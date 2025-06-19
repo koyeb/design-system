@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import IconChevronRight from 'lucide-static/icons/chevron-right.svg?react';
+import { ChevronRightIcon } from 'lucide-react';
 
 import { Collapse } from '../collapse/collapse';
 
@@ -67,7 +67,7 @@ export function AccordionHeader({
       )}
     >
       <div>
-        <IconChevronRight className={clsx('size-4 transition-transform', expanded && 'rotate-90')} />
+        <ChevronRightIcon className={clsx('size-4 transition-transform', expanded && 'rotate-90')} />
       </div>
       {children}
     </header>

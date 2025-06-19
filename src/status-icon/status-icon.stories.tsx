@@ -1,8 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import IconBox from 'lucide-static/icons/box.svg?react';
+import { BoxIcon } from 'lucide-react';
 
 import { controls } from '../utils/storybook';
-
 import { StatusIcon } from './status-icon';
 
 const meta = {
@@ -12,7 +11,7 @@ const meta = {
     controls: controls.exclude(['Icon', 'color']),
   },
   args: {
-    Icon: IconBox,
+    Icon: BoxIcon,
   },
   argTypes: {},
 } satisfies Meta<typeof StatusIcon>;

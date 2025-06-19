@@ -1,23 +1,21 @@
 import {
+  FloatingPortal,
+  UseFloatingOptions,
+  UseTransitionStylesProps,
   autoUpdate,
   flip,
-  FloatingPortal,
   offset,
   size,
   useFloating,
-  UseFloatingOptions,
   useTransitionStyles,
-  UseTransitionStylesProps,
 } from '@floating-ui/react';
 import clsx from 'clsx';
 import * as downshift from 'downshift';
-import IconChevronUpDown from 'lucide-static/icons/chevrons-up-down.svg?react';
-import { createContext, CSSProperties, useContext } from 'react';
+import { ChevronsUpDownIcon } from 'lucide-react';
+import { CSSProperties, createContext, useContext } from 'react';
 
 import { Field } from '../field/field';
 import { InputBox } from '../input/input';
-
-/* eslint-disable react-refresh/only-export-components */
 
 type Combobox<T> = ReturnType<typeof downshift.useCombobox<T>>;
 type Floating = ReturnType<typeof useFloating>;
@@ -119,7 +117,7 @@ function Input({ start, ...props }: React.ComponentProps<typeof InputBox>) {
       start={start}
       end={
         <button {...combobox?.getToggleButtonProps()} className="px-2">
-          <IconChevronUpDown className="size-4" />
+          <ChevronsUpDownIcon className="size-4" />
         </button>
       }
     />

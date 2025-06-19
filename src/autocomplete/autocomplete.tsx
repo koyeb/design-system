@@ -1,6 +1,6 @@
 import clsx from 'clsx';
 import { useCombobox } from 'downshift';
-import IconChevronDown from 'lucide-static/icons/chevron-down.svg?react';
+import { ChevronDownIcon } from 'lucide-react';
 import { useMemo } from 'react';
 
 import { Dropdown } from '../dropdown/dropdown';
@@ -146,7 +146,7 @@ export function Autocomplete<Item>({
         disabled={disabled}
         end={
           <button type="button" className="rounded-e" {...toggleButtonProps}>
-            <IconChevronDown className={clsx('icon mx-1', isOpen && 'rotate-180')} />
+            <ChevronDownIcon className={clsx('icon mx-1', isOpen && 'rotate-180')} />
           </button>
         }
         boxClassName={clsx('outline-none', isOpen && '!rounded-b-none')}

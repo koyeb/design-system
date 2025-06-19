@@ -9,7 +9,7 @@ import {
 } from '@floating-ui/react';
 import clsx from 'clsx';
 import { AnimatePresence, motion } from 'framer-motion';
-import IconClose from 'lucide-static/icons/x.svg?react';
+import { XIcon } from 'lucide-react';
 
 const duration = 140;
 
@@ -94,7 +94,7 @@ export function DialogHeader({ title, onClose }: DialogHeaderProps) {
       <h2 className="text-2xl font-semibold">{title}</h2>
 
       <button type="button" className={clsx('focusable rounded', !onClose && 'hidden')} onClick={onClose}>
-        <IconClose className="size-4" />
+        <XIcon className="size-4" />
       </button>
     </header>
   );

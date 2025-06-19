@@ -1,6 +1,5 @@
 import clsx from 'clsx';
-import IconHelp from 'lucide-static/icons/circle-help.svg?react';
-import IconInfo from 'lucide-static/icons/info.svg?react';
+import { HelpCircleIcon, InfoIcon } from 'lucide-react';
 
 import { Tooltip } from '../tooltip/tooltip';
 
@@ -11,7 +10,7 @@ type HelpProps = {
 };
 
 export function HelpTooltip({ icon = 'help', className, children }: HelpProps) {
-  const Icon = icon === 'help' ? IconHelp : IconInfo;
+  const Icon = icon === 'help' ? HelpCircleIcon : InfoIcon;
 
   return (
     <Tooltip allowHover content={children}>

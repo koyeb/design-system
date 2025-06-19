@@ -1,14 +1,9 @@
 import react from '@vitejs/plugin-react';
 import { defineConfig } from 'vite';
 import dts from 'vite-plugin-dts';
-import svgr from 'vite-plugin-svgr';
 
 export default defineConfig({
-  plugins: [
-    react(),
-    svgr({ svgrOptions: { ref: true } }),
-    dts({ rollupTypes: true, exclude: ['**/*.stories.tsx'] }),
-  ],
+  plugins: [react(), dts({ rollupTypes: true, exclude: ['**/*.stories.tsx'] })],
   build: {
     outDir: 'lib',
     emptyOutDir: true,
@@ -20,7 +15,15 @@ export default defineConfig({
       fileName: 'main',
     },
     rollupOptions: {
-      external: [/node_modules/],
+      external: [
+        //
+        '@floating-ui/react',
+        'class-variance-authority',
+        'clsx',
+        'lucide-static',
+        'react',
+        'react/jsx-runtime',
+      ],
     },
   },
 });

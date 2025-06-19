@@ -1,9 +1,8 @@
 import { Meta, StoryFn } from '@storybook/react';
-import EllipsisVertical from 'lucide-static/icons/ellipsis-vertical.svg?react';
+import { EllipsisVerticalIcon } from 'lucide-react';
 import { useState } from 'react';
 
 import { IconButton } from '../button/button';
-
 import { Table } from './table';
 
 export default {
@@ -46,7 +45,7 @@ export const Default: StoryFn = () => (
         render: (item) => item.released,
       },
       actions: {
-        render: () => <IconButton variant="ghost" color="gray" size={1} Icon={EllipsisVertical} />,
+        render: () => <IconButton variant="ghost" color="gray" size={1} Icon={EllipsisVerticalIcon} />,
       },
     }}
   />
@@ -72,7 +71,7 @@ export const ExpandableRow: StoryFn = () => {
           render: (item) => item.released,
         },
         actions: {
-          render: () => <IconButton variant="ghost" color="gray" size={1} Icon={EllipsisVertical} />,
+          render: () => <IconButton variant="ghost" color="gray" size={1} Icon={EllipsisVerticalIcon} />,
         },
       }}
       isExpanded={(item) => expanded.includes(item)}

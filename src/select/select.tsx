@@ -1,6 +1,6 @@
 import clsx from 'clsx';
-import { useSelect, UseSelectProps, UseSelectState, UseSelectStateChangeOptions } from 'downshift';
-import IconChevronDown from 'lucide-static/icons/chevron-down.svg?react';
+import { UseSelectProps, UseSelectState, UseSelectStateChangeOptions, useSelect } from 'downshift';
+import { ChevronDownIcon } from 'lucide-react';
 import { useCallback, useMemo } from 'react';
 
 import { Dropdown, DropdownGroup } from '../dropdown/dropdown';
@@ -23,8 +23,8 @@ type SelectProps<Item> = {
   placeholder?: React.ReactNode;
   className?: string;
   id?: string;
-  items: Array<Item>;
-  groups?: Array<DropdownGroup<Item>>;
+  items: Item[];
+  groups?: DropdownGroup<Item>[];
   selectedItem?: Item | null;
   onSelectedItemChange?: (value: Item) => void;
   onItemClick?: (item: Item) => void;
@@ -159,7 +159,7 @@ export function Select<Item>({
           )}
         </div>
 
-        <IconChevronDown className={clsx('icon mx-1 size-6', isOpen && 'rotate-180')} />
+        <ChevronDownIcon className={clsx('icon mx-1 size-6', isOpen && 'rotate-180')} />
       </div>
 
       <Dropdown

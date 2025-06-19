@@ -1,6 +1,5 @@
 import clsx from 'clsx';
-import IconAlert from 'lucide-static/icons/circle-alert.svg?react';
-import IconInfo from 'lucide-static/icons/info.svg?react';
+import { AlertCircleIcon, InfoIcon } from 'lucide-react';
 
 import { StatusIcon } from '../status-icon/status-icon';
 
@@ -57,8 +56,8 @@ export function Alert({
 }
 
 const icons: Record<AlertVariant, React.ComponentProps<typeof StatusIcon>> = {
-  neutral: { Icon: IconInfo, color: 'gray' },
-  info: { Icon: IconInfo, color: 'blue' },
-  error: { Icon: IconAlert, color: 'red' },
-  warning: { Icon: IconAlert, color: 'orange' },
+  neutral: { Icon: InfoIcon, color: 'gray' },
+  info: { Icon: InfoIcon, color: 'blue' },
+  error: { Icon: AlertCircleIcon, color: 'red' },
+  warning: { Icon: AlertCircleIcon, color: 'orange' },
 };

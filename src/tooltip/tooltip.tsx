@@ -1,6 +1,6 @@
 import { FloatingArrow, FloatingPortal } from '@floating-ui/react';
 import clsx from 'clsx';
-import IconInfo from 'lucide-static/icons/info.svg?react';
+import { InfoIcon } from 'lucide-react';
 import { useState } from 'react';
 
 import { UseTooltipProps, useTooltip } from './use-tooltip';
@@ -114,7 +114,7 @@ type InfoTooltipProps = Omit<TooltipProps, 'children'> & {
 export function InfoTooltip({ iconClassName, ...props }: InfoTooltipProps) {
   return (
     <Tooltip {...props}>
-      {(props) => <IconInfo {...props} className={clsx('size-4', iconClassName)} />}
+      {(props) => <InfoIcon {...props} className={clsx('size-4', iconClassName)} />}
     </Tooltip>
   );
 }

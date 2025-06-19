@@ -1,9 +1,5 @@
 import clsx from 'clsx';
-import IconCheck from 'lucide-static/icons/check.svg?react';
-import IconAlertCircle from 'lucide-static/icons/circle-alert.svg?react';
-import IconInfoCircle from 'lucide-static/icons/info.svg?react';
-import IconAlertTriangle from 'lucide-static/icons/triangle-alert.svg?react';
-import IconXClose from 'lucide-static/icons/x.svg?react';
+import { AlertCircleIcon, AlertTriangleIcon, CheckIcon, CircleIcon, XIcon } from 'lucide-react';
 
 import { StatusIcon } from '../status-icon/status-icon';
 
@@ -33,15 +29,15 @@ export function Notification({ title, variant = 'info', onClose, className, chil
       </div>
 
       <button className="ml-auto" onClick={onClose}>
-        <IconXClose className="size-4" />
+        <XIcon className="size-4" />
       </button>
     </div>
   );
 }
 
 const icons: Record<NotificationVariant, React.ComponentProps<typeof StatusIcon>> = {
-  success: { color: 'green', Icon: IconCheck },
-  info: { color: 'blue', Icon: IconInfoCircle },
-  warning: { color: 'orange', Icon: IconAlertTriangle },
-  error: { color: 'red', Icon: IconAlertCircle },
+  success: { color: 'green', Icon: CheckIcon },
+  info: { color: 'blue', Icon: CircleIcon },
+  warning: { color: 'orange', Icon: AlertTriangleIcon },
+  error: { color: 'red', Icon: AlertCircleIcon },
 };

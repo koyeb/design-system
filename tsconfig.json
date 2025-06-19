@@ -1,6 +1,5 @@
 {
-  "include": ["src"],
-  "files": ["tailwind-preset.ts"],
+  "include": ["src/**/*"],
   "compilerOptions": {
     "target": "ESNext",
     "lib": ["DOM", "DOM.Iterable", "ESNext"],
