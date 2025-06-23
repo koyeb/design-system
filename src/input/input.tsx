@@ -7,6 +7,7 @@ import { useId } from '../utils/use-id';
 type InputOwnProps = {
   size?: 1 | 2 | 3;
   label?: React.ReactNode;
+  labelPosition?: 'top' | 'left';
   helpTooltip?: React.ReactNode;
   helperText?: React.ReactNode;
   error?: React.ReactNode;
@@ -22,6 +23,7 @@ type InputProps = Extend<React.ComponentProps<'input'>, InputOwnProps>;
 export function Input({
   size,
   label,
+  labelPosition,
   helpTooltip,
   helperText,
   error,
@@ -41,6 +43,7 @@ export function Input({
           {label}
         </FieldLabel>
       }
+      labelPosition={labelPosition}
       helperText={
         <FieldHelperText id={helperTextId} invalid={invalid}>
           {error ?? helperText}
@@ -91,7 +94,7 @@ export function InputBox({
     <div
       ref={boxRef}
       className={clsx(
-        'row w-full justify-stretch rounded border -outline-offset-1',
+        'row w-full justify-stretch rounded border bg-neutral -outline-offset-1',
         props.disabled || props.readOnly ? 'bg-muted dark:bg-muted' : 'focusable-within',
         props.disabled && 'opacity-50',
         props['aria-invalid'] && 'border-red outline-red',
