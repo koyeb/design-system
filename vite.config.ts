@@ -16,11 +16,15 @@ export default defineConfig({
     },
     rollupOptions: {
       external: [
-        //
         '@floating-ui/react',
+        /^@shikijs/,
+        '@tanstack/react-ranger',
         'class-variance-authority',
+        'shiki',
         'clsx',
-        'lucide-static',
+        'downshift',
+        'framer-motion',
+        'lucide-react',
         'react',
         'react/jsx-runtime',
       ],

@@ -17,12 +17,12 @@ import { CSSProperties, createContext, useContext } from 'react';
 import { Field } from '../field/field';
 import { InputBox } from '../input/input';
 
-type Combobox<T> = ReturnType<typeof downshift.useCombobox<T>>;
+type DownshiftCombobox<T> = ReturnType<typeof downshift.useCombobox<T>>;
 type Floating = ReturnType<typeof useFloating>;
 type FloatingTransition = { isMounted: boolean; styles: CSSProperties };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-type ComboboxContext = Combobox<any> & {
+type ComboboxContext = DownshiftCombobox<any> & {
   floating: Floating;
   transition: FloatingTransition;
 };

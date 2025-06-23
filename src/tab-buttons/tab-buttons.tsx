@@ -1,5 +1,7 @@
 import { cva } from 'class-variance-authority';
 
+import { Extend } from '../utils/types';
+
 type TabButtonsProps = {
   size?: 1 | 2;
   className?: string;
@@ -9,14 +11,14 @@ type TabButtonsProps = {
 export function TabButtons({ size = 2, className, children }: TabButtonsProps) {
   return (
     <div className="max-w-full overflow-x-auto">
-      <div role="tablist" className={TabButtons.class({ size, className })}>
+      <div role="tablist" className={TabButtons.className({ size, className })}>
         {children}
       </div>
     </div>
   );
 }
 
-TabButtons.class = cva('row w-fit gap-2 rounded-md bg-muted p-1', {
+TabButtons.className = cva('row w-fit gap-2 rounded-md bg-muted p-1', {
   variants: {
     size: {
       1: 'h-8',
@@ -25,45 +27,34 @@ TabButtons.class = cva('row w-fit gap-2 rounded-md bg-muted p-1', {
   },
 });
 
-type TabButtonProps = {
-  size?: 1 | 2;
-  selected: boolean;
-  disabled?: boolean;
-  panelId?: string;
-  onClick?: () => void;
-  className?: string;
-  children?: React.ReactNode;
-};
+type TabButtonProps = Extend<
+  React.ComponentProps<'button'>,
+  {
+    size?: 1 | 2;
+    selected: boolean;
+    panelId?: string;
+    className?: string;
+  }
+>;
 
-export function TabButton({
-  size,
-  selected,
-  disabled,
-  panelId,
-  onClick,
-  className,
-  children,
-}: TabButtonProps) {
+export function TabButton({ size, selected, panelId, className, ...props }: TabButtonProps) {
   return (
     <button
       type="button"
       role="tab"
-      disabled={disabled}
-      className={TabButton.class({ size, selected, className })}
+      className={TabButton.className({ size, selected, className })}
       aria-selected={selected}
       aria-controls={panelId}
-      onClick={onClick}
-    >
-      {children}
-    </button>
+      {...props}
+    />
   );
 }
 
-TabButton.class = cva(
+TabButton.className = cva(
   [
     'col h-full flex-1 items-center justify-center',
     'focusable whitespace-nowrap rounded px-3 transition-all',
-    'disabled:pointer-events-none disabled:opacity-50',
+    'aria-disabled:pointer-events-none aria-disabled:opacity-50',
   ],
   {
     variants: {

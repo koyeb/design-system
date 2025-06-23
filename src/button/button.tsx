@@ -22,7 +22,7 @@ type ButtonProps = Extend<React.ComponentProps<'button'>, ButtonOwnProps>;
 
 export function Button({ loading, children, className, ...props }: ButtonProps) {
   return (
-    <button type="button" disabled={loading} className={buttonClassName(props, className)} {...props}>
+    <button type="button" disabled={loading} className={Button.className(props, className)} {...props}>
       {loading && <Spinner className="size-4" />}
       {children}
     </button>
@@ -96,8 +96,7 @@ export function IconButton({
   );
 }
 
-// eslint-disable-next-line react-refresh/only-export-components
-export function buttonClassName(
+Button.className = function (
   { variant = 'solid', size = 2, color = 'green' }: ButtonOwnProps,
   className?: string,
 ) {
@@ -112,7 +111,7 @@ export function buttonClassName(
     variant === 'ghost' && ghostClass(color),
     className,
   );
-}
+};
 
 function sizeClass(size: ButtonSize) {
   return clsx({

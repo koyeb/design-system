@@ -22,13 +22,15 @@
     "storybook": "storybook dev --ci -p 6006"
   },
   "peerDependencies": {
-    "@floating-ui/react": "^0.26.27",
+    "@floating-ui/react": "^0.27.0",
     "@tanstack/react-ranger": "^0.0.4",
+    "class-variance-authority": "^0.7.0",
     "clsx": "^2.0.0",
     "downshift": "^9.0.0",
-    "framer-motion": "^11.12.0",
-    "react": "^18.0.0",
-    "react-dom": "^18.0.0"
+    "framer-motion": "^12.0.0",
+    "lucide-react": "^0.518.0",
+    "shiki": "^2.0.0",
+    "react": "^19.0.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.28.0",
@@ -51,11 +53,12 @@
     "downshift": "^9.0.9",
     "eslint": "^9.28.0",
     "framer-motion": "^12.17.0",
+    "lucide-react": "^0.518.0",
     "postcss": "^8.5.6",
     "prettier": "^3.5.3",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
-    "shiki": "^2",
+    "shiki": "^2.0.0",
     "storybook": "^8.6.14",
     "storybook-dark-mode": "^4.0.2",
     "tailwindcss": "^3.4.17",
@@ -64,8 +67,5 @@
     "vite": "^6.3.5",
     "vite-plugin-dts": "4.5.4",
     "vite-plugin-svgr": "^4.3.0"
-  },
-  "dependencies": {
-    "lucide-react": "^0.518.0"
   }
 }
