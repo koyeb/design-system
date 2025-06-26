@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 
 import { ComponentPlaceholder, controls } from '../utils/storybook';
 import { Collapse } from './collapse';

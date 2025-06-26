@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 
 import { controls } from '../utils/storybook';
 import { Code, Json } from './code';
@@ -17,7 +17,7 @@ export const Default: StoryObj<typeof Code> = {
   args: {
     lang: 'javascript',
     value:
-      "import type { Meta } from '@storybook/react';\n\nexport default {\n  title: 'MyStory',\n} satisfies Meta;",
+      "import type { Meta } from '@storybook/react-vite';\n\nexport default {\n  title: 'MyStory',\n} satisfies Meta;",
   },
 };
 

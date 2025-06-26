@@ -1,6 +1,6 @@
 import { Placement } from '@floating-ui/react';
-import { action } from '@storybook/addon-actions';
-import type { Meta, StoryObj } from '@storybook/react';
+import { action } from 'storybook/actions';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 
 import { controls } from '../utils/storybook';
 import { Floating } from './floating';

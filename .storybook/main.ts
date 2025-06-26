@@ -2,7 +2,7 @@ import type { StorybookConfig } from '@storybook/react-vite';
 
 export default {
   stories: ['../src/**/*.stories.tsx'],
-  addons: ['@storybook/addon-actions', '@storybook/addon-controls', 'storybook-dark-mode'],
+  addons: ['@vueless/storybook-dark-mode'],
   framework: '@storybook/react-vite',
   viteFinal: async (config) => {
     config.plugins ??= [];

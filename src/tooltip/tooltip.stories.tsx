@@ -1,5 +1,5 @@
 import { Placement } from '@floating-ui/react';
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 
 import { controls } from '../utils/storybook';
 import { Tooltip } from './tooltip';
