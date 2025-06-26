@@ -11,7 +11,6 @@ export function ProgressBar({ progress = 0, label = true, className }: ProgressB
     <div className={className}>
       <div className="relative h-1 bg-green">
         <div
-          // eslint-disable-next-line tailwindcss/no-arbitrary-value
           className="absolute right-0 h-full bg-black/40 transition-[width] will-change-[width] dark:bg-white/80"
           style={{ width: `${100 - percent}%` }}
         />

@@ -53,7 +53,7 @@ export function TabButton({ size, selected, panelId, className, ...props }: TabB
 TabButton.className = cva(
   [
     'col h-full flex-1 items-center justify-center',
-    'focusable whitespace-nowrap rounded px-3 transition-all',
+    'rounded px-3 whitespace-nowrap focusable transition-all',
     'aria-disabled:pointer-events-none aria-disabled:opacity-50',
   ],
   {

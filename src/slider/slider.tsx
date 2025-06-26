@@ -77,7 +77,7 @@ export function Slider({
         id={id}
         className={clsx('relative h-2 w-full rounded-full bg-inverted/10', {
           'cursor-pointer': !disabled,
-          'opacity-50 pointer-events-none': disabled,
+          'pointer-events-none opacity-50': disabled,
         })}
       >
         <Connector steps={ranger.getSteps()} />

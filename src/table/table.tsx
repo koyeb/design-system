@@ -95,7 +95,7 @@ export function Table<Item, Column extends string>({
   );
 }
 
-function defaultGetKey<T>(item: T): React.Key | undefined {
+function defaultGetKey(item: unknown): React.Key | undefined {
   if (typeof item !== 'object' || item === null) {
     return;
   }

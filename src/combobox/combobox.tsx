@@ -147,7 +147,7 @@ function Menu({ className, ...props }: React.ComponentProps<'ul'>) {
   return <ul {...combobox?.getMenuProps(props)} className={clsx('p-1', className)} />;
 }
 
-function MenuItem<T>({ className, ...props }: { item: T } & React.ComponentProps<'li'>) {
+function MenuItem({ className, ...props }: { item: unknown } & React.ComponentProps<'li'>) {
   const combobox = useContext(comboboxContext);
 
   return (

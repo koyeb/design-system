@@ -22,11 +22,11 @@ export function Badge({ size = 2, color = 'gray', className, ...props }: BadgePr
           'px-3 py-1': size === 2,
         },
         {
-          'text-red bg-red/10': color === 'red',
-          'text-green bg-green/10': color === 'green',
-          'text-blue bg-blue/10': color === 'blue',
-          'text-orange bg-orange/10': color === 'orange',
-          'text-dim bg-gray/10': color === 'gray',
+          'bg-red/10 text-red': color === 'red',
+          'bg-green/10 text-green': color === 'green',
+          'bg-blue/10 text-blue': color === 'blue',
+          'bg-orange/10 text-orange': color === 'orange',
+          'bg-gray/10 text-dim': color === 'gray',
         },
         className,
       )}

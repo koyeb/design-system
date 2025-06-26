@@ -21,7 +21,7 @@ export function Radio({ label, helpTooltip, className, ...props }: RadioProps) {
       helpTooltip={helpTooltip}
       className={clsx(
         'inline-flex flex-row items-center gap-2',
-        'focusable-within rounded outline-offset-4',
+        'rounded focusable-within outline-offset-4',
         !props.disabled && 'cursor-pointer',
         props.disabled && 'text-dim',
         className,
@@ -38,7 +38,7 @@ export function RadioInput(props: React.ComponentProps<'input'>) {
     <>
       <input type="radio" className="peer sr-only fixed" {...props} />
 
-      <span className="leading-none peer-checked:hidden  peer-disabled:[&>span]:bg-muted">
+      <span className="leading-none peer-checked:hidden peer-disabled:[&>span]:bg-muted">
         <span className="inline-block size-4 rounded-full border" />
       </span>
 

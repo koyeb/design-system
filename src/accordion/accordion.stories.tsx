@@ -2,7 +2,6 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { useState } from 'react';
 
 import { ComponentPlaceholder } from '../utils/storybook';
-
 import { AccordionSection } from './accordion';
 
 type Args = {

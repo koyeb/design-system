@@ -48,7 +48,7 @@ export function Dialog({ open, onClose, onClosed, overlayClassName, className, c
       <div
         ref={refs.setFloating}
         className={clsx(
-          'max-h-full overflow-y-auto rounded-lg bg-popover p-8 text-contrast-popover shadow-lg dark:border',
+          'max-h-full overflow-y-auto rounded-lg bg-popover p-8 text-zinc-950 shadow-lg dark:border dark:text-zinc-50',
           className,
         )}
         {...getFloatingProps()}
@@ -93,7 +93,7 @@ export function DialogHeader({ title, onClose }: DialogHeaderProps) {
     <header className="row items-center justify-between gap-4">
       <h2 className="text-2xl font-semibold">{title}</h2>
 
-      <button type="button" className={clsx('focusable rounded', !onClose && 'hidden')} onClick={onClose}>
+      <button type="button" className={clsx('rounded focusable', !onClose && 'hidden')} onClick={onClose}>
         <XIcon className="size-4" />
       </button>
     </header>
@@ -101,5 +101,5 @@ export function DialogHeader({ title, onClose }: DialogHeaderProps) {
 }
 
 export function DialogFooter({ className, children }: { className?: string; children: React.ReactNode }) {
-  return <footer className={clsx('row mt-2 items-center justify-end gap-2', className)}>{children}</footer>;
+  return <footer className={clsx('mt-2 row items-center justify-end gap-2', className)}>{children}</footer>;
 }

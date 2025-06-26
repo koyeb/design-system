@@ -21,11 +21,11 @@ export function Switch({ label, labelPosition = 'top', helpTooltip, className, .
       id={`${id}-label`}
       htmlFor={id}
       className={clsx(
-        'focusable-within inline-flex rounded outline-offset-4',
+        'inline-flex rounded focusable-within outline-offset-4',
         !props.disabled && 'cursor-pointer',
         {
-          'flex-col gap-1.5 items-start': labelPosition === 'top',
-          'flex-row gap-2 items-center': labelPosition === 'left',
+          'flex-col items-start gap-1.5': labelPosition === 'top',
+          'flex-row items-center gap-2': labelPosition === 'left',
         },
         className,
       )}

@@ -80,7 +80,7 @@ export function Item<Item>({
       {...getItemProps({ item, index })}
     >
       <div
-        className={clsx('flex-1 break-all rounded p-1', index === highlightedIndex && 'bg-muted')}
+        className={clsx('flex-1 rounded p-1 break-all', index === highlightedIndex && 'bg-muted')}
         onClick={() => onItemClick?.(item)}
       >
         {renderItem(item, index)}

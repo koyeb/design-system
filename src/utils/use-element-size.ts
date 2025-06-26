@@ -20,10 +20,6 @@ export function useWatchElementSize(element: HTMLElement | null, callback: Watch
       for (const entry of entries) {
         const borderBoxSize = entry.borderBoxSize[0];
 
-        if (!borderBoxSize) {
-          continue;
-        }
-
         callback({
           width: borderBoxSize.inlineSize,
           height: borderBoxSize.blockSize,

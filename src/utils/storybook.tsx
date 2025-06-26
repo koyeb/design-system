@@ -1,5 +1,3 @@
-/* eslint-disable react-refresh/only-export-components */
-
 type NumberOptions = Partial<Record<'min' | 'max' | 'step', number>>;
 
 export const controls = {
@@ -34,5 +32,5 @@ export const controls = {
 };
 
 export function ComponentPlaceholder() {
-  return <div className="min-h-4 min-w-8 border border-dashed border-strong" />;
+  return <div className="min-h-4 min-w-8 border border-dashed border-zinc-400" />;
 }

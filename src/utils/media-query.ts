@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 export function usePrefersDarkMode() {
   return useMediaQuery('(prefers-color-scheme: dark)');
@@ -25,10 +25,10 @@ function useMediaQuery(query: string): boolean | undefined {
 
     handleChange();
 
-    matchMedia.addEventListener?.('change', handleChange);
+    matchMedia.addEventListener('change', handleChange);
 
     return () => {
-      matchMedia.removeEventListener?.('change', handleChange);
+      matchMedia.removeEventListener('change', handleChange);
     };
   }, [query]);
 

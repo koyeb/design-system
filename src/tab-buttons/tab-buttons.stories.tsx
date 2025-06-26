@@ -2,7 +2,6 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { useState } from 'react';
 
 import { controls } from '../utils/storybook';
-
 import { TabButton, TabButtons } from './tab-buttons';
 
 const meta = {

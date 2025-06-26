@@ -2,9 +2,9 @@ import {
   FloatingPortal,
   Middleware,
   Placement,
-  safePolygon,
   Strategy,
   UseRoleProps,
+  safePolygon,
 } from '@floating-ui/react';
 
 import { useFloating } from './use-floating';

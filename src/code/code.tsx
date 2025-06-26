@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { createHighlighterCore, HighlighterCore } from 'shiki/core';
+import { HighlighterCore, createHighlighterCore } from 'shiki/core';
 import { createOnigurumaEngine } from 'shiki/engine/oniguruma';
 
 export type CodeLang = 'dotenv' | 'javascript' | 'json' | 'python' | 'go' | 'prisma' | 'text' | 'yaml';
@@ -49,7 +49,7 @@ function useHighlighter() {
         import('shiki/langs/yaml.mjs'),
       ],
       engine: createOnigurumaEngine(import('shiki/wasm')),
-      // eslint-disable-next-line no-console
+       
     }).then(setHighlighter, console.error);
   }, []);
 

@@ -2,7 +2,6 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { useState } from 'react';
 
 import { controls } from '../utils/storybook';
-
 import { Autocomplete } from './autocomplete';
 
 type Game = {

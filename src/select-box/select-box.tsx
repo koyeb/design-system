@@ -41,7 +41,7 @@ export function SelectBox({
       htmlFor={id}
       aria-disabled={disabled}
       className={clsx(
-        'row relative rounded-lg border transition-colors has-[:checked]:border-green',
+        'relative row rounded-lg border transition-colors has-[:checked]:border-green',
         'before:absolute before:inset-0 before:-z-10 before:rounded-lg before:bg-popover',
         !disabled && 'cursor-pointer hover:bg-muted/50',
         disabled && 'bg-muted text-dim',
@@ -60,7 +60,7 @@ export function SelectBox({
             <span>{title}</span>
           </div>
 
-          <div className={clsx('px-2 pb-3 pt-1 text-xs text-dim', classes?.description)}>{description}</div>
+          <div className={clsx('px-2 pt-1 pb-3 text-xs text-dim', classes?.description)}>{description}</div>
 
           {footer && <div className="rounded-br-lg px-3 py-1">{footer}</div>}
         </div>

@@ -3,7 +3,6 @@ import { useState } from 'react';
 
 import { Checkbox } from '../checkbox/checkbox';
 import { controls } from '../utils/storybook';
-
 import { MultiSelect, Select } from './select';
 
 type Game = {

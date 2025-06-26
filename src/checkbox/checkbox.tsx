@@ -21,7 +21,7 @@ export function Checkbox({ label, helpTooltip, className, ...props }: CheckboxPr
       helpTooltip={helpTooltip}
       className={clsx(
         'inline-flex flex-row items-center gap-2',
-        'focusable-within rounded outline-offset-4',
+        'rounded focusable-within outline-offset-4',
         !props.disabled && 'cursor-pointer',
         props.disabled && 'text-dim',
         className,

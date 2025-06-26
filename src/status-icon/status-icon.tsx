@@ -18,7 +18,7 @@ export function StatusIcon({ color, Icon, className }: StatusIconProps) {
           'bg-green/20 text-green': color === 'green',
           'bg-blue/20 text-blue': color === 'blue',
           'bg-orange/20 text-orange': color === 'orange',
-          'bg-inverted/20 text-inverted': color === 'gray',
+          'bg-inverted/20 text-neutral': color === 'gray',
         },
         className,
       )}

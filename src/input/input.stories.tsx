@@ -1,7 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
 import { controls } from '../utils/storybook';
-
 import { Input, InputEnd, InputStart } from './input';
 
 const meta = {

@@ -26,7 +26,7 @@ export function AccordionSection({
       data-error={hasError}
       className={clsx(
         'group border-t transition-colors first-of-type:border-none',
-        'data-[expanded=true]:border-t-strong/50 [[data-expanded=true]+&]:border-t-strong/50',
+        'data-[expanded=true]:border-t-zinc-400 [[data-expanded=true]+&]:border-t-zinc-400',
         'data-[error=true]:!border-t-red [[data-error=true]+&]:!border-t-red',
         className,
       )}

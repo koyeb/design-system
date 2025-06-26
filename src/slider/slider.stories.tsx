@@ -2,7 +2,6 @@ import type { Meta, StoryFn } from '@storybook/react';
 import { useState } from 'react';
 
 import { controls } from '../utils/storybook';
-
 import { Slider } from './slider';
 
 const meta = {

@@ -1,7 +1,6 @@
 import type { Meta, StoryFn } from '@storybook/react';
 
 import { controls } from '../utils/storybook';
-
 import { Badge } from './badge';
 
 const meta = {

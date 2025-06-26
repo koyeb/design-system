@@ -3,7 +3,6 @@ import { action } from '@storybook/addon-actions';
 import type { Meta, StoryObj } from '@storybook/react';
 
 import { controls } from '../utils/storybook';
-
 import { Floating } from './floating';
 
 const meta = {

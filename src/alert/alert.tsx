@@ -29,7 +29,7 @@ export function Alert({
     <div
       role="alert"
       className={clsx(
-        'col sm:row items-start gap-3 rounded-lg border px-4 py-3 sm:items-stretch',
+        'col items-start gap-3 rounded-lg border px-4 py-3 sm:row sm:items-stretch',
         {
           'border-blue': variant === 'info',
           'border-red': variant === 'error',
@@ -45,7 +45,7 @@ export function Alert({
     >
       {icon ?? <StatusIcon {...icons[variant]} className="self-start" />}
 
-      <div className="col me-auto items-start justify-center gap-1">
+      <div className="me-auto col items-start justify-center gap-1">
         {title && <span className="text-base font-medium">{title}</span>}
         {description && <span>{description}</span>}
       </div>

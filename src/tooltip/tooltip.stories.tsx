@@ -2,7 +2,6 @@ import { Placement } from '@floating-ui/react';
 import type { Meta, StoryObj } from '@storybook/react';
 
 import { controls } from '../utils/storybook';
-
 import { Tooltip } from './tooltip';
 
 const meta = {

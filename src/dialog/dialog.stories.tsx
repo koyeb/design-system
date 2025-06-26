@@ -1,7 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
 import { ComponentPlaceholder, controls } from '../utils/storybook';
-
 import { Dialog } from './dialog';
 
 const meta = {

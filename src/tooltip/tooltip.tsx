@@ -81,10 +81,10 @@ function TooltipElement({
         ref={setFloating}
         style={styles}
         className={clsx(
-          'col z-50 max-w-80 gap-1 rounded-lg p-2 shadow-lg',
+          'z-50 col max-w-80 gap-1 rounded-lg p-2 shadow-lg',
           {
             'bg-neutral': color === 'neutral',
-            'bg-inverted text-inverted': color === 'inverted',
+            'bg-inverted text-neutral': color === 'inverted',
           },
           className,
         )}

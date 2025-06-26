@@ -33,7 +33,7 @@ export function Tab({ component = 'button', className, selected, children, ...pr
       role: 'tab',
       'aria-selected': selected,
       className: clsx(
-        'inline-block whitespace-nowrap border-b-2 px-4 py-2 font-semibold outline-none transition-colors focus-visible:bg-green/10',
+        'inline-block border-b-2 px-4 py-2 font-semibold whitespace-nowrap transition-colors outline-none focus-visible:bg-green/10',
         selected && 'border-green',
         !selected && 'border-transparent text-dim',
         className,

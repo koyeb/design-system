@@ -102,7 +102,7 @@ Button.className = function (
 ) {
   return clsx(
     'inline-flex items-center justify-center whitespace-nowrap',
-    'focusable rounded-md font-medium transition-colors',
+    'rounded-md font-medium focusable transition-colors',
     sizeClass(size),
     hoverClass(color),
     focusClass(color),
@@ -115,18 +115,18 @@ Button.className = function (
 
 function sizeClass(size: ButtonSize) {
   return clsx({
-    'gap-1 min-h-6 px-2 text-xs': size === 1,
-    'gap-2.5 min-h-8 px-3': size === 2,
-    'gap-2.5 min-h-10 px-4': size === 3,
+    'min-h-6 gap-1 px-2 text-xs': size === 1,
+    'min-h-8 gap-2.5 px-3': size === 2,
+    'min-h-10 gap-2.5 px-4': size === 3,
   });
 }
 
 function hoverClass(color: ButtonColor) {
   return clsx(
-    color === 'green' && 'hover:bg-green/90 hover:text-contrast-green',
-    color === 'blue' && 'hover:bg-blue/90 hover:text-contrast-blue',
-    color === 'orange' && 'hover:bg-orange/90 hover:text-contrast-orange',
-    color === 'red' && 'hover:bg-red/90 hover:text-contrast-red',
+    color === 'green' && 'hover:bg-green/90 hover:text-zinc-50',
+    color === 'blue' && 'hover:bg-blue/90 hover:text-zinc-50',
+    color === 'orange' && 'hover:bg-orange/90 hover:text-zinc-50',
+    color === 'red' && 'hover:bg-red/90 hover:text-zinc-50',
     color === 'gray' && 'hover:bg-muted/90',
   );
 }
@@ -144,31 +144,31 @@ function focusClass(color: ButtonColor) {
 function solidClass(color: ButtonColor) {
   // prettier-ignore
   return clsx(
-    color === 'green' && 'bg-green text-contrast-green disabled:bg-green/50 dark:disabled:text-contrast-green/50',
-    color === 'blue' && 'bg-blue text-contrast-blue disabled:bg-blue/50 dark:disabled:text-contrast-blue/50',
-    color === 'orange' && 'bg-orange text-contrast-orange disabled:bg-orange/50 dark:disabled:text-contrast-orange/50',
-    color === 'red' && 'bg-red text-contrast-red disabled:bg-red/50 dark:disabled:text-contrast-red/50',
+    color === 'green' && 'bg-green text-zinc-50 disabled:bg-green/50 dark:disabled:text-zinc-50/50',
+    color === 'blue' && 'bg-blue text-zinc-50 disabled:bg-blue/50 dark:disabled:text-zinc-50/50',
+    color === 'orange' && 'bg-orange text-zinc-50 disabled:bg-orange/50 dark:disabled:text-zinc-50/50',
+    color === 'red' && 'bg-red text-zinc-50 disabled:bg-red/50 dark:disabled:text-zinc-50/50',
     color === 'gray' && 'bg-muted disabled:bg-muted disabled:text-dim',
   );
 }
 
 function outlineClass(color: ButtonColor) {
   return clsx(
-    'border disabled:border-default disabled:bg-muted disabled:text-dim',
+    'border disabled:border-border disabled:bg-muted disabled:text-dim',
     color === 'green' && 'border-green',
     color === 'blue' && 'border-blue',
     color === 'orange' && 'border-orange',
-    color === 'red' && ' border-red',
+    color === 'red' && 'border-red',
   );
 }
 
 function ghostClass(color: ButtonColor) {
   return clsx(
     'border border-transparent',
-    color === 'green' && 'text-green disabled:bg-green/50 disabled:text-contrast-green',
-    color === 'blue' && 'text-blue disabled:bg-blue/50 disabled:text-contrast-blue',
-    color === 'orange' && 'text-orange disabled:bg-orange/50 disabled:text-contrast-orange',
-    color === 'red' && 'text-red disabled:bg-red/50 disabled:text-contrast-red',
+    color === 'green' && 'text-green disabled:bg-green/50 disabled:text-zinc-50',
+    color === 'blue' && 'text-blue disabled:bg-blue/50 disabled:text-zinc-50',
+    color === 'orange' && 'text-orange disabled:bg-orange/50 disabled:text-zinc-50',
+    color === 'red' && 'text-red disabled:bg-red/50 disabled:text-zinc-50',
     color === 'gray' && 'disabled:bg-muted disabled:text-dim',
   );
 }

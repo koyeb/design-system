@@ -140,8 +140,8 @@ export function Select<Item>({
         {...toggleButtonProps}
         className={clsx('row w-full items-center rounded border bg-inherit -outline-offset-1', {
           'cursor-pointer focusable': !disabled && !readOnly,
-          'pointer-events-none': disabled || readOnly,
-          'opacity-50 bg-muted dark:bg-muted/40': disabled,
+          'pointer-events-none': disabled ?? readOnly,
+          'bg-muted opacity-50 dark:bg-muted/40': disabled,
           'rounded-b-none outline-none': isOpen,
           'border-red outline-red': invalid,
           'min-h-6': size === 1,
@@ -156,13 +156,13 @@ export function Select<Item>({
             <>
               {selectedItem && renderItem(selectedItem)}
               {!selectedItem && (
-                <span className="select-none text-placeholder">{placeholder ?? <wbr />}</span>
+                <span className="text-placeholder select-none">{placeholder ?? <wbr />}</span>
               )}
             </>
           )}
         </div>
 
-        <ChevronDownIcon className={clsx('icon mx-1 size-6', isOpen && 'rotate-180')} />
+        <ChevronDownIcon className={clsx('mx-1 icon size-6', isOpen && 'rotate-180')} />
       </div>
 
       <Dropdown

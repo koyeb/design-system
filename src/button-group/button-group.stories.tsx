@@ -2,7 +2,6 @@ import type { Meta, StoryObj } from '@storybook/react';
 
 import { Button } from '../button/button';
 import { controls } from '../utils/storybook';
-
 import { ButtonGroup } from './button-group';
 
 const meta = {

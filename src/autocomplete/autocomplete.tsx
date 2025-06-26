@@ -88,9 +88,7 @@ export function Autocomplete<Item>({
         '__controlled_prop_updated_selected_item__',
       ].includes(type);
 
-      if (inputValue !== undefined) {
-        onInputValueChange?.(inputValue, isItemSelected);
-      }
+      onInputValueChange?.(inputValue, isItemSelected);
     },
     selectedItem,
     onSelectedItemChange({ selectedItem }) {
@@ -146,7 +144,7 @@ export function Autocomplete<Item>({
         disabled={disabled}
         end={
           <button type="button" className="rounded-e" {...toggleButtonProps}>
-            <ChevronDownIcon className={clsx('icon mx-1', isOpen && 'rotate-180')} />
+            <ChevronDownIcon className={clsx('mx-1 icon', isOpen && 'rotate-180')} />
           </button>
         }
         boxClassName={clsx('outline-none', isOpen && '!rounded-b-none')}

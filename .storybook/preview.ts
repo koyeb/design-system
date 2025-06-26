@@ -1,8 +1,13 @@
-import { definePreview } from '@storybook/react-vite';
+import type { Preview } from '@storybook/react';
 
 import '@fontsource-variable/inter';
-import '../src/styles.css';
+import './styles.css';
 
-export default definePreview({
-  parameters: {},
-});
+export default {
+  parameters: {
+    darkMode: {
+      classTarget: 'html',
+      stylePreview: true,
+    },
+  },
+} satisfies Preview;
