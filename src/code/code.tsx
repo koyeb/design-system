@@ -49,7 +49,6 @@ function useHighlighter() {
         import('shiki/langs/yaml.mjs'),
       ],
       engine: createOnigurumaEngine(import('shiki/wasm')),
-       
     }).then(setHighlighter, console.error);
   }, []);
 
