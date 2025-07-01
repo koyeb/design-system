@@ -43,75 +43,78 @@
   }
 }
 
-@utility text-default {
-  color: var(--color-zinc-950) !important;
+@layer utilities {
+  .text-default {
+    color: var(--color-zinc-950);
 
-  @variant dark {
-    color: var(--color-zinc-50) !important;
+    @variant dark {
+      color: var(--color-zinc-50);
+    }
   }
-}
 
-@utility text-inverted {
-  color: var(--color-zinc-50) !important;
+  .text-inverted {
+    color: var(--color-zinc-50);
 
-  @variant dark {
-    color: var(--color-zinc-950) !important;
+    @variant dark {
+      color: var(--color-zinc-950);
+    }
   }
-}
 
-@utility text-dim {
-  color: var(--color-zinc-500) !important;
+  .text-dim {
+    color: var(--color-zinc-500);
 
-  @variant dark {
-    color: var(--color-zinc-400) !important;
+    @variant dark {
+      color: var(--color-zinc-400);
+    }
   }
-}
 
-@utility text-placeholder {
-  color: var(--color-zinc-500) !important;
+  .text-placeholder {
+    color: var(--color-zinc-500);
 
-  @variant dark {
-    color: var(--color-zinc-400) !important;
+    @variant dark {
+      color: var(--color-zinc-400);
+    }
   }
-}
 
-@utility text-red {
-  color: var(--color-red-600) !important;
+  .text-red {
+    color: var(--color-red-600);
 
-  @variant dark {
-    color: var(--color-red-400) !important;
+    @variant dark {
+      color: var(--color-red-400);
+    }
   }
-}
 
-@utility text-green {
-  color: var(--color-emerald-600) !important;
+  .text-green,
+  .text-link {
+    color: var(--color-emerald-600);
 
-  @variant dark {
-    color: var(--color-emerald-400) !important;
+    @variant dark {
+      color: var(--color-emerald-400);
+    }
   }
-}
 
-@utility text-blue {
-  color: var(--color-sky-600) !important;
+  .text-blue {
+    color: var(--color-sky-600);
 
-  @variant dark {
-    color: var(--color-sky-400) !important;
+    @variant dark {
+      color: var(--color-sky-400);
+    }
   }
-}
 
-@utility text-orange {
-  color: var(--color-amber-600) !important;
+  .text-orange {
+    color: var(--color-amber-600);
 
-  @variant dark {
-    color: var(--color-amber-400) !important;
+    @variant dark {
+      color: var(--color-amber-400);
+    }
   }
-}
 
-@utility text-gray {
-  color: var(--color-gray-600) !important;
+  .text-gray {
+    color: var(--color-gray-600);
 
-  @variant dark {
-    color: var(--color-gray-400) !important;
+    @variant dark {
+      color: var(--color-gray-400);
+    }
   }
 }
 
