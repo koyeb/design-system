@@ -6,6 +6,7 @@ export default {
   framework: '@storybook/react-vite',
   viteFinal: async (config) => {
     config.plugins ??= [];
+    config.plugins = config.plugins.filter((plugin) => (plugin as { name: string }).name !== 'vite:dts');
     config.plugins.push((await import('@tailwindcss/vite')).default());
     return config;
   },
