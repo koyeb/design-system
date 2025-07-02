@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
+import { useDarkMode } from '@vueless/storybook-dark-mode';
 
 import { controls } from '../utils/storybook';
 import { Code, Json } from './code';
@@ -13,7 +14,7 @@ const meta = {
 export default meta;
 
 export const Default: StoryObj<typeof Code> = {
-  render: (args) => <Code {...args} />,
+  render: (args) => <Code {...args} theme={useDarkMode() ? 'dark' : 'light'} />,
   args: {
     lang: 'javascript',
     value:
