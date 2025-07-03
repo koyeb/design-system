@@ -31,20 +31,18 @@ type TabButtonProps = Extend<
   React.ComponentProps<'button'>,
   {
     size?: 1 | 2;
-    selected: boolean;
-    panelId?: string;
+    selected?: boolean;
     className?: string;
   }
 >;
 
-export function TabButton({ size, selected, panelId, className, ...props }: TabButtonProps) {
+export function TabButton({ size, selected, className, ...props }: TabButtonProps) {
   return (
     <button
       type="button"
       role="tab"
-      className={TabButton.className({ size, selected, className })}
-      aria-selected={selected}
-      aria-controls={panelId}
+      className={TabButton.className({ size, className })}
+      data-status={selected ? 'active' : 'inactive'}
       {...props}
     />
   );
@@ -55,16 +53,16 @@ TabButton.className = cva(
     'col h-full flex-1 items-center justify-center',
     'rounded px-3 whitespace-nowrap focusable transition-all',
     'aria-disabled:pointer-events-none aria-disabled:opacity-50',
+    [
+      'data-[status=inactive]:text-dim data-[status=inactive]:hover:bg-neutral/50 data-[status=inactive]:hover:text-default',
+      'data-[status=active]:bg-neutral',
+    ],
   ],
   {
     variants: {
       size: {
         1: 'text-xs',
         2: 'font-medium',
-      },
-      selected: {
-        false: 'text-dim hover:bg-neutral/50 hover:text-default',
-        true: 'bg-neutral',
       },
     },
   },
