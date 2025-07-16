@@ -138,7 +138,7 @@ export function Select<Item>({
     >
       <div
         {...toggleButtonProps}
-        className={clsx('row w-full items-center rounded border bg-inherit -outline-offset-1', {
+        className={clsx('row w-full items-center rounded border bg-neutral -outline-offset-1', {
           'cursor-pointer focusable': !disabled && !readOnly,
           'pointer-events-none': disabled ?? readOnly,
           'bg-muted opacity-50 dark:bg-muted/40': disabled,

@@ -43,7 +43,7 @@ export function TextArea({
         aria-invalid={invalid}
         aria-errormessage={invalid ? helperTextId : undefined}
         className={clsx(
-          'w-full rounded border bg-inherit px-2 py-1.5 focusable -outline-offset-1',
+          'w-full rounded border bg-neutral px-2 py-1.5 focusable -outline-offset-1',
           'placeholder:text-placeholder',
           'disabled:opacity-50',
           invalid && 'border-red outline-red',
