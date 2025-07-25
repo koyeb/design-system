@@ -41,7 +41,7 @@ export function CheckboxInput({ indeterminate, ...props }: CheckboxInputProps) {
       <input type="checkbox" className="peer sr-only fixed" {...props} />
 
       <span className="leading-none peer-checked:hidden peer-disabled:[&>span]:bg-muted">
-        <span className="inline-block size-4 rounded border" />
+        <Unchecked className="size-4" />
       </span>
 
       <span className="hidden leading-none peer-checked:block">
@@ -51,12 +51,24 @@ export function CheckboxInput({ indeterminate, ...props }: CheckboxInputProps) {
   );
 }
 
+function Unchecked(props: React.SVGProps<SVGSVGElement>) {
+  return (
+    <svg viewBox="0 0 16 16" {...props}>
+      <path
+        strokeWidth={1}
+        className="fill-neutral stroke-border"
+        d="M4 0.5H12C13.933 0.5 15.5 2.067 15.5 4V12C15.5 13.933 13.933 15.5 12 15.5H4C2.067 15.5 0.5 13.933 0.5 12V4C0.5 2.067 2.067 0.5 4 0.5Z"
+      />
+    </svg>
+  );
+}
+
 function Checked(props: React.SVGProps<SVGSVGElement>) {
   return (
     <svg viewBox="0 0 16 16" {...props}>
       <path
         className="fill-green"
-        d="M0 4C0 1.79086 1.79086 0 4 0H12C14.2091 0 16 1.79086 16 4V12C16 14.2091 14.2091 16 12 16H4C1.79086 16 0 14.2091 0 12V4Z"
+        d="M4 0.5H12C13.933 0.5 15.5 2.067 15.5 4V12C15.5 13.933 13.933 15.5 12 15.5H4C2.067 15.5 0.5 13.933 0.5 12V4C0.5 2.067 2.067 0.5 4 0.5Z"
       />
       <path
         className="stroke-neutral"
@@ -74,7 +86,7 @@ function Indeterminate(props: React.SVGProps<SVGSVGElement>) {
   return (
     <svg viewBox="0 0 16 16" fill="none" {...props}>
       <path
-        d="M0 4C0 1.79086 1.79086 0 4 0H12C14.2091 0 16 1.79086 16 4V12C16 14.2091 14.2091 16 12 16H4C1.79086 16 0 14.2091 0 12V4Z"
+        d="M4 0.5H12C13.933 0.5 15.5 2.067 15.5 4V12C15.5 13.933 13.933 15.5 12 15.5H4C2.067 15.5 0.5 13.933 0.5 12V4C0.5 2.067 2.067 0.5 4 0.5Z"
         fill="#059669"
         fillOpacity="0.1"
       />

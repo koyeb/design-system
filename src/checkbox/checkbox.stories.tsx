@@ -13,6 +13,7 @@ const meta = {
   argTypes: {
     checked: controls.boolean(),
     disabled: controls.hidden(),
+    indeterminate: controls.boolean(),
   },
 } satisfies Meta<typeof Checkbox>;
 
