@@ -21,6 +21,7 @@ type SliderProps = {
   step?: 1;
   tickSize?: number;
   renderTick?: (value: number) => React.ReactNode;
+  connector?: boolean;
   id?: string;
   className?: string;
 };
@@ -40,6 +41,7 @@ export function Slider({
   step = 1,
   tickSize = step,
   renderTick,
+  connector,
   id: idProp,
   className,
 }: SliderProps) {
@@ -80,7 +82,7 @@ export function Slider({
           'pointer-events-none opacity-50': disabled,
         })}
       >
-        <Connector steps={ranger.getSteps()} />
+        {connector && <Connector steps={ranger.getSteps()} />}
 
         {ranger.handles().map((handle, i) => (
           <button
