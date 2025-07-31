@@ -6,7 +6,7 @@ import { Extend } from '../utils/types';
 import { useId } from '../utils/use-id';
 
 type SwitchOwnProps = {
-  label: React.ReactNode;
+  label?: React.ReactNode;
   labelPosition?: 'top' | 'left';
   helpTooltip?: React.ReactNode;
 };
