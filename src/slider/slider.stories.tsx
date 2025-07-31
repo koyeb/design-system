@@ -8,7 +8,7 @@ const meta = {
   title: 'DesignSystem/Slider',
   component: Slider,
   parameters: {
-    controls: controls.exclude(['className', 'value']),
+    controls: controls.exclude(['ref', 'id', 'className', 'value', 'onChange', 'renderTick']),
   },
   args: {
     className: 'max-w-sm',
@@ -16,9 +16,13 @@ const meta = {
     min: 0,
     max: 8,
     step: 1,
+    renderTick: (value) => value,
   },
   argTypes: {
-    value: controls.number(),
+    label: controls.string(),
+    helpTooltip: controls.string(),
+    helperText: controls.string(),
+    error: controls.string(),
   },
 } satisfies Meta<typeof Slider>;
 
