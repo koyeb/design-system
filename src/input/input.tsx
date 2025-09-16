@@ -131,17 +131,27 @@ export function InputBox({
 }
 
 type InputStartProps = {
+  className?: string;
   children: React.ReactNode;
 };
 
-export function InputStart({ children }: InputStartProps) {
-  return <span className="row items-center rounded-s border-e bg-muted px-2">{children}</span>;
+export function InputStart({ className, children }: InputStartProps) {
+  return (
+    <span className={clsx('row items-center rounded-s border-e bg-muted px-1 text-dim', className)}>
+      {children}
+    </span>
+  );
 }
 
 type InputEndProps = {
+  className?: string;
   children: React.ReactNode;
 };
 
-export function InputEnd({ children }: InputEndProps) {
-  return <span className="row items-center rounded-e border-s bg-muted px-2">{children}</span>;
+export function InputEnd({ className, children }: InputEndProps) {
+  return (
+    <span className={clsx('row items-center rounded-e border-s bg-muted px-1 text-dim', className)}>
+      {children}
+    </span>
+  );
 }
