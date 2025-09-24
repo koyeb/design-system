@@ -19,12 +19,21 @@ type DialogProps = {
   open: boolean;
   onClose?: () => void;
   onClosed?: () => void;
+  root?: HTMLElement;
   overlayClassName?: string;
   className?: string;
   children: React.ReactNode | ((props: Record<string, unknown>) => React.ReactElement);
 };
 
-export function Dialog({ open, onClose, onClosed, overlayClassName, className, children }: DialogProps) {
+export function Dialog({
+  open,
+  onClose,
+  onClosed,
+  root,
+  overlayClassName,
+  className,
+  children,
+}: DialogProps) {
   const { refs, context } = useFloating({
     open: open,
     onOpenChange(open) {
@@ -61,7 +70,7 @@ export function Dialog({ open, onClose, onClosed, overlayClassName, className, c
   return (
     <AnimatePresence onExitComplete={onClosed}>
       {open && (
-        <FloatingPortal root={document.getElementById('root')}>
+        <FloatingPortal root={root}>
           <MotionFloatingOverlay
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
