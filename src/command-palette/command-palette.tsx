@@ -4,7 +4,7 @@ import { ItemList } from './item-list';
 import { SearchInput } from './search-input';
 import { CommandPalette } from './use-command-palette';
 
-export { useCommandPalette, type CommandPalette } from './use-command-palette';
+export { useCommandPalette, type CommandPalette, type CommandPaletteItem } from './use-command-palette';
 
 type CommandPaletteProps = {
   palette: CommandPalette;
@@ -31,7 +31,7 @@ function useCommandPaletteCombobox(palette: CommandPalette) {
     selectedItem: null,
 
     itemToString(item) {
-      return item?.label ?? '';
+      return typeof item?.label === 'string' ? item.label : '';
     },
 
     highlightedIndex: palette.highlightedIndex,

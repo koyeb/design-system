@@ -1,11 +1,11 @@
-import { Spinner } from '@koyeb/design-system';
 import { UseComboboxReturnValue } from 'downshift';
 
-import { CommandPalette, PaletteItem } from './use-command-palette';
+import { Spinner } from '../spinner/spinner';
+import { CommandPalette, CommandPaletteItem } from './use-command-palette';
 
 type SearchInputProps = {
   palette: CommandPalette;
-  combobox: UseComboboxReturnValue<PaletteItem>;
+  combobox: UseComboboxReturnValue<CommandPaletteItem>;
 };
 
 export function SearchInput({ palette, combobox }: SearchInputProps) {

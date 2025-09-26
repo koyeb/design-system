@@ -12,7 +12,7 @@ import {
   TimerIcon,
   UtensilsIcon,
 } from 'lucide-react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { action } from 'storybook/actions';
 
 import { Dialog } from '../dialog/dialog';
@@ -32,10 +32,14 @@ export const Default: StoryFn = () => {
   const [open, setOpen] = useState(true);
 
   const palette = useCommandPalette({
-    initialize,
     onSuccess: () => setOpen(false),
     onError: action('onError'),
   });
+
+  useEffect(() => {
+    initialize(palette);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <>

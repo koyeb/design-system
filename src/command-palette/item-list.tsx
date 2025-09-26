@@ -3,11 +3,11 @@ import { UseComboboxReturnValue } from 'downshift';
 import { ChevronRight } from 'lucide-react';
 import { Fragment } from 'react/jsx-runtime';
 
-import { CommandPalette, PaletteItem } from './use-command-palette';
+import { CommandPalette, CommandPaletteItem } from './use-command-palette';
 
 type ItemListProps = {
   palette: CommandPalette;
-  combobox: UseComboboxReturnValue<PaletteItem>;
+  combobox: UseComboboxReturnValue<CommandPaletteItem>;
   noResults?: () => React.ReactNode;
 };
 
@@ -29,7 +29,7 @@ export function ItemList({ palette, combobox, noResults }: ItemListProps) {
                 key={item.id}
                 item={item}
                 isHighlighted={palette.items.indexOf(item) === combobox.highlightedIndex}
-                props={combobox.getItemProps({ item: item, index: palette.items.indexOf(item) })}
+                props={combobox.getItemProps({ item, index: palette.items.indexOf(item) })}
               />
             ))}
         </Fragment>
@@ -39,7 +39,7 @@ export function ItemList({ palette, combobox, noResults }: ItemListProps) {
 }
 
 type ItemProps = {
-  item: PaletteItem;
+  item: CommandPaletteItem;
   isHighlighted: boolean;
   props: Record<string, unknown>;
 };

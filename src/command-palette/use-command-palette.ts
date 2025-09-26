@@ -1,14 +1,11 @@
 import { produce } from 'immer';
-import { useEffect, useMemo, useReducer } from 'react';
+import { useCallback, useMemo, useReducer } from 'react';
 
 type SvgProps = React.SVGProps<SVGSVGElement>;
 type SvgComponent = React.ComponentType<SvgProps>;
 
-export type PaletteState = State;
-export type PaletteItem = Item;
-export type PaletteContext = Context;
-
 export type CommandPalette = ReturnType<typeof useCommandPalette>;
+export type CommandPaletteItem = Item;
 
 const initialState: State = {
   loading: false,
@@ -21,88 +18,98 @@ const initialState: State = {
     value: '',
   },
   stack: [],
+  initial: {
+    items: [],
+    contexts: [],
+    input: {
+      Icon: null,
+      placeholder: '',
+    },
+  },
 };
 
 type UseCommandPaletteProps = {
-  initialize: (palette: CommandPalette) => void;
   onError: (error: unknown) => void;
   onSuccess: () => void;
 };
 
-export function useCommandPalette({ initialize, onError, onSuccess }: UseCommandPaletteProps) {
+export function useCommandPalette({ onError, onSuccess }: UseCommandPaletteProps) {
   const [state, dispatch] = useReducer(produce(producer), initialState);
+  const { input, loading, contexts, items, highlightedIndex, stack } = state;
 
-  const palette = useMemo(() => {
-    const { input, loading, contexts, items, highlightedIndex, stack } = state;
-    const filteredItems = filterItems(items, contexts, input.value);
-    const filteredContexts = filterContexts(contexts, filteredItems);
+  const filteredItems = useMemo(
+    () => filterItems(items, contexts, input.value),
+    [items, contexts, input.value],
+  );
 
-    return {
-      input,
-      loading,
-      items: filteredItems,
-      contexts: filteredContexts,
-      highlightedIndex: highlightedIndex,
-      highlightedItem: filteredItems.at(highlightedIndex),
-      canGoBack: stack.length > 0,
+  const filteredContexts = useMemo(() => filterContexts(contexts, filteredItems), [contexts, filteredItems]);
 
-      reset: () => {
-        dispatch({ type: 'reset' });
-        initialize(palette);
-      },
+  return {
+    input,
+    loading,
+    items: filteredItems,
+    contexts: filteredContexts,
+    highlightedIndex: highlightedIndex,
+    highlightedItem: filteredItems.at(highlightedIndex),
+    canGoBack: stack.length > 0,
 
-      addItem: (item: Omit<Item, 'id' | 'contextId'>) => {
-        const id = createId();
+    reset: useCallback(() => {
+      dispatch({ type: 'reset' });
+    }, []),
 
-        dispatch({ type: 'addItem', item: { id, ...item } });
+    addItem: useCallback((item: Omit<Item, 'id' | 'contextId'>) => {
+      const id = createId();
 
-        return {
-          remove: () => {
-            dispatch({ type: 'removeItem', id });
-          },
-        };
-      },
+      dispatch({ type: 'addItem', item: { id, ...item } });
 
-      addGroup: (context: Omit<Context, 'id'>) => {
-        const id = createId();
+      return {
+        remove: () => {
+          dispatch({ type: 'removeItem', id });
+        },
+      };
+    }, []),
 
-        dispatch({ type: 'addContext', context: { id, ...context } });
+    addGroup: useCallback((context: Omit<Context, 'id'>) => {
+      const id = createId();
 
-        return {
-          addItem: (item: Omit<Item, 'id' | 'contextId'>) => {
-            dispatch({ type: 'addItem', item: { id: createId(), contextId: id, ...item } });
-          },
-          remove: () => {
-            dispatch({ type: 'removeContext', id });
-          },
-        };
-      },
+      dispatch({ type: 'addContext', context: { id, ...context } });
 
-      setHighlightedIndex: (highlightedIndex: number) => {
-        dispatch({ type: 'setHighlightedIndex', highlightedIndex });
-      },
+      return {
+        addItem: (item: Omit<Item, 'id' | 'contextId'>) => {
+          dispatch({ type: 'addItem', item: { id: createId(), contextId: id, ...item } });
+        },
+        remove: () => {
+          dispatch({ type: 'removeContext', id });
+        },
+      };
+    }, []),
 
-      setIcon: (Icon: SvgComponent) => {
-        dispatch({ type: 'setInput', input: { Icon } });
-      },
+    setHighlightedIndex: useCallback((highlightedIndex: number) => {
+      dispatch({ type: 'setHighlightedIndex', highlightedIndex });
+    }, []),
 
-      setPlaceholder: (placeholder: string) => {
-        dispatch({ type: 'setInput', input: { placeholder } });
-      },
+    setIcon: useCallback((Icon: SvgComponent) => {
+      dispatch({ type: 'setInput', input: { Icon } });
+    }, []),
 
-      setInputValue: (value: string) => {
-        dispatch({ type: 'setInput', input: { value } });
-      },
+    setPlaceholder: useCallback((placeholder: string) => {
+      dispatch({ type: 'setInput', input: { placeholder } });
+    }, []),
 
-      push: () => {
-        dispatch({ type: 'push' });
-      },
+    setInputValue: useCallback((value: string) => {
+      dispatch({ type: 'setInput', input: { value } });
+    }, []),
 
-      pop: () => {
-        dispatch({ type: 'pop' });
-      },
+    push: useCallback(() => {
+      dispatch({ type: 'push' });
+    }, []),
 
-      execute: async (item: Item) => {
+    pop: useCallback(() => {
+      dispatch({ type: 'pop' });
+    }, []),
+
+    execute: useCallback(
+      async (item: Item) => {
         dispatch({ type: 'setLoading', loading: true });
 
         if (item.hasSubItems) {
@@ -121,17 +128,9 @@ export function useCommandPalette({ initialize, onError, onSuccess }: UseCommand
           dispatch({ type: 'setLoading', loading: false });
         }
       },
-    };
-    // assuming that initialize, onSuccess and onError are stable
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [state]);
-
-  useEffect(() => {
-    initialize(palette);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  return palette;
+      [onSuccess, onError],
+    ),
+  };
 }
 
 function filterItems(items: Item[], contexts: Context[], inputValue: string) {
@@ -140,7 +139,7 @@ function filterItems(items: Item[], contexts: Context[], inputValue: string) {
   const search = normalize(inputValue);
 
   return sortedItems.filter((item) => {
-    return normalize(item.label).includes(search) || normalize(item.description ?? '').includes(search);
+    return normalize(item.label).includes(search) || normalize(item.description).includes(search);
   });
 }
 
@@ -155,8 +154,8 @@ function filterContexts(contexts: Context[], filteredItems: Item[]) {
 type Item = {
   id: string;
   contextId?: string;
-  label: string;
-  description?: string;
+  label: React.ReactNode;
+  description?: React.ReactNode;
   Icon?: SvgComponent;
   hasSubItems?: boolean;
   shortcut?: string;
@@ -186,6 +185,14 @@ type State = {
       placeholder: string;
     };
   }>;
+  initial: {
+    items: Item[];
+    contexts: Context[];
+    input: {
+      Icon: SvgComponent | null;
+      placeholder: string;
+    };
+  };
 };
 
 type Action =
@@ -202,7 +209,18 @@ type Action =
 
 function producer(state: State, action: Action): State {
   if (action.type === 'reset') {
-    return initialState;
+    return {
+      loading: false,
+      items: state.initial.items,
+      contexts: state.initial.contexts,
+      input: {
+        ...state.initial.input,
+        value: '',
+      },
+      highlightedIndex: 0,
+      stack: [],
+      initial: state.initial,
+    };
   }
 
   if (action.type === 'setLoading') {
@@ -211,23 +229,39 @@ function producer(state: State, action: Action): State {
 
   if (action.type === 'setInput') {
     Object.assign(state.input, action.input);
+
+    if (state.stack.length === 0) {
+      Object.assign(state.initial.input, action.input);
+    }
   }
 
   if (action.type === 'addItem') {
     state.items.push(action.item);
+
+    if (state.stack.length === 0) {
+      state.initial.items.push(action.item);
+    }
   }
 
   if (action.type === 'removeItem') {
     state.items = state.items.filter(not(has('id', action.id)));
+    state.initial.items = state.initial.items.filter(not(has('id', action.id)));
   }
 
   if (action.type === 'addContext') {
     state.contexts.push(action.context);
+
+    if (state.stack.length === 0) {
+      state.initial.contexts.push(action.context);
+    }
   }
 
   if (action.type === 'removeContext') {
     state.contexts = state.contexts.filter(not(has('id', action.id)));
+    state.initial.contexts = state.initial.contexts.filter(not(has('id', action.id)));
+
     state.items = state.items.filter(not(has('contextId', action.id)));
+    state.initial.items = state.initial.items.filter(not(has('contextId', action.id)));
   }
 
   if (action.type === 'setHighlightedIndex') {
@@ -280,8 +314,12 @@ function not<Args extends unknown[]>(predicate: (...args: Args) => boolean) {
   return (...args: Args) => !predicate(...args);
 }
 
-function normalize(str: string) {
-  return normalizeDiacriticCharacters(str).toLowerCase();
+function normalize(input: unknown) {
+  if (typeof input !== 'string') {
+    return '';
+  }
+
+  return normalizeDiacriticCharacters(input).toLowerCase();
 }
 
 function normalizeDiacriticCharacters(string: string) {
