@@ -10,8 +10,10 @@ export default defineConfig({
     cssCodeSplit: true,
     lib: {
       formats: ['es'],
-      entry: 'src/index.ts',
-      fileName: 'main',
+      entry: {
+        main: 'src/index.ts',
+        next: 'src/next.ts',
+      },
     },
     rollupOptions: {
       external: [

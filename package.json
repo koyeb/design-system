@@ -1,6 +1,6 @@
 {
   "name": "@koyeb/design-system",
-  "version": "0.9.3",
+  "version": "0.9.4",
   "packageManager": "pnpm@10.16.1",
   "type": "module",
   "files": [
@@ -11,6 +11,10 @@
     ".": {
       "import": "./lib/main.js",
       "types": "./lib/main.d.js"
+    },
+    "./next": {
+      "import": "./lib/next.js",
+      "types": "./lib/next.d.js"
     },
     "./styles.css": "./styles.css"
   },
