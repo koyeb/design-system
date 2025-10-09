@@ -1,19 +1,8 @@
-import {
-  FloatingFocusManager,
-  FloatingOverlay,
-  FloatingPortal,
-  useDismiss,
-  useFloating,
-  useInteractions,
-  useRole,
-} from '@floating-ui/react';
+import { useDismiss, useFloating, useInteractions, useRole } from '@floating-ui/react';
 import clsx from 'clsx';
-import { AnimatePresence, motion } from 'framer-motion';
 import { XIcon } from 'lucide-react';
 
-const duration = 140;
-
-const MotionFloatingOverlay = motion.create(FloatingOverlay);
+import { Backdrop } from '../backdrop/backdrop';
 
 type DialogProps = {
   open: boolean;
@@ -68,27 +57,18 @@ export function Dialog({
   };
 
   return (
-    <AnimatePresence onExitComplete={onClosed}>
-      {open && (
-        <FloatingPortal root={root}>
-          <MotionFloatingOverlay
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: duration / 1000 }}
-            lockScroll
-            className={clsx(
-              'z-40 flex items-center justify-center bg-black/5 p-2 backdrop-blur-md',
-              overlayClassName,
-            )}
-          >
-            <FloatingFocusManager context={context} initialFocus={-1}>
-              {content()}
-            </FloatingFocusManager>
-          </MotionFloatingOverlay>
-        </FloatingPortal>
+    <Backdrop
+      open={open}
+      onClosed={onClosed}
+      context={context}
+      root={root}
+      className={clsx(
+        'z-40 flex items-center justify-center bg-black/5 p-2 backdrop-blur-md',
+        overlayClassName,
       )}
-    </AnimatePresence>
+    >
+      {content()}
+    </Backdrop>
   );
 }
 
