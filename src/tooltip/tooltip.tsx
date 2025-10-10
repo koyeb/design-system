@@ -1,27 +1,71 @@
-import { FloatingArrow, FloatingPortal } from '@floating-ui/react';
+import {
+  FloatingArrow,
+  FloatingPortal,
+  useDismiss,
+  useFloating,
+  useInteractions,
+  useRole,
+} from '@floating-ui/react';
 import clsx from 'clsx';
-import { InfoIcon } from 'lucide-react';
+import { motion } from 'framer-motion';
 import { useState } from 'react';
 
+import { Backdrop } from '../backdrop/backdrop';
 import { UseTooltipProps, useTooltip } from './use-tooltip';
-
-type TooltipChildrenProps = Record<string, unknown> & {
-  ref: (element: Element | null) => void;
-};
 
 type TooltipOwnProps = {
   open?: boolean;
   setOpen?: (open: boolean) => void;
-  title?: React.ReactNode;
-  content: React.ReactNode;
-  color?: TooltipElementProps['color'];
+  root?: HTMLElement;
   className?: string;
-  children: (props: TooltipChildrenProps) => React.ReactNode;
+  content: React.ReactNode;
+  trigger: (props: Record<string, unknown>) => React.ReactNode;
+  closeButton?: (onClick: () => void) => React.ReactNode;
 };
 
 type TooltipProps = Omit<UseTooltipProps, 'open' | 'setOpen'> & TooltipOwnProps;
 
-export function Tooltip({ content, title, color, className, children, ...props }: TooltipProps) {
+export function TooltipMobile({ content, root, trigger, closeButton, className, ...props }: TooltipProps) {
+  const [openState, setOpenState] = useState(false);
+  const [open, setOpen] = [props.open ?? openState, props.setOpen ?? setOpenState];
+
+  const { refs, context } = useFloating({
+    open,
+    onOpenChange: setOpen,
+  });
+
+  const dismiss = useDismiss(context, { outsidePressEvent: 'mousedown' });
+  const role = useRole(context, { role: 'tooltip' });
+
+  const { getFloatingProps } = useInteractions([dismiss, role]);
+
+  return (
+    <>
+      {trigger({ onClick: () => setOpen(true) })}
+
+      <Backdrop
+        open={open}
+        context={context}
+        root={root}
+        className="z-40 overflow-hidden! bg-black/5 p-2 backdrop-blur-xs"
+      >
+        <motion.div
+          initial={{ transform: 'translateY(100%)' }}
+          animate={{ transform: 'translateY(0)' }}
+          exit={{ transform: 'translateY(100%)' }}
+          ref={refs.setFloating}
+          className={clsx('absolute inset-x-0 bottom-0 rounded-t-2xl bg-neutral px-4 pt-4 pb-12', className)}
+          {...getFloatingProps()}
+        >
+          {content}
+          {closeButton?.(() => setOpen(false))}
+        </motion.div>
+      </Backdrop>
+    </>
+  );
+}
+
+export function TooltipDesktop({ content, arrow, className, trigger, ...props }: TooltipProps) {
   const [open, setOpen] = useState(false);
 
   const { getReferenceProps, setReference, ...tooltip } = useTooltip({
@@ -30,10 +74,7 @@ export function Tooltip({ content, title, color, className, children, ...props }
     ...props,
   });
 
-  const reference = children({
-    ref: setReference,
-    ...getReferenceProps(),
-  });
+  const reference = trigger(getReferenceProps({ ref: setReference }));
 
   if (!content) {
     return reference;
@@ -43,23 +84,20 @@ export function Tooltip({ content, title, color, className, children, ...props }
     <>
       {reference}
 
-      <TooltipElement {...tooltip} color={color} arrow={props.arrow ?? true} className={className}>
-        {title && <div className="font-semibold">{title}</div>}
-        <div className="text-xs font-medium">{content}</div>
+      <TooltipElement {...tooltip} arrow={arrow} className={className}>
+        {content}
       </TooltipElement>
     </>
   );
 }
 
 type TooltipElementProps = Omit<ReturnType<typeof useTooltip>, 'setReference' | 'getReferenceProps'> & {
-  color?: 'neutral' | 'inverted';
   arrow?: boolean;
   className?: string;
   children: React.ReactNode;
 };
 
 function TooltipElement({
-  color = 'inverted',
   context,
   styles,
   isMounted,
@@ -78,43 +116,19 @@ function TooltipElement({
   return (
     <FloatingPortal>
       <div
-        ref={setFloating}
         style={styles}
-        className={clsx(
-          'z-50 col max-w-80 gap-1 rounded-lg p-2 shadow-lg',
-          {
-            'bg-neutral': color === 'neutral',
-            'bg-inverted text-neutral': color === 'inverted',
-          },
-          className,
-        )}
-        {...getFloatingProps()}
+        className={clsx('z-50 rounded-md border bg-neutral p-3 drop-shadow-md', className)}
+        {...getFloatingProps({ ref: setFloating })}
       >
         {children}
         {arrow && (
-          <FloatingArrow
-            ref={arrowElement}
-            context={context}
-            height={arrowSize}
-            className={clsx({
-              'fill-neutral': color === 'neutral',
-              'fill-inverted': color === 'inverted',
-            })}
-          />
+          <FloatingArrow ref={arrowElement} context={context} height={arrowSize} className="fill-neutral" />
         )}
       </div>
     </FloatingPortal>
   );
 }
 
-type InfoTooltipProps = Omit<TooltipProps, 'children'> & {
-  iconClassName?: string;
-};
-
-export function InfoTooltip({ iconClassName, ...props }: InfoTooltipProps) {
-  return (
-    <Tooltip {...props}>
-      {(props) => <InfoIcon {...props} className={clsx('size-4', iconClassName)} />}
-    </Tooltip>
-  );
+export function TooltipTitle({ title }: { title: React.ReactNode }) {
+  return <div className="text-base font-bold md:text-xs md:text-dim md:uppercase">{title}</div>;
 }
