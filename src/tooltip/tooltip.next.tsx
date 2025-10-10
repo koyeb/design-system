@@ -65,7 +65,7 @@ export function TooltipMobile({ content, root, trigger, closeButton, className, 
   );
 }
 
-export function TooltipDesktop({ content, className, trigger, ...props }: TooltipProps) {
+export function TooltipDesktop({ content, arrow, className, trigger, ...props }: TooltipProps) {
   const [open, setOpen] = useState(false);
 
   const { getReferenceProps, setReference, ...tooltip } = useTooltip({
@@ -84,7 +84,7 @@ export function TooltipDesktop({ content, className, trigger, ...props }: Toolti
     <>
       {reference}
 
-      <TooltipElement {...tooltip} className={className}>
+      <TooltipElement {...tooltip} arrow={arrow} className={className}>
         {content}
       </TooltipElement>
     </>
