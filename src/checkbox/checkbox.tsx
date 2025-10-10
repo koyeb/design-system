@@ -6,19 +6,17 @@ import { useId } from '../utils/use-id';
 
 type CheckboxOwnProps = {
   label?: React.ReactNode;
-  helpTooltip?: React.ReactNode;
 };
 
 type CheckboxProps = Extend<CheckboxInputProps, CheckboxOwnProps>;
 
-export function Checkbox({ label, helpTooltip, className, ...props }: CheckboxProps) {
+export function Checkbox({ label, className, ...props }: CheckboxProps) {
   const id = useId(props.id);
 
   return (
     <FieldLabel
       id={`${id}-label`}
       htmlFor={id}
-      helpTooltip={helpTooltip}
       className={clsx(
         'inline-flex flex-row items-center gap-2',
         'rounded focusable-within outline-offset-4',

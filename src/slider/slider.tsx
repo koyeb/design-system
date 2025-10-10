@@ -12,7 +12,6 @@ type SliderProps = {
   onChange?: (values: number[]) => void;
   disabled?: boolean;
   label?: React.ReactNode;
-  helpTooltip?: React.ReactNode;
   helperText?: React.ReactNode;
   invalid?: boolean;
   error?: React.ReactNode;
@@ -32,7 +31,6 @@ export function Slider({
   onChange,
   disabled,
   label,
-  helpTooltip,
   helperText,
   invalid,
   error,
@@ -62,11 +60,7 @@ export function Slider({
 
   return (
     <Field
-      label={
-        <FieldLabel htmlFor={id} helpTooltip={helpTooltip}>
-          {label}
-        </FieldLabel>
-      }
+      label={<FieldLabel htmlFor={id}>{label}</FieldLabel>}
       helperText={
         <FieldHelperText id={helperTextId} invalid={invalid}>
           {error ?? helperText}

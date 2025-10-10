@@ -1,19 +1,17 @@
 import clsx from 'clsx';
 
 import { FieldLabel } from '../field/field';
-import { HelpTooltip } from '../help-tooltip/help-tooltip';
 import { Extend } from '../utils/types';
 import { useId } from '../utils/use-id';
 
 type SwitchOwnProps = {
   label?: React.ReactNode;
   labelPosition?: 'top' | 'left';
-  helpTooltip?: React.ReactNode;
 };
 
 type SwitchProps = Extend<React.ComponentProps<'input'>, SwitchOwnProps>;
 
-export function Switch({ label, labelPosition = 'top', helpTooltip, className, ...props }: SwitchProps) {
+export function Switch({ label, labelPosition = 'top', className, ...props }: SwitchProps) {
   const id = useId(props.id);
 
   return (
@@ -31,10 +29,7 @@ export function Switch({ label, labelPosition = 'top', helpTooltip, className, .
       )}
     >
       {label && (
-        <div className={clsx('row items-center gap-2', labelPosition === 'left' && 'order-2')}>
-          {label}
-          {helpTooltip && <HelpTooltip>{helpTooltip}</HelpTooltip>}
-        </div>
+        <div className={clsx('row items-center gap-2', labelPosition === 'left' && 'order-2')}>{label}</div>
       )}
 
       <div className="row h-8 items-center">

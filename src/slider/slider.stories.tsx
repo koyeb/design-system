@@ -20,7 +20,6 @@ const meta = {
   },
   argTypes: {
     label: controls.string(),
-    helpTooltip: controls.string(),
     helperText: controls.string(),
     error: controls.string(),
   },

@@ -14,7 +14,6 @@ type AutocompleteProps<Item> = {
   open?: boolean;
   size?: 1 | 2 | 3;
   label?: React.ReactNode;
-  helpTooltip?: React.ReactNode;
   helperText?: React.ReactNode;
   placeholder?: string;
   error?: React.ReactNode;
@@ -42,7 +41,6 @@ export function Autocomplete<Item>({
   open,
   size,
   label,
-  helpTooltip,
   helperText,
   placeholder,
   error,
@@ -124,7 +122,7 @@ export function Autocomplete<Item>({
   return (
     <Field
       label={
-        <FieldLabel htmlFor={id} helpTooltip={helpTooltip} {...getLabelProps()}>
+        <FieldLabel htmlFor={id} {...getLabelProps()}>
           {label}
         </FieldLabel>
       }

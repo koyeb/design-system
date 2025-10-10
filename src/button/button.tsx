@@ -2,7 +2,7 @@ import clsx from 'clsx';
 import { isValidElement } from 'react';
 
 import { Spinner } from '../spinner/spinner';
-import { Tooltip } from '../tooltip/tooltip';
+import { TooltipDesktop } from '../tooltip/tooltip';
 import { useBreakpoint } from '../utils/media-query';
 import { mergeRefs } from '../utils/merge-refs';
 import { Extend } from '../utils/types';
@@ -71,10 +71,11 @@ export function IconButton({
   };
 
   return (
-    <Tooltip content={sm && children}>
-      {({ ref: tooltipRef, ...tooltip }) => (
+    <TooltipDesktop
+      content={sm && children}
+      trigger={({ ref: tooltipRef, ...tooltip }) => (
         <Button
-          ref={mergeRefs(ref, tooltipRef)}
+          ref={mergeRefs(ref, tooltipRef as React.ForwardedRef<HTMLButtonElement>)}
           variant={variant}
           size={size}
           className={clsx(
@@ -92,7 +93,7 @@ export function IconButton({
           {getIcon()}
         </Button>
       )}
-    </Tooltip>
+    />
   );
 }
 

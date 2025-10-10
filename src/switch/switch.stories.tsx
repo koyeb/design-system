@@ -11,7 +11,6 @@ const meta = {
   },
   args: {
     label: 'Label',
-    helpTooltip: 'Help tooltip',
   },
   argTypes: {
     checked: controls.boolean(),

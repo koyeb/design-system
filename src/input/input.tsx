@@ -8,7 +8,6 @@ type InputOwnProps = {
   size?: 1 | 2 | 3;
   label?: React.ReactNode;
   labelPosition?: 'top' | 'left';
-  helpTooltip?: React.ReactNode;
   helperText?: React.ReactNode;
   error?: React.ReactNode;
   invalid?: boolean;
@@ -24,7 +23,6 @@ export function Input({
   size,
   label,
   labelPosition,
-  helpTooltip,
   helperText,
   error,
   invalid = Boolean(error),
@@ -38,11 +36,7 @@ export function Input({
 
   return (
     <Field
-      label={
-        <FieldLabel htmlFor={id} helpTooltip={helpTooltip}>
-          {label}
-        </FieldLabel>
-      }
+      label={<FieldLabel htmlFor={id}>{label}</FieldLabel>}
       labelPosition={labelPosition}
       helperText={
         <FieldHelperText id={helperTextId} invalid={invalid}>

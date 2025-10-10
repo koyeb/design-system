@@ -14,7 +14,6 @@ export * from './dropdown/dropdown';
 export * from './dropdown/use-dropdown';
 export * from './field/field';
 export * from './floating/floating';
-export * from './help-tooltip/help-tooltip';
 export * from './input/input';
 export * from './menu/menu';
 export * from './notification/notification';

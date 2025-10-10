@@ -8,7 +8,6 @@ const meta = {
   component: Checkbox,
   args: {
     label: 'Label',
-    helpTooltip: 'Help tooltip',
   },
   argTypes: {
     checked: controls.boolean(),

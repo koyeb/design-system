@@ -6,19 +6,17 @@ import { useId } from '../utils/use-id';
 
 type RadioOwnProps = {
   label?: React.ReactNode;
-  helpTooltip?: React.ReactNode;
 };
 
 type RadioProps = Extend<React.ComponentProps<'input'>, RadioOwnProps>;
 
-export function Radio({ label, helpTooltip, className, ...props }: RadioProps) {
+export function Radio({ label, className, ...props }: RadioProps) {
   const id = useId(props.id);
 
   return (
     <FieldLabel
       id={`${id}-label`}
       htmlFor={id}
-      helpTooltip={helpTooltip}
       className={clsx(
         'inline-flex flex-row items-center gap-2',
         'rounded focusable-within outline-offset-4',

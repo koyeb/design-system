@@ -1,7 +1,5 @@
 import clsx from 'clsx';
 
-import { HelpTooltip } from '../help-tooltip/help-tooltip';
-
 type FieldProps = {
   ref?: React.Ref<HTMLDivElement>;
   label?: React.ReactNode;
@@ -31,31 +29,14 @@ export function Field({ ref, label, labelPosition = 'top', helperText, className
   );
 }
 
-type FieldLabelProps = React.LabelHTMLAttributes<HTMLLabelElement> & {
-  helpTooltip?: React.ReactNode;
-};
+type FieldLabelProps = React.LabelHTMLAttributes<HTMLLabelElement>;
 
-export function FieldLabel({ helpTooltip, className, children, ...props }: FieldLabelProps) {
-  if (!children) {
+export function FieldLabel(props: FieldLabelProps) {
+  if (!props.children) {
     return null;
   }
 
-  const label = (
-    <label className={className} {...props}>
-      {children}
-    </label>
-  );
-
-  if (!helpTooltip) {
-    return label;
-  }
-
-  return (
-    <div className="inline-flex flex-row items-center gap-2">
-      {label}
-      <HelpTooltip>{helpTooltip}</HelpTooltip>
-    </div>
-  );
+  return <label {...props} />;
 }
 
 type FieldHelperTextProps = React.HTMLAttributes<HTMLSpanElement> & {

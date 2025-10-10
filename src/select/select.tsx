@@ -15,7 +15,6 @@ type SelectProps<Item> = {
   size?: 1 | 2 | 3;
   label?: React.ReactNode;
   labelPosition?: 'top' | 'left';
-  helpTooltip?: React.ReactNode;
   helperText?: React.ReactNode;
   error?: React.ReactNode;
   invalid?: boolean;
@@ -45,7 +44,6 @@ export function Select<Item>({
   size = 2,
   label,
   labelPosition,
-  helpTooltip,
   helperText,
   error,
   invalid = Boolean(error),
@@ -123,11 +121,7 @@ export function Select<Item>({
 
   return (
     <Field
-      label={
-        <FieldLabel helpTooltip={helpTooltip} {...getLabelProps()}>
-          {label}
-        </FieldLabel>
-      }
+      label={<FieldLabel {...getLabelProps()}>{label}</FieldLabel>}
       labelPosition={labelPosition}
       helperText={
         <FieldHelperText id={helperTextId} invalid={invalid}>

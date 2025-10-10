@@ -31,7 +31,6 @@ const meta = {
   args: {
     className: 'max-w-sm',
     label: 'Label',
-    helpTooltip: 'Help tooltip',
     placeholder: 'Placeholder',
     helperText: 'Helper text',
     items: games,
