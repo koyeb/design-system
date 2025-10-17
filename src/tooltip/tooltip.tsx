@@ -1,71 +1,25 @@
-import {
-  FloatingArrow,
-  FloatingPortal,
-  useDismiss,
-  useFloating,
-  useInteractions,
-  useRole,
-} from '@floating-ui/react';
+import { FloatingArrow, FloatingPortal } from '@floating-ui/react';
 import clsx from 'clsx';
 import { motion } from 'framer-motion';
 import { useState } from 'react';
 
 import { Backdrop } from '../backdrop/backdrop';
+import { useBreakpoint } from '../utils/media-query';
 import { UseTooltipProps, useTooltip } from './use-tooltip';
 
 type TooltipOwnProps = {
   open?: boolean;
   setOpen?: (open: boolean) => void;
-  root?: HTMLElement;
+  forceDesktop?: boolean;
+  root?: HTMLElement | null;
   className?: string;
-  content: React.ReactNode;
+  content?: ({ onClose }: { onClose: () => void }) => React.ReactNode;
   trigger: (props: Record<string, unknown>) => React.ReactNode;
-  closeButton?: (onClick: () => void) => React.ReactNode;
 };
 
 type TooltipProps = Omit<UseTooltipProps, 'open' | 'setOpen'> & TooltipOwnProps;
 
-export function TooltipMobile({ content, root, trigger, closeButton, className, ...props }: TooltipProps) {
-  const [openState, setOpenState] = useState(false);
-  const [open, setOpen] = [props.open ?? openState, props.setOpen ?? setOpenState];
-
-  const { refs, context } = useFloating({
-    open,
-    onOpenChange: setOpen,
-  });
-
-  const dismiss = useDismiss(context, { outsidePressEvent: 'mousedown' });
-  const role = useRole(context, { role: 'tooltip' });
-
-  const { getFloatingProps } = useInteractions([dismiss, role]);
-
-  return (
-    <>
-      {trigger({ onClick: () => setOpen(true) })}
-
-      <Backdrop
-        open={open}
-        context={context}
-        root={root}
-        className="z-40 overflow-hidden! bg-black/5 p-2 backdrop-blur-xs"
-      >
-        <motion.div
-          initial={{ transform: 'translateY(100%)' }}
-          animate={{ transform: 'translateY(0)' }}
-          exit={{ transform: 'translateY(100%)' }}
-          ref={refs.setFloating}
-          className={clsx('absolute inset-x-0 bottom-0 rounded-t-2xl bg-neutral px-4 pt-4 pb-12', className)}
-          {...getFloatingProps()}
-        >
-          {content}
-          {closeButton?.(() => setOpen(false))}
-        </motion.div>
-      </Backdrop>
-    </>
-  );
-}
-
-export function TooltipDesktop({ content, arrow, className, trigger, ...props }: TooltipProps) {
+export function Tooltip({ content, trigger, ...props }: TooltipProps) {
   const [open, setOpen] = useState(false);
 
   const { getReferenceProps, setReference, ...tooltip } = useTooltip({
@@ -74,56 +28,77 @@ export function TooltipDesktop({ content, arrow, className, trigger, ...props }:
     ...props,
   });
 
-  const reference = trigger(getReferenceProps({ ref: setReference }));
-
-  if (!content) {
-    return reference;
-  }
-
   return (
     <>
-      {reference}
+      {trigger(getReferenceProps({ ref: setReference }))}
 
-      <TooltipElement {...tooltip} arrow={arrow} className={className}>
-        {content}
-      </TooltipElement>
+      {content && (
+        <TooltipElement {...tooltip} {...props}>
+          {content({ onClose: () => tooltip.context.onOpenChange(false) })}
+        </TooltipElement>
+      )}
     </>
   );
 }
 
 type TooltipElementProps = Omit<ReturnType<typeof useTooltip>, 'setReference' | 'getReferenceProps'> & {
+  root?: HTMLElement | null;
   arrow?: boolean;
+  forceDesktop?: boolean;
   className?: string;
   children: React.ReactNode;
 };
 
-function TooltipElement({
-  context,
-  styles,
-  isMounted,
-  arrowSize,
-  arrowElement,
-  arrow,
-  setFloating,
-  getFloatingProps,
-  className,
-  children,
-}: TooltipElementProps) {
+function TooltipElement(props: TooltipElementProps) {
+  const { context, forceDesktop, isMounted, arrowSize, arrowElement, arrow, children } = props;
+
+  const mobile = !useBreakpoint('sm');
+  const Container = mobile && !forceDesktop ? ContainerMobile : ContainerDesktop;
+
   if (!isMounted) {
     return null;
   }
 
   return (
-    <FloatingPortal>
-      <div
-        style={styles}
-        className={clsx('z-50 rounded-md border bg-neutral p-3 drop-shadow-md', className)}
+    <Container {...props}>
+      {children}
+
+      {arrow && (
+        <FloatingArrow ref={arrowElement} context={context} height={arrowSize} className="fill-neutral" />
+      )}
+    </Container>
+  );
+}
+
+function ContainerMobile(props: TooltipElementProps) {
+  const { context, setFloating, getFloatingProps, root, className, children } = props;
+
+  return (
+    <Backdrop context={context} root={root} className="z-40 overflow-hidden! bg-black/5 p-2 backdrop-blur-xs">
+      <motion.div
+        initial={{ transform: 'translateY(100%)' }}
+        animate={{ transform: 'translateY(0)' }}
+        exit={{ transform: 'translateY(100%)' }}
+        className={clsx('absolute inset-x-0 bottom-0 rounded-t-2xl bg-neutral p-4', className)}
         {...getFloatingProps({ ref: setFloating })}
       >
         {children}
-        {arrow && (
-          <FloatingArrow ref={arrowElement} context={context} height={arrowSize} className="fill-neutral" />
-        )}
+      </motion.div>
+    </Backdrop>
+  );
+}
+
+function ContainerDesktop(props: TooltipElementProps) {
+  const { setFloating, getFloatingProps, root, className, children } = props;
+
+  return (
+    <FloatingPortal root={root}>
+      <div
+        className={clsx('z-50 rounded-md border bg-neutral p-3 drop-shadow-md', className)}
+        style={props.styles}
+        {...getFloatingProps({ ref: setFloating })}
+      >
+        {children}
       </div>
     </FloatingPortal>
   );

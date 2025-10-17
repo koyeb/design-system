@@ -6,28 +6,21 @@ import {
 } from '@floating-ui/react';
 import { AnimatePresence, motion } from 'framer-motion';
 
+const MotionFloatingOverlay = motion.create(FloatingOverlay);
 const duration = 140;
 
-const MotionFloatingOverlay = motion.create(FloatingOverlay);
-
-export function Backdrop({
-  open,
-  onClosed,
-  context,
-  root,
-  className,
-  children,
-}: {
-  open: boolean;
+type BackdropProps = {
   onClosed?: () => void;
   context: FloatingRootContext;
-  root?: HTMLElement;
+  root?: HTMLElement | null;
   className?: string;
   children: React.ReactElement;
-}) {
+};
+
+export function Backdrop({ onClosed, context, root, className, children }: BackdropProps) {
   return (
     <AnimatePresence onExitComplete={onClosed}>
-      {open && (
+      {context.open && (
         <FloatingPortal root={root}>
           <MotionFloatingOverlay
             initial={{ opacity: 0 }}

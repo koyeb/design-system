@@ -9,7 +9,6 @@ const gap = 6;
 export type UseTooltipProps = {
   open?: boolean;
   setOpen?: (open: boolean) => void;
-  referenceElement?: HTMLElement | null;
   placement?: Placement;
   strategy?: Strategy;
   arrow?: boolean;
@@ -20,7 +19,6 @@ export type UseTooltipProps = {
 export function useTooltip({
   open,
   setOpen,
-  referenceElement,
   placement = 'bottom',
   strategy,
   arrow: showArrow = true,
@@ -34,7 +32,6 @@ export function useTooltip({
     setOpen,
     placement,
     strategy,
-    referenceElement,
     offset: (showArrow ? arrowSize : 0) + (offset ?? gap),
     middlewares: [showArrow && arrow({ element: arrowElement })],
     interactions: {

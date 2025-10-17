@@ -58,7 +58,6 @@ export function Dialog({
 
   return (
     <Backdrop
-      open={open}
       onClosed={onClosed}
       context={context}
       root={root}
