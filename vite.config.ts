@@ -27,6 +27,7 @@ export default defineConfig({
         'framer-motion',
         'lucide-react',
         'react',
+        'react-dom',
         'react/jsx-runtime',
       ],
     },
