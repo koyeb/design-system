@@ -1,8 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
-import { Field, FieldHelperText, FieldLabel } from '../field/field';
+import { Dropdown, Menu, MenuItem } from '../dropdown/dropdown.next';
+import { FieldHelperText, FieldLabel } from '../field/field.next';
 import { controls } from '../utils/storybook';
-import { Select } from './select.next';
+import { Select, SelectToggleButton } from './select.next';
 
 type Args = {
   label: string;
@@ -46,32 +47,48 @@ const meta = {
     size: controls.inlineRadio([1, 2, 3]),
   },
   render: ({ label, size, placeholder, disabled, readOnly, invalid, helperText }) => (
-    <Field
-      label={<FieldLabel>{label}</FieldLabel>}
-      helperText={<FieldHelperText invalid={invalid} children={helperText} />}
-      className="max-w-sm"
-    >
-      <Select.Root
-        items={games}
-        matchReferenceSize
-        offset={8}
-        toggleButton={(props, { selectedItem }) => (
-          <Select.ToggleButton
-            {...props}
-            size={size}
-            placeholder={placeholder}
-            disabled={disabled}
-            readOnly={readOnly}
-            invalid={invalid}
-          >
-            {selectedItem?.name}
-          </Select.ToggleButton>
-        )}
-        menu={() => (
-          <Select.DropdownMenu items={games} getKey={(game) => game.name} renderItem={(game) => game.name} />
-        )}
-      />
-    </Field>
+    <Select
+      select={{
+        items: games,
+      }}
+      dropdown={{
+        matchReferenceSize: true,
+        offset: 8,
+        flip: true,
+      }}
+      field={({ select }) => ({
+        label: <FieldLabel {...select.getLabelProps()}>{label}</FieldLabel>,
+        helperText: <FieldHelperText invalid={invalid} children={helperText} />,
+        className: 'max-w-sm',
+      })}
+      toggleButton={({ select }) => (
+        <SelectToggleButton
+          size={size}
+          placeholder={placeholder}
+          disabled={disabled}
+          readOnly={readOnly}
+          invalid={invalid}
+        >
+          {select.selectedItem?.name}
+        </SelectToggleButton>
+      )}
+      menu={({ select, dropdown }) => (
+        <Dropdown dropdown={dropdown}>
+          <Menu {...select.getMenuProps()}>
+            {games.map((game, index) => (
+              <MenuItem
+                {...select.getItemProps({ item: game, index })}
+                key={game.name}
+                highlighted={index === select.highlightedIndex}
+              >
+                <span>{game.name}</span>
+                <span className="text-dim ml-2">{game.released}</span>
+              </MenuItem>
+            ))}
+          </Menu>
+        </Dropdown>
+      )}
+    />
   ),
 } satisfies Meta<Args>;
 

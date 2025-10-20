@@ -1,170 +1,92 @@
-import {
-  ElementRects,
-  Elements,
-  Placement,
-  UseFloatingOptions,
-  UseFloatingReturn,
-  UseTransitionStylesProps,
-  autoUpdate,
-  flip,
-  offset,
-  size,
-  useFloating,
-  useTransitionStyles,
-} from '@floating-ui/react';
+import { useMergeRefs } from '@floating-ui/react';
 import { cva } from 'class-variance-authority';
 import clsx from 'clsx';
 import * as downshift from 'downshift';
-import { CSSProperties, createContext, use } from 'react';
+import { ChevronDown } from 'lucide-react';
+import { createContext, use } from 'react';
 import { createPortal } from 'react-dom';
 
-import { Field } from '../field/field';
+import { useDropdown } from '../dropdown/dropdown.next';
+import { Field, FieldLabel, useFieldId } from '../field/field.next';
 import { Extend } from '../utils/types';
 
-type FloatingTransition = { isMounted: boolean; styles: CSSProperties };
-
-type SelectContext<T = unknown> = downshift.UseSelectReturnValue<T> & {
-  floating: UseFloatingReturn;
-  transition: FloatingTransition;
+type SelectContext<T = unknown> = {
+  select: downshift.UseSelectReturnValue<T>;
+  dropdown: ReturnType<typeof useDropdown>;
 };
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const selectContext = createContext<SelectContext<any> | null>(null);
+const selectContext = createContext<SelectContext<any>>(null as never);
 
-export const Select = {
-  stateChangeTypes: downshift.useSelect.stateChangeTypes,
-  context: selectContext,
-  Provider: selectContext.Provider,
-  useSelect,
-  useSelectContext,
-  Root,
-  ToggleButton,
-  Dropdown,
-  Menu,
-  MenuItem,
-  DropdownMenu,
+type SelectProps<T> = {
+  select: downshift.UseSelectProps<T>;
+  dropdown: Parameters<typeof useDropdown>[1];
+  root?: HTMLElement | null;
+  field?: (select: SelectContext<T>) => Omit<React.ComponentProps<typeof Field>, 'children'>;
+  toggleButton: (select: SelectContext<T>) => React.ReactNode;
+  menu: (select: SelectContext<T>) => React.ReactNode;
 };
 
-type UseSelectProps<T> = {
-  items?: T[];
-  select?: Omit<downshift.UseSelectProps<T>, 'items'>;
-  floating?: UseFloatingOptions;
-  transition?: UseTransitionStylesProps;
-  placement?: Placement;
-  offset?: number;
-  flip?: boolean;
-  matchReferenceSize?: boolean;
-};
+export function Select<T>(props: SelectProps<T>) {
+  const select = downshift.useSelect(props.select);
+  const dropdown = useDropdown(select.isOpen, props.dropdown);
 
-function useSelect<T>({
-  items,
-  select: selectProps,
-  floating: floatingProps,
-  transition: transitionProps,
-  ...props
-}: UseSelectProps<T>): SelectContext<T> {
-  const select = downshift.useSelect({ items: items ?? [], ...selectProps });
-
-  const floating = useFloating({
-    whileElementsMounted: autoUpdate,
-    open: select.isOpen,
-    placement: props.placement,
-    middleware: [
-      props.offset !== undefined && offset(props.offset),
-      props.flip && flip(),
-      props.matchReferenceSize && size({ apply: applyMatchReferenceSize }),
-    ],
-    ...floatingProps,
-  });
-
-  const transition = useTransitionStyles(floating.context, {
-    duration: 120,
-    ...transitionProps,
-  });
-
-  return {
-    ...select,
-    floating,
-    transition,
+  const context = {
+    select,
+    dropdown,
   };
-}
-
-function applyMatchReferenceSize({ rects, elements }: { rects: ElementRects; elements: Elements }) {
-  Object.assign(elements.floating.style, {
-    width: `${rects.reference.width}px`,
-  });
-}
-
-function useSelectContext() {
-  const context = use(selectContext);
-
-  if (context === null) {
-    throw new Error(`Missing select provider`);
-  }
-
-  return context;
-}
-
-type RootProps<T> = Extend<
-  Extend<Omit<React.ComponentProps<typeof Field>, 'children'>, UseSelectProps<T>>,
-  {
-    toggleButton: (props: Record<string, unknown>, select: SelectContext<T>) => React.ReactNode;
-    menu: (select: SelectContext<T>) => React.ReactNode;
-    root?: HTMLElement;
-  }
->;
-
-function Root<T>({
-  toggleButton,
-  menu,
-  root,
-  ref,
-  label,
-  labelPosition,
-  helperText,
-  className,
-  ...props
-}: RootProps<T>) {
-  const value = Select.useSelect(props);
 
   return (
-    <Select.Provider value={value}>
-      {toggleButton({ ref: value.floating.refs.setReference }, value)}
-      {createPortal(menu(value), root ?? document.body)}
-    </Select.Provider>
+    <selectContext.Provider value={context}>
+      <Field
+        id={props.select.id}
+        label={<FieldLabel {...select.getLabelProps()} />}
+        {...props.field?.(context)}
+      >
+        {props.toggleButton(context)}
+        {createPortal(props.menu(context), props.root ?? document.body)}
+      </Field>
+    </selectContext.Provider>
   );
 }
 
-type ToggleButtonProps = Extend<
+type SelectToggleButtonProps = Extend<
   React.ComponentProps<'div'>,
   {
-    size: 1 | 2 | 3;
-    placeholder?: string;
+    size?: 1 | 2 | 3;
+    placeholder?: React.ReactNode;
+    icon?: React.ReactNode;
     disabled?: boolean;
     readOnly?: boolean;
     invalid?: boolean;
   }
 >;
 
-function ToggleButton({ disabled, invalid, placeholder, children, ...props }: ToggleButtonProps) {
-  const select = useSelectContext();
+export function SelectToggleButton(props: SelectToggleButtonProps) {
+  const { ref, size, placeholder, icon, disabled, readOnly, invalid, className, children, ...rest } = props;
+  const { select, dropdown } = use(selectContext);
+  const id = useFieldId();
+
+  const refs = useMergeRefs([dropdown.refs.setReference, ref]);
 
   return (
     <div
-      aria-invalid={invalid}
-      aria-disabled={disabled}
-      className={ToggleButton.className({ ...props, className: props.className })}
-      {...select.getToggleButtonProps(props)}
+      {...select.getToggleButtonProps({ ref: refs })}
+      aria-disabled={disabled || undefined}
+      aria-invalid={invalid || undefined}
+      aria-errormessage={invalid ? `${id}-helper-text` : undefined}
+      className={SelectToggleButton.className({ size, disabled, readOnly, invalid, className })}
+      {...rest}
     >
-      {select.selectedItem ? children : <div className="text-placeholder">{placeholder}</div>}
+      {select.selectedItem ? children : placeholder && <div className="text-placeholder">{placeholder}</div>}
+      {icon ?? <ChevronDown className={clsx('ml-auto size-4', { '-scale-y-100': select.isOpen })} />}
     </div>
   );
 }
 
-ToggleButton.className = cva(
+SelectToggleButton.className = cva(
   [
-    'row w-full items-center',
-    'rounded border -outline-offset-1 transition-colors',
+    'row w-full items-center gap-2',
+    'rounded border -outline-offset-1 transition-colors duration-100',
     'focus:focused cursor-pointer',
   ],
   {
@@ -191,61 +113,3 @@ ToggleButton.className = cva(
     },
   },
 );
-
-function Dropdown({ className, ...props }: React.ComponentProps<'div'>) {
-  const { floating, transition } = useSelectContext();
-
-  return (
-    <div
-      ref={floating.refs.setFloating}
-      style={{ ...floating.floatingStyles, ...transition.styles }}
-      className={clsx(
-        'z-50 rounded-md border bg-neutral shadow-md',
-        { hidden: !transition.isMounted },
-        className,
-      )}
-      {...props}
-    />
-  );
-}
-
-function Menu({ className, ...props }: React.ComponentProps<'ul'>) {
-  const select = useSelectContext();
-
-  return <ul {...select.getMenuProps(props)} className={clsx('p-1', className)} />;
-}
-
-function MenuItem({ className, ...props }: { item: unknown; index: number } & React.ComponentProps<'li'>) {
-  const select = useSelectContext();
-
-  return (
-    <li
-      {...select.getItemProps(props)}
-      className={clsx(
-        'row cursor-pointer items-center rounded-md px-2 py-1 aria-disabled:cursor-default',
-        { 'bg-muted': select.highlightedIndex === props.index },
-        className,
-      )}
-    />
-  );
-}
-
-type DropdownMenuProps<T> = {
-  items: T[];
-  getKey: (item: T) => React.Key;
-  renderItem: (item: T) => React.ReactNode;
-};
-
-function DropdownMenu<T>({ items, getKey, renderItem }: DropdownMenuProps<T>) {
-  return (
-    <Dropdown>
-      <Menu>
-        {items.map((item, index) => (
-          <MenuItem key={getKey(item)} item={item} index={index}>
-            {renderItem(item)}
-          </MenuItem>
-        ))}
-      </Menu>
-    </Dropdown>
-  );
-}

@@ -1,6 +1,6 @@
 {
   "name": "@koyeb/design-system",
-  "version": "0.10.1",
+  "version": "0.10.2-alpha.1",
   "packageManager": "pnpm@10.16.1",
   "type": "module",
   "files": [
@@ -19,6 +19,7 @@
     "./styles.css": "./styles.css"
   },
   "scripts": {
+    "dev": "vite build --watch",
     "build": "vite build",
     "storybook": "storybook dev --ci -p 6006",
     "lint": "eslint src"
