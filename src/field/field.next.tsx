@@ -58,7 +58,7 @@ export function FieldHelperText({ invalid, className, children, ...props }: Fiel
   return (
     <span
       id={`${fieldId}-helper-text`}
-      className={clsx('col-span-2 text-xs text-dim', invalid && 'text-red', className)}
+      className={clsx('col-span-2 text-xs', invalid ? 'text-red' : 'text-dim', className)}
       {...props}
     >
       {children}
