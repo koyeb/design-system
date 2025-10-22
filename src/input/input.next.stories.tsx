@@ -1,7 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
-import { Field } from '../field/field';
-import { FieldHelperText, FieldLabel } from '../field/field.next';
+import { Field, FieldHelperText, FieldLabel } from '../field/field.next';
 import { controls } from '../utils/storybook';
 import { Input, InputEnd, InputStart } from './input.next';
 

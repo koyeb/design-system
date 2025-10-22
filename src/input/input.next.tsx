@@ -7,7 +7,6 @@ type InputProps = Extend<
   React.ComponentProps<'input'>,
   {
     size?: 1 | 2 | 3;
-    placeholder?: string;
     invalid?: boolean;
     start?: React.ReactNode;
     end?: React.ReactNode;
@@ -21,7 +20,6 @@ export function Input({
   disabled,
   readOnly,
   invalid,
-  placeholder,
   start,
   end,
   className,
@@ -38,12 +36,11 @@ export function Input({
       {start}
 
       <input
-        placeholder={placeholder}
+        id={id}
         disabled={disabled}
         readOnly={readOnly}
         aria-invalid={invalid || undefined}
         aria-errormessage={invalid ? `${id}-helper-text` : undefined}
-        id={id}
         className={classes.input({ size, className })}
         {...props}
       />
