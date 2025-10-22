@@ -1,5 +1,4 @@
 import { cva } from 'class-variance-authority';
-import clsx from 'clsx';
 
 import { Field, useFieldId } from '../field/field.next';
 import { Extend } from '../utils/types';
@@ -68,28 +67,31 @@ export function InputBox({
   );
 }
 
-InputBox.className = cva('row w-full justify-stretch rounded border -outline-offset-1 focusable-within', {
-  variants: {
-    size: {
-      1: 'min-h-6',
-      2: 'min-h-8',
-      3: 'min-h-10',
+InputBox.className = cva(
+  ['row w-full justify-stretch rounded border -outline-offset-1 focusable-within', 'peer'],
+  {
+    variants: {
+      size: {
+        1: 'min-h-6',
+        2: 'min-h-8',
+        3: 'min-h-10',
+      },
+      disabled: {
+        true: 'bg-muted pointer-events-none',
+        false: 'bg-neutral',
+      },
+      readOnly: {
+        true: 'pointer-events-none',
+      },
+      invalid: {
+        true: 'border-red outline-red',
+      },
     },
-    disabled: {
-      true: 'bg-muted pointer-events-none',
-      false: 'bg-neutral',
-    },
-    readOnly: {
-      true: 'pointer-events-none',
-    },
-    invalid: {
-      true: 'border-red outline-red',
+    defaultVariants: {
+      size: 2,
     },
   },
-  defaultVariants: {
-    size: 2,
-  },
-});
+);
 
 InputBox.inputClassName = cva(
   [
@@ -111,27 +113,45 @@ InputBox.inputClassName = cva(
 );
 
 type InputStartProps = {
+  background?: boolean;
   className?: string;
   children: React.ReactNode;
 };
 
-export function InputStart({ className, children }: InputStartProps) {
-  return (
-    <span className={clsx('row items-center rounded-s border-e bg-muted px-1 text-dim', className)}>
-      {children}
-    </span>
-  );
+export function InputStart({ background, className, children }: InputStartProps) {
+  return <span className={inputStart({ background, className })}>{children}</span>;
 }
+
+const inputStart = cva('row items-center', {
+  variants: {
+    background: {
+      true: 'rounded-s border-e bg-muted text-dim px-1',
+      false: 'ps-2',
+    },
+  },
+  defaultVariants: {
+    background: true,
+  },
+});
 
 type InputEndProps = {
+  background?: boolean;
   className?: string;
   children: React.ReactNode;
 };
 
-export function InputEnd({ className, children }: InputEndProps) {
-  return (
-    <span className={clsx('row items-center rounded-e border-s bg-muted px-1 text-dim', className)}>
-      {children}
-    </span>
-  );
+export function InputEnd({ background, className, children }: InputEndProps) {
+  return <span className={inputEnd({ background, className })}>{children}</span>;
 }
+
+const inputEnd = cva('row items-center', {
+  variants: {
+    background: {
+      true: 'rounded-e border-s bg-muted text-dim px-1',
+      false: 'pe-2',
+    },
+  },
+  defaultVariants: {
+    background: true,
+  },
+});
