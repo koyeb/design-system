@@ -1,9 +1,10 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
+import { useSelect } from 'downshift';
+import { createPortal } from 'react-dom';
 
-import { Dropdown, Menu, MenuItem } from '../dropdown/dropdown.next';
-import { FieldHelperText, FieldLabel } from '../field/field.next';
+import { Field, FieldHelperText, FieldLabel } from '../field/field.next';
+import { Dropdown, Menu, MenuItem, SelectToggleButton, useDropdown } from '../next';
 import { controls } from '../utils/storybook';
-import { Select, SelectToggleButton } from './select.next';
 
 type Args = {
   label: string;
@@ -46,23 +47,26 @@ const meta = {
   argTypes: {
     size: controls.inlineRadio([1, 2, 3]),
   },
-  render: ({ label, size, placeholder, disabled, readOnly, invalid, helperText }) => (
-    <Select
-      select={{
-        items: games,
-      }}
-      dropdown={{
-        matchReferenceSize: true,
-        offset: 8,
-        flip: true,
-      }}
-      field={({ select }) => ({
-        label: <FieldLabel {...select.getLabelProps()}>{label}</FieldLabel>,
-        helperText: <FieldHelperText invalid={invalid} children={helperText} />,
-        className: 'max-w-sm',
-      })}
-      toggleButton={({ select }) => (
+  render: ({ label, size, placeholder, disabled, readOnly, invalid, helperText }) => {
+    const select = useSelect({
+      items: games,
+    });
+
+    const dropdown = useDropdown(select.isOpen, {
+      offset: 8,
+      flip: true,
+      matchReferenceSize: true,
+    });
+
+    return (
+      <Field
+        label={<FieldLabel {...select.getLabelProps()}>{label}</FieldLabel>}
+        helperText={<FieldHelperText invalid={invalid}>{helperText}</FieldHelperText>}
+        className="max-w-sm"
+      >
         <SelectToggleButton
+          select={select}
+          dropdown={dropdown}
           size={size}
           placeholder={placeholder}
           disabled={disabled}
@@ -71,25 +75,27 @@ const meta = {
         >
           {select.selectedItem?.name}
         </SelectToggleButton>
-      )}
-      menu={({ select, dropdown }) => (
-        <Dropdown dropdown={dropdown}>
-          <Menu {...select.getMenuProps()}>
-            {games.map((game, index) => (
-              <MenuItem
-                {...select.getItemProps({ item: game, index })}
-                key={game.name}
-                highlighted={index === select.highlightedIndex}
-              >
-                <span>{game.name}</span>
-                <span className="text-dim ml-2">{game.released}</span>
-              </MenuItem>
-            ))}
-          </Menu>
-        </Dropdown>
-      )}
-    />
-  ),
+
+        {createPortal(
+          <Dropdown dropdown={dropdown}>
+            <Menu {...select.getMenuProps()}>
+              {games.map((game, index) => (
+                <MenuItem
+                  {...select.getItemProps({ item: game, index })}
+                  key={game.name}
+                  highlighted={index === select.highlightedIndex}
+                >
+                  <span>{game.name}</span>
+                  <span className="text-dim ml-2">{game.released}</span>
+                </MenuItem>
+              ))}
+            </Menu>
+          </Dropdown>,
+          document.body,
+        )}
+      </Field>
+    );
+  },
 } satisfies Meta<Args>;
 
 export default meta;

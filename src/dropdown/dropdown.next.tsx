@@ -1,31 +1,35 @@
 import {
   ElementRects,
   Elements,
+  ReferenceType,
   UseFloatingOptions,
+  UseFloatingReturn,
   UseTransitionStylesProps,
   autoUpdate,
   flip,
   offset,
   size,
   useFloating,
+  useMergeRefs,
   useTransitionStyles,
 } from '@floating-ui/react';
 import { cva } from 'class-variance-authority';
 
 import { Extend } from '../utils/types';
 
-export function useDropdown(
-  open: boolean,
-  props: {
-    floating?: UseFloatingOptions;
-    transition?: UseTransitionStylesProps;
-    offset?: number;
-    flip?: boolean;
-    matchReferenceSize?: boolean;
-  } = {},
-): ReturnType<typeof useFloating> & {
+export type UseDropdownProps = Partial<{
+  floating: UseFloatingOptions;
+  transition: UseTransitionStylesProps;
+  offset: number;
+  flip: boolean;
+  matchReferenceSize: boolean;
+}>;
+
+export type UseDropdown = UseFloatingReturn<ReferenceType> & {
   transition: { styles: React.CSSProperties; isMounted: boolean };
-} {
+};
+
+export function useDropdown(open: boolean, props: UseDropdownProps = {}): UseDropdown {
   const floating = useFloating({
     open,
     whileElementsMounted: autoUpdate,
@@ -54,18 +58,22 @@ function applyMatchReferenceSize({ rects, elements }: { rects: ElementRects; ele
   });
 }
 
-type DropdownProps = {
-  dropdown: ReturnType<typeof useDropdown>;
-  className?: string;
-  children: React.ReactNode;
-};
+type DropdownProps = Extend<
+  React.ComponentProps<'div'>,
+  {
+    dropdown: ReturnType<typeof useDropdown>;
+  }
+>;
 
-export function Dropdown({ dropdown, className, children }: DropdownProps) {
+export function Dropdown({ ref, dropdown, style, className, children, ...props }: DropdownProps) {
+  const mergedRefs = useMergeRefs([dropdown.refs.setFloating, ref]);
+
   return (
     <div
-      ref={dropdown.refs.setFloating}
+      ref={mergedRefs}
+      style={{ ...dropdown.floatingStyles, ...dropdown.transition.styles, ...style }}
       className={Dropdown.className({ hidden: !dropdown.transition.isMounted, className })}
-      style={{ ...dropdown.floatingStyles, ...dropdown.transition.styles }}
+      {...props}
     >
       {children}
     </div>

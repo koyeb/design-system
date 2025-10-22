@@ -3,55 +3,16 @@ import { cva } from 'class-variance-authority';
 import clsx from 'clsx';
 import * as downshift from 'downshift';
 import { ChevronDown } from 'lucide-react';
-import { createContext, use } from 'react';
-import { createPortal } from 'react-dom';
 
-import { useDropdown } from '../dropdown/dropdown.next';
-import { Field, FieldLabel, useFieldId } from '../field/field.next';
+import { UseDropdown } from '../dropdown/dropdown.next';
+import { useFieldId } from '../field/field.next';
 import { Extend } from '../utils/types';
 
-type SelectContext<T = unknown> = {
-  select: downshift.UseSelectReturnValue<T>;
-  dropdown: ReturnType<typeof useDropdown>;
-};
-
-const selectContext = createContext<SelectContext<any>>(null as never);
-
-type SelectProps<T> = {
-  select: downshift.UseSelectProps<T>;
-  dropdown: Parameters<typeof useDropdown>[1];
-  root?: HTMLElement | null;
-  field?: (select: SelectContext<T>) => Omit<React.ComponentProps<typeof Field>, 'children'>;
-  toggleButton: (select: SelectContext<T>) => React.ReactNode;
-  menu: (select: SelectContext<T>) => React.ReactNode;
-};
-
-export function Select<T>(props: SelectProps<T>) {
-  const select = downshift.useSelect(props.select);
-  const dropdown = useDropdown(select.isOpen, props.dropdown);
-
-  const context = {
-    select,
-    dropdown,
-  };
-
-  return (
-    <selectContext.Provider value={context}>
-      <Field
-        id={props.select.id}
-        label={<FieldLabel {...select.getLabelProps()} />}
-        {...props.field?.(context)}
-      >
-        {props.toggleButton(context)}
-        {createPortal(props.menu(context), props.root ?? document.body)}
-      </Field>
-    </selectContext.Provider>
-  );
-}
-
-type SelectToggleButtonProps = Extend<
+type SelectToggleButtonProps<T> = Extend<
   React.ComponentProps<'div'>,
   {
+    select: downshift.UseSelectReturnValue<T>;
+    dropdown: UseDropdown;
     size?: 1 | 2 | 3;
     placeholder?: React.ReactNode;
     icon?: React.ReactNode;
@@ -61,29 +22,47 @@ type SelectToggleButtonProps = Extend<
   }
 >;
 
-export function SelectToggleButton(props: SelectToggleButtonProps) {
-  const { ref, size, placeholder, icon, disabled, readOnly, invalid, className, children, ...rest } = props;
-  const { select, dropdown } = use(selectContext);
-  const id = useFieldId();
+export function SelectToggleButton<T>(props: SelectToggleButtonProps<T>) {
+  const {
+    select,
+    dropdown,
+    ref,
+    size,
+    placeholder,
+    icon,
+    disabled,
+    readOnly,
+    invalid,
+    className,
+    children,
+    ...rest
+  } = props;
 
-  const refs = useMergeRefs([dropdown.refs.setReference, ref]);
+  const mergedRefs = useMergeRefs([dropdown.refs.setReference, ref]);
+  const id = useFieldId();
 
   return (
     <div
-      {...select.getToggleButtonProps({ ref: refs })}
+      {...select.getToggleButtonProps({ ref: mergedRefs, ...rest })}
       aria-disabled={disabled || undefined}
       aria-invalid={invalid || undefined}
       aria-errormessage={invalid ? `${id}-helper-text` : undefined}
-      className={SelectToggleButton.className({ size, disabled, readOnly, invalid, className })}
-      {...rest}
+      className={toggleButton({ size, disabled, readOnly, invalid, className })}
     >
-      {select.selectedItem ? children : placeholder && <div className="text-placeholder">{placeholder}</div>}
-      {icon ?? <ChevronDown className={clsx('ml-auto size-4', { '-scale-y-100': select.isOpen })} />}
+      <div className="grow">
+        {children ?? (placeholder && <div className="text-placeholder">{placeholder}</div>)}
+      </div>
+
+      {icon ?? (
+        <div>
+          <ChevronDown className={clsx('size-4', select.isOpen && '-scale-y-100')} />
+        </div>
+      )}
     </div>
   );
 }
 
-SelectToggleButton.className = cva(
+const toggleButton = cva(
   [
     'row w-full items-center gap-2',
     'rounded border -outline-offset-1 transition-colors duration-100',
