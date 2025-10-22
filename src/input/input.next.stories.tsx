@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
+import { Field } from '../field/field';
 import { FieldHelperText, FieldLabel } from '../field/field.next';
 import { controls } from '../utils/storybook';
 import { Input, InputEnd, InputStart } from './input.next';
@@ -33,20 +34,21 @@ const meta = {
     size: controls.inlineRadio([1, 2, 3]),
   },
   render: ({ label, size, placeholder, disabled, readOnly, invalid, helperText, start, end }) => (
-    <Input
-      size={size}
-      placeholder={placeholder}
-      disabled={disabled}
-      readOnly={readOnly}
-      invalid={invalid}
-      start={start && <InputStart>Start</InputStart>}
-      end={end && <InputEnd>End</InputEnd>}
-      field={{
-        label: <FieldLabel>{label}</FieldLabel>,
-        helperText: <FieldHelperText invalid={invalid}>{helperText}</FieldHelperText>,
-        className: 'max-w-sm',
-      }}
-    />
+    <Field
+      label={<FieldLabel>{label}</FieldLabel>}
+      helperText={<FieldHelperText invalid={invalid}>{helperText}</FieldHelperText>}
+      className="max-w-sm"
+    >
+      <Input
+        size={size}
+        placeholder={placeholder}
+        disabled={disabled}
+        readOnly={readOnly}
+        invalid={invalid}
+        start={start && <InputStart>Start</InputStart>}
+        end={end && <InputEnd>End</InputEnd>}
+      />
+    </Field>
   ),
 } satisfies Meta<Args>;
 

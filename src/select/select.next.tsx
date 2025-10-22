@@ -65,7 +65,7 @@ export function SelectToggleButton<T>(props: SelectToggleButtonProps<T>) {
 const toggleButton = cva(
   [
     'row w-full items-center gap-2',
-    'rounded border -outline-offset-1 transition-colors duration-100',
+    'bg-neutral rounded border -outline-offset-1 transition-colors duration-100',
     'focus:focused cursor-pointer',
   ],
   {
@@ -77,7 +77,6 @@ const toggleButton = cva(
       },
       disabled: {
         true: 'bg-muted text-dim pointer-events-none',
-        false: 'bg-neutral',
       },
       readOnly: {
         true: 'pointer-events-none',
