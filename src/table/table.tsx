@@ -114,11 +114,13 @@ function SelectionHeader<T>({ items, selection }: SelectionHeaderProps<T>) {
   const indeterminate = selection.selected.size < items.length;
 
   return (
-    <Checkbox
-      checked={selection.selected.size > 0}
-      indeterminate={indeterminate}
-      onChange={() => (indeterminate ? selection.selectAll() : selection.clear())}
-    />
+    <label className="cursor-pointer">
+      <Checkbox
+        checked={selection.selected.size > 0}
+        indeterminate={indeterminate}
+        onChange={() => (indeterminate ? selection.selectAll() : selection.clear())}
+      />
+    </label>
   );
 }
 
@@ -129,10 +131,12 @@ type SelectionColumnProps<T> = {
 
 function SelectionColumn<T>({ item, selection }: SelectionColumnProps<T>) {
   return (
-    <Checkbox
-      className="mt-1"
-      checked={selection.selected.has(item)}
-      onChange={() => selection.toggle(item)}
-    />
+    <label className="cursor-pointer">
+      <Checkbox
+        className="mt-1"
+        checked={selection.selected.has(item)}
+        onChange={() => selection.toggle(item)}
+      />
+    </label>
   );
 }
