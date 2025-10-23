@@ -62,17 +62,26 @@ type DropdownProps = Extend<
   React.ComponentProps<'div'>,
   {
     dropdown: ReturnType<typeof useDropdown>;
+    onClosed?: () => void;
   }
 >;
 
-export function Dropdown({ ref, dropdown, style, className, children, ...props }: DropdownProps) {
+export function Dropdown({ ref, dropdown, onClosed, style, className, children, ...props }: DropdownProps) {
   const mergedRefs = useMergeRefs([dropdown.refs.setFloating, ref]);
+
+  const onTransitionEnd = () => {
+    if (!dropdown.context.open) {
+      onClosed?.();
+    }
+  };
 
   return (
     <div
       ref={mergedRefs}
       style={{ ...dropdown.floatingStyles, ...dropdown.transition.styles, ...style }}
       className={Dropdown.className({ hidden: !dropdown.transition.isMounted, className })}
+      onTransitionEnd={onTransitionEnd}
+      onTransitionCancel={onTransitionEnd}
       {...props}
     >
       {children}
