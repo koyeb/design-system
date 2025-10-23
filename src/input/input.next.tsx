@@ -70,7 +70,7 @@ export function InputEnd({ background, className, children }: InputEndProps) {
 }
 
 const classes = {
-  root: cva(['row w-full bg-neutral justify-stretch rounded border -outline-offset-1 focusable-within'], {
+  root: cva(['row w-full justify-stretch rounded border -outline-offset-1 focusable-within'], {
     variants: {
       size: {
         1: 'min-h-6',
@@ -79,6 +79,7 @@ const classes = {
       },
       disabled: {
         true: 'bg-muted pointer-events-none',
+        false: 'bg-neutral',
       },
       readOnly: {
         true: 'pointer-events-none',
@@ -89,6 +90,7 @@ const classes = {
     },
     defaultVariants: {
       size: 2,
+      disabled: false,
     },
   }),
 
