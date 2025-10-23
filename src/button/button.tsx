@@ -2,9 +2,6 @@ import clsx from 'clsx';
 import { isValidElement } from 'react';
 
 import { Spinner } from '../spinner/spinner';
-import { Tooltip } from '../tooltip/tooltip';
-import { useBreakpoint } from '../utils/media-query';
-import { mergeRefs } from '../utils/merge-refs';
 import { Extend } from '../utils/types';
 
 export type ButtonVariant = 'solid' | 'outline' | 'ghost';
@@ -31,26 +28,25 @@ export function Button({ loading, children, className, ...props }: ButtonProps) 
 
 type IconButtonComponentProps = {
   Icon: React.ComponentType<{ className?: string }>;
+  icon?: never;
 };
 
 type IconButtonNodeProps = {
-  icon: Exclude<React.ReactNode, undefined | null>;
+  Icon?: never;
+  icon: React.ReactElement;
 };
 
 type IconButtonProps = ButtonProps & (IconButtonComponentProps | IconButtonNodeProps);
 
 export function IconButton({
-  ref,
   variant = 'outline',
   size = 2,
+  icon,
+  Icon,
   className,
   children,
   ...props
 }: IconButtonProps) {
-  // prettier-ignore
-  const { Icon, icon, ...rest } = props as ButtonProps & Partial<IconButtonComponentProps & IconButtonNodeProps>;
-  const sm = useBreakpoint('sm');
-
   const getIcon = () => {
     if (isValidElement(icon)) {
       return icon;
@@ -71,30 +67,22 @@ export function IconButton({
   };
 
   return (
-    <Tooltip
-      forceDesktop
-      content={() => sm && children}
-      trigger={({ ref: tooltipRef, ...tooltip }) => (
-        <Button
-          ref={mergeRefs(ref, tooltipRef as React.ForwardedRef<HTMLButtonElement>)}
-          variant={variant}
-          size={size}
-          className={clsx(
-            {
-              '!px-1': size === 1,
-              '!px-2': size === 2,
-              '!px-3': size === 3,
-            },
-            className,
-          )}
-          {...rest}
-          {...tooltip}
-        >
-          {children && <span className="sm:hidden">{children}</span>}
-          {getIcon()}
-        </Button>
+    <Button
+      variant={variant}
+      size={size}
+      className={clsx(
+        {
+          '!px-1': size === 1,
+          '!px-2': size === 2,
+          '!px-3': size === 3,
+        },
+        className,
       )}
-    />
+      {...props}
+    >
+      {children && <span className="sm:hidden">{children}</span>}
+      {getIcon()}
+    </Button>
   );
 }
 
