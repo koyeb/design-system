@@ -32,7 +32,30 @@ export function Field({ ref, id: idProp, label, helperText, className, children 
   );
 }
 
-type FieldLabelProps = React.LabelHTMLAttributes<HTMLLabelElement>;
+type InlineFieldProps = {
+  ref?: React.Ref<HTMLLabelElement>;
+  id?: string;
+  className?: string;
+  children: React.ReactNode;
+};
+
+export function InlineField({ id: idProp, className, ...props }: InlineFieldProps) {
+  const id = useId(idProp);
+
+  return (
+    <fieldIdContext.Provider value={id}>
+      <FieldLabel
+        className={clsx(
+          'inline-flex flex-row items-center gap-2 rounded focusable-within outline-offset-4 cursor-pointer',
+          className,
+        )}
+        {...props}
+      />
+    </fieldIdContext.Provider>
+  );
+}
+
+type FieldLabelProps = React.ComponentProps<'label'>;
 
 export function FieldLabel(props: FieldLabelProps) {
   const id = useFieldId();
@@ -44,7 +67,7 @@ export function FieldLabel(props: FieldLabelProps) {
   return <label htmlFor={id} {...props} />;
 }
 
-type FieldHelperTextProps = React.HTMLAttributes<HTMLSpanElement> & {
+type FieldHelperTextProps = React.ComponentProps<'span'> & {
   invalid?: boolean;
 };
 

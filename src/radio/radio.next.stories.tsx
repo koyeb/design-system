@@ -1,7 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
+import { InlineField } from '../next';
 import { controls } from '../utils/storybook';
-import { Radio, RadioLabel } from './radio.next';
+import { Radio } from './radio.next';
 
 type Args = {
   label: string;
@@ -19,10 +20,10 @@ const meta = {
     checked: controls.boolean(),
   },
   render: ({ label, ...props }) => (
-    <RadioLabel disabled={props.disabled}>
+    <InlineField>
       <Radio {...props} />
-      {label}
-    </RadioLabel>
+      <span>{label}</span>
+    </InlineField>
   ),
 } satisfies Meta<Args>;
 

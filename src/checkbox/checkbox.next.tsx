@@ -1,24 +1,5 @@
-import { cva } from 'class-variance-authority';
-
-import { FieldLabel } from '../next';
+import { useFieldId } from '../next';
 import { Extend } from '../utils/types';
-
-export function CheckboxLabel({
-  disabled,
-  className,
-  ...props
-}: React.ComponentProps<typeof FieldLabel> & { disabled?: boolean }) {
-  return <FieldLabel className={label({ disabled, className })} {...props} />;
-}
-
-const label = cva('inline-flex flex-row items-center gap-2 rounded focusable-within outline-offset-4', {
-  variants: {
-    disabled: {
-      true: 'text-dim',
-      false: 'cursor-pointer',
-    },
-  },
-});
 
 type CheckboxProps = Extend<
   React.ComponentProps<'input'>,
@@ -28,9 +9,11 @@ type CheckboxProps = Extend<
 >;
 
 export function Checkbox({ indeterminate, className, ...props }: CheckboxProps) {
+  const id = useFieldId();
+
   return (
     <>
-      <input type="checkbox" className="peer sr-only fixed" {...props} />
+      <input id={id} type="checkbox" className="peer sr-only fixed" {...props} />
 
       <span className="leading-none peer-checked:hidden peer-disabled:[&>span]:bg-muted">
         <Unchecked className="size-4" />

@@ -1,7 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
+import { InlineField } from '../next';
 import { controls } from '../utils/storybook';
-import { Checkbox, CheckboxLabel } from './checkbox.next';
+import { Checkbox } from './checkbox.next';
 
 type Args = {
   label: string;
@@ -21,10 +22,10 @@ const meta = {
     checked: controls.boolean(),
   },
   render: ({ label, ...props }) => (
-    <CheckboxLabel disabled={props.disabled}>
+    <InlineField>
       <Checkbox {...props} />
-      {label}
-    </CheckboxLabel>
+      <span>{label}</span>
+    </InlineField>
   ),
 } satisfies Meta<Args>;
 

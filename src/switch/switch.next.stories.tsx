@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
-import { FieldLabel } from '../field/field.next';
+import { InlineField } from '../field/field.next';
 import { Switch } from './switch.next';
 
 type Args = {
@@ -15,10 +15,10 @@ const meta = {
     disabled: false,
   },
   render: ({ label, disabled }) => (
-    <FieldLabel className="gap-y-1.5 col items-start">
-      <div>{label}</div>
+    <InlineField>
       <Switch disabled={disabled} />
-    </FieldLabel>
+      <span>{label}</span>
+    </InlineField>
   ),
 } satisfies Meta<Args>;
 

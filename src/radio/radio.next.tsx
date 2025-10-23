@@ -1,30 +1,13 @@
-import { cva } from 'class-variance-authority';
-
-import { FieldLabel } from '../next';
-
-export function RadioLabel({
-  disabled,
-  className,
-  ...props
-}: React.ComponentProps<typeof FieldLabel> & { disabled?: boolean }) {
-  return <FieldLabel className={label({ disabled, className })} {...props} />;
-}
-
-const label = cva('inline-flex flex-row items-center gap-2 rounded focusable-within outline-offset-4', {
-  variants: {
-    disabled: {
-      true: 'text-dim',
-      false: 'cursor-pointer',
-    },
-  },
-});
+import { useFieldId } from '../next';
 
 type RadioProps = React.ComponentProps<'input'>;
 
 export function Radio({ className, ...props }: RadioProps) {
+  const id = useFieldId();
+
   return (
     <>
-      <input type="radio" className="peer sr-only fixed" {...props} />
+      <input id={id} type="radio" className="peer sr-only fixed" {...props} />
 
       <span className="leading-none peer-checked:hidden peer-disabled:[&>span]:bg-muted">
         <span className="inline-block size-4 rounded-full border" />
