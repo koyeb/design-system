@@ -30,9 +30,8 @@ export type UseDropdown = UseFloatingReturn<ReferenceType> & {
   transition: { styles: React.CSSProperties; isMounted: boolean };
 };
 
-export function useDropdown(open: boolean, props: UseDropdownProps = {}): UseDropdown {
+export function useDropdown(props: UseDropdownProps = {}): UseDropdown {
   const floating = useFloating({
-    open,
     whileElementsMounted: autoUpdate,
     middleware: [
       props.offset !== undefined && offset(props.offset),

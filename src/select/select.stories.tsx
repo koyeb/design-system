@@ -54,7 +54,8 @@ const meta = {
       items: games,
     });
 
-    const dropdown = useDropdown(select.isOpen, {
+    const dropdown = useDropdown({
+      floating: { open: select.isOpen },
       offset: 8,
       flip: true,
       matchReferenceSize: true,
