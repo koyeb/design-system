@@ -114,13 +114,10 @@ export function MenuItem({ highlighted, className, ...props }: MenuItemProps) {
   return <li {...props} className={MenuItem.className({ highlighted, className })} />;
 }
 
-MenuItem.className = cva(
-  'row cursor-pointer items-center rounded-md px-2 py-1 aria-disabled:cursor-default',
-  {
-    variants: {
-      highlighted: {
-        true: 'bg-muted',
-      },
+MenuItem.className = cva('cursor-pointer rounded-md px-2 py-1 aria-disabled:pointer-events-none', {
+  variants: {
+    highlighted: {
+      true: 'bg-muted',
     },
   },
-);
+});
