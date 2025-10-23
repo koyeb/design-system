@@ -1,57 +1,47 @@
-import clsx from 'clsx';
+import { cva } from 'class-variance-authority';
 
-import { Field, FieldHelperText, FieldLabel } from '../field/field';
+import { useFieldId } from '../field/field';
 import { Extend } from '../utils/types';
-import { useId } from '../utils/use-id';
 
-type TextAreaOwnProps = {
-  label?: React.ReactNode;
-  placeholder?: React.ReactNode;
-  helperText?: React.ReactNode;
-  error?: React.ReactNode;
-  invalid?: boolean;
-  textAreaClassName?: string;
-};
+type TextAreaProps = Extend<
+  React.ComponentProps<'textarea'>,
+  {
+    invalid?: boolean;
+  }
+>;
 
-type TextAreaProps = Extend<React.ComponentProps<'textarea'>, TextAreaOwnProps>;
-
-export function TextArea({
-  label,
-  placeholder,
-  helperText,
-  error,
-  invalid = Boolean(error),
-  className,
-  textAreaClassName,
-  ...props
-}: TextAreaProps) {
-  const id = useId(props.id);
-  const helperTextId = `${id}-error-text`;
+export function TextArea({ disabled, readOnly, invalid, className, ...props }: TextAreaProps) {
+  const id = useFieldId();
 
   return (
-    <Field
-      className={className}
-      label={<FieldLabel htmlFor={id}>{label}</FieldLabel>}
-      helperText={
-        <FieldHelperText id={helperTextId} invalid={invalid}>
-          {error ?? helperText}
-        </FieldHelperText>
-      }
-    >
-      <textarea
-        id={id}
-        aria-invalid={invalid}
-        aria-errormessage={invalid ? helperTextId : undefined}
-        className={clsx(
-          'w-full rounded border bg-neutral px-2 py-1.5 focusable -outline-offset-1',
-          'placeholder:text-placeholder',
-          'disabled:opacity-50',
-          invalid && 'border-red outline-red',
-          textAreaClassName,
-        )}
-        placeholder={typeof placeholder === 'string' ? placeholder : undefined}
-        {...props}
-      />
-    </Field>
+    <textarea
+      id={id}
+      disabled={disabled}
+      readOnly={readOnly}
+      aria-invalid={invalid || undefined}
+      aria-errormessage={invalid ? `${id}-helper-text` : undefined}
+      className={textArea({ disabled, readOnly, invalid, className })}
+      {...props}
+    />
   );
 }
+const textArea = cva(
+  [
+    'w-full rounded border bg-neutral px-2 py-1.5 focusable -outline-offset-1',
+    'placeholder:text-placeholder',
+    'disabled:opacity-50',
+  ],
+  {
+    variants: {
+      disabled: {
+        true: 'bg-muted pointer-events-none',
+      },
+      readOnly: {
+        true: 'pointer-events-none',
+      },
+      invalid: {
+        true: 'border-red outline-red',
+      },
+    },
+  },
+);

@@ -1,226 +1,95 @@
+import { useMergeRefs } from '@floating-ui/react';
+import { cva } from 'class-variance-authority';
 import clsx from 'clsx';
-import { UseSelectProps, UseSelectState, UseSelectStateChangeOptions, useSelect } from 'downshift';
-import { ChevronDownIcon } from 'lucide-react';
-import { useCallback, useMemo } from 'react';
+import * as downshift from 'downshift';
+import { ChevronDown } from 'lucide-react';
 
-import { Dropdown, DropdownGroup } from '../dropdown/dropdown';
-import { useDropdown } from '../dropdown/use-dropdown';
-import { Field, FieldHelperText, FieldLabel } from '../field/field';
+import { UseDropdown } from '../dropdown/dropdown';
+import { useFieldId } from '../field/field';
 import { Extend } from '../utils/types';
-import { useId } from '../utils/use-id';
 
-type SelectProps<Item> = {
-  ref?: React.Ref<HTMLDivElement>;
-  open?: boolean;
-  size?: 1 | 2 | 3;
-  label?: React.ReactNode;
-  labelPosition?: 'top' | 'left';
-  helperText?: React.ReactNode;
-  error?: React.ReactNode;
-  invalid?: boolean;
-  disabled?: boolean;
-  readOnly?: boolean;
-  placeholder?: React.ReactNode;
-  className?: string;
-  id?: string;
-  items: Item[];
-  groups?: DropdownGroup<Item>[];
-  selectedItem?: Item | null;
-  onSelectedItemChange?: (value: Item) => void;
-  onItemClick?: (item: Item) => void;
-  onBlur?: (event: React.FocusEvent) => void;
-  getKey: (item: Item) => React.Key;
-  itemToString: (item: Item) => string;
-  renderItem: (item: Item, index?: number) => React.ReactNode;
-  renderSelectedItem?: (item: Item | null) => React.ReactNode;
-  renderNoItems?: () => React.ReactNode;
-  canSelectItem?: (item: Item) => boolean;
-  stateReducer?: UseSelectProps<Item>['stateReducer'];
-};
-
-export function Select<Item>({
-  ref: forwardedRef,
-  open,
-  size = 2,
-  label,
-  labelPosition,
-  helperText,
-  error,
-  invalid = Boolean(error),
-  disabled,
-  readOnly,
-  placeholder,
-  className,
-  id: idProp,
-  items,
-  groups,
-  selectedItem: selectedItemProp,
-  onSelectedItemChange,
-  onItemClick,
-  onBlur,
-  getKey,
-  itemToString,
-  renderItem,
-  renderNoItems,
-  renderSelectedItem,
-  canSelectItem,
-  stateReducer,
-}: SelectProps<Item>) {
-  const id = useId(idProp);
-  const helperTextId = `${id}-helper-text`;
-
-  const {
-    isOpen,
-    selectedItem,
-    highlightedIndex,
-    getLabelProps,
-    getToggleButtonProps,
-    getMenuProps,
-    getItemProps,
-  } = useSelect({
-    id,
-    items,
-    isOpen: open,
-    selectedItem: selectedItemProp,
-    onSelectedItemChange({ selectedItem }) {
-      if (selectedItem) {
-        onSelectedItemChange?.(selectedItem);
-      }
-    },
-    itemToString(item) {
-      return item ? itemToString(item) : '';
-    },
-    isItemDisabled(item) {
-      return Boolean(canSelectItem && !canSelectItem(item));
-    },
-    stateReducer(state, options) {
-      return stateReducer?.(state, options) ?? options.changes;
-    },
-  });
-
-  const dropdown = useDropdown(isOpen);
-  const dropdownRef = dropdown.setReference;
-
-  const ref = useCallback(
-    (ref: HTMLDivElement) => {
-      dropdownRef(ref);
-
-      if (typeof forwardedRef === 'function') {
-        forwardedRef(ref);
-      } else if (forwardedRef != null) {
-        forwardedRef.current = ref;
-      }
-    },
-    [dropdownRef, forwardedRef],
-  );
-
-  const toggleButtonProps = useMemo(
-    () => getToggleButtonProps({ ref, disabled, readOnly, onBlur }),
-    [getToggleButtonProps, ref, disabled, readOnly, onBlur],
-  );
-
-  return (
-    <Field
-      label={<FieldLabel {...getLabelProps()}>{label}</FieldLabel>}
-      labelPosition={labelPosition}
-      helperText={
-        <FieldHelperText id={helperTextId} invalid={invalid}>
-          {error ?? helperText}
-        </FieldHelperText>
-      }
-      className={className}
-    >
-      <div
-        {...toggleButtonProps}
-        className={clsx('row w-full items-center rounded border bg-neutral -outline-offset-1', {
-          'cursor-pointer focusable': !disabled && !readOnly,
-          'pointer-events-none': disabled ?? readOnly,
-          'bg-muted opacity-50 dark:bg-muted/40': disabled,
-          'rounded-b-none outline-none': isOpen,
-          'border-red outline-red': invalid,
-          'min-h-6': size === 1,
-          'min-h-8': size === 2,
-          'min-h-10': size === 3,
-        })}
-        aria-invalid={invalid}
-        aria-errormessage={helperTextId}
-      >
-        <div className={clsx('flex-1 px-2')}>
-          {renderSelectedItem?.(selectedItem) ?? (
-            <>
-              {selectedItem && renderItem(selectedItem)}
-              {!selectedItem && (
-                <span className="text-placeholder select-none">{placeholder ?? <wbr />}</span>
-              )}
-            </>
-          )}
-        </div>
-
-        <ChevronDownIcon className={clsx('mx-1 icon size-6', isOpen && 'rotate-180')} />
-      </div>
-
-      <Dropdown
-        dropdown={dropdown}
-        highlightedIndex={highlightedIndex}
-        getMenuProps={getMenuProps}
-        getItemProps={getItemProps}
-        getKey={getKey}
-        renderItem={renderItem}
-        renderNoItems={renderNoItems}
-        onItemClick={onItemClick}
-        {...(groups ? { groups } : { items })}
-      />
-    </Field>
-  );
-}
-
-type MultiSelectProps<Item> = Extend<
-  SelectProps<Item>,
+type SelectToggleButtonProps<T> = Extend<
+  React.ComponentProps<'div'>,
   {
-    selectedItems?: Item[];
-    onItemsSelected?: (item: Item) => void;
-    onItemsUnselected?: (item: Item) => void;
-    renderItem: (item: Item, selected: boolean, index?: number) => React.ReactNode;
-    renderSelectedItems: (items: Item[]) => React.ReactNode;
+    select: downshift.UseSelectReturnValue<T>;
+    dropdown: UseDropdown;
+    size?: 1 | 2 | 3;
+    placeholder?: React.ReactNode;
+    icon?: React.ReactNode;
+    disabled?: boolean;
+    readOnly?: boolean;
+    invalid?: boolean;
   }
 >;
 
-export function MultiSelect<Item>({
-  selectedItems = [],
-  onItemsSelected,
-  onItemsUnselected,
-  renderItem,
-  renderSelectedItems,
-  ...props
-}: MultiSelectProps<Item>) {
+export function SelectToggleButton<T>(props: SelectToggleButtonProps<T>) {
+  const {
+    select,
+    dropdown,
+    ref,
+    size,
+    placeholder,
+    icon,
+    disabled,
+    readOnly,
+    invalid,
+    className,
+    children,
+    ...rest
+  } = props;
+
+  const mergedRefs = useMergeRefs([dropdown.refs.setReference, ref]);
+  const id = useFieldId();
+
   return (
-    <Select
-      selectedItem={null}
-      onItemClick={(item) => {
-        if (selectedItems.includes(item)) {
-          onItemsUnselected?.(item);
-        } else {
-          onItemsSelected?.(item);
-        }
-      }}
-      renderItem={(item, index) => renderItem(item, selectedItems.includes(item), index)}
-      renderSelectedItem={() => renderSelectedItems(selectedItems)}
-      stateReducer={multiSelectStateReducer}
-      {...props}
-    />
+    <div
+      {...select.getToggleButtonProps({ ref: mergedRefs, ...rest })}
+      aria-disabled={disabled || undefined}
+      aria-invalid={invalid || undefined}
+      aria-errormessage={invalid ? `${id}-helper-text` : undefined}
+      className={toggleButton({ size, disabled, readOnly, invalid, className })}
+    >
+      <div className="grow">
+        {children ?? (placeholder && <div className="text-placeholder">{placeholder}</div>)}
+      </div>
+
+      {icon ?? (
+        <div>
+          <ChevronDown className={clsx('size-4', select.isOpen && '-scale-y-100')} />
+        </div>
+      )}
+    </div>
   );
 }
 
-function multiSelectStateReducer<Item>(
-  state: UseSelectState<Item>,
-  { changes, type }: UseSelectStateChangeOptions<Item>,
-) {
-  switch (type) {
-    case useSelect.stateChangeTypes.ToggleButtonKeyDownEnter:
-    case useSelect.stateChangeTypes.ToggleButtonKeyDownSpaceButton:
-    case useSelect.stateChangeTypes.ItemClick:
-      return { ...changes, isOpen: true, highlightedIndex: state.highlightedIndex };
-  }
-
-  return changes;
-}
+const toggleButton = cva(
+  [
+    'row w-full items-center gap-2',
+    'rounded border -outline-offset-1 transition-colors duration-100',
+    'focus:focused cursor-pointer',
+  ],
+  {
+    variants: {
+      size: {
+        1: 'min-h-6 px-1.5',
+        2: 'min-h-8 px-2',
+        3: 'min-h-10 px-3',
+      },
+      disabled: {
+        true: 'bg-muted text-dim pointer-events-none',
+        false: 'bg-neutral',
+      },
+      readOnly: {
+        true: 'pointer-events-none',
+        false: '',
+      },
+      invalid: {
+        true: 'border-red outline-red',
+      },
+    },
+    defaultVariants: {
+      size: 2,
+      disabled: false,
+    },
+  },
+);

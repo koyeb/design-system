@@ -1,7 +1,7 @@
 import clsx from 'clsx';
 
-import { CheckboxInput } from '../checkbox/checkbox';
-import { RadioInput } from '../radio/radio';
+import { Checkbox } from '../checkbox/checkbox';
+import { Radio } from '../radio/radio';
 import { Extend } from '../utils/types';
 import { useId } from '../utils/use-id';
 
@@ -49,8 +49,8 @@ export function SelectBox({
       )}
     >
       <div className="flex items-center justify-center rounded-l-lg px-2">
-        {type === 'checkbox' && <CheckboxInput id={id} disabled={disabled} {...props} />}
-        {type === 'radio' && <RadioInput id={id} disabled={disabled} {...props} />}
+        {type === 'checkbox' && <Checkbox id={id} disabled={disabled} {...props} />}
+        {type === 'radio' && <Radio id={id} disabled={disabled} {...props} />}
       </div>
 
       {children ?? (

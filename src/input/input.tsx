@@ -1,121 +1,46 @@
-import clsx from 'clsx';
+import { cva } from 'class-variance-authority';
 
-import { Field, FieldHelperText, FieldLabel } from '../field/field';
+import { useFieldId } from '../field/field';
 import { Extend } from '../utils/types';
-import { useId } from '../utils/use-id';
 
-type InputOwnProps = {
-  size?: 1 | 2 | 3;
-  label?: React.ReactNode;
-  labelPosition?: 'top' | 'left';
-  helperText?: React.ReactNode;
-  error?: React.ReactNode;
-  invalid?: boolean;
-  start?: React.ReactNode;
-  end?: React.ReactNode;
-  inputBoxClassName?: string;
-  inputClassName?: string;
-};
-
-type InputProps = Extend<React.ComponentProps<'input'>, InputOwnProps>;
+type InputProps = Extend<
+  React.ComponentProps<'input'>,
+  {
+    size?: 1 | 2 | 3;
+    invalid?: boolean;
+    start?: React.ReactNode;
+    end?: React.ReactNode;
+    root?: React.ComponentProps<'div'>;
+  }
+>;
 
 export function Input({
   size,
-  label,
-  labelPosition,
-  helperText,
-  error,
-  invalid = Boolean(error),
-  className,
-  inputBoxClassName,
-  inputClassName,
-  ...props
-}: InputProps) {
-  const id = useId(props.id);
-  const helperTextId = `${id}-helper-text`;
-
-  return (
-    <Field
-      label={<FieldLabel htmlFor={id}>{label}</FieldLabel>}
-      labelPosition={labelPosition}
-      helperText={
-        <FieldHelperText id={helperTextId} invalid={invalid}>
-          {error ?? helperText}
-        </FieldHelperText>
-      }
-      className={className}
-    >
-      <InputBox
-        id={id}
-        size={size}
-        boxClassName={inputBoxClassName}
-        className={inputClassName}
-        aria-invalid={invalid}
-        aria-errormessage={helperTextId}
-        {...props}
-      />
-    </Field>
-  );
-}
-
-type InputBoxOwnProps = {
-  boxRef?: React.Ref<HTMLDivElement>;
-  boxClassName?: string;
-  size?: 1 | 2 | 3;
-  placeholder?: string;
-  start?: React.ReactNode;
-  end?: React.ReactNode;
-};
-
-type InputBoxProps = Extend<React.ComponentProps<'input'>, InputBoxOwnProps>;
-
-export function InputBox({
-  boxRef,
-  boxClassName,
-  size = 2,
-  placeholder,
-  value,
-  min,
-  max,
-  step,
+  disabled,
+  readOnly,
+  invalid,
   start,
   end,
-  id,
   className,
+  root,
   ...props
-}: InputBoxProps) {
+}: InputProps) {
+  const id = useFieldId();
+
   return (
     <div
-      ref={boxRef}
-      className={clsx(
-        'row w-full justify-stretch rounded border -outline-offset-1',
-        props.disabled || props.readOnly ? 'bg-muted' : 'bg-neutral focusable-within',
-        props.disabled && 'opacity-50',
-        props['aria-invalid'] && 'border-red outline-red',
-        {
-          'min-h-6': size === 1,
-          'min-h-8': size === 2,
-          'min-h-10': size === 3,
-        },
-        boxClassName,
-      )}
+      {...root}
+      className={classes.root({ size, disabled, readOnly, invalid, className: root?.className })}
     >
       {start}
 
       <input
         id={id}
-        className={clsx(
-          'w-full min-w-0 flex-1 rounded bg-inherit px-2 outline-none',
-          'placeholder:text-placeholder',
-          start && 'rounded-s-none',
-          end && 'rounded-e-none',
-          className,
-        )}
-        value={Number.isNaN(value) ? '' : value}
-        min={Number.isNaN(min) ? undefined : min}
-        max={Number.isNaN(max) ? undefined : max}
-        step={Number.isNaN(step) ? undefined : step}
-        placeholder={placeholder}
+        disabled={disabled}
+        readOnly={readOnly}
+        aria-invalid={invalid || undefined}
+        aria-errormessage={invalid ? `${id}-helper-text` : undefined}
+        className={classes.input({ size, className })}
         {...props}
       />
 
@@ -125,27 +50,90 @@ export function InputBox({
 }
 
 type InputStartProps = {
+  background?: boolean;
   className?: string;
   children: React.ReactNode;
 };
 
-export function InputStart({ className, children }: InputStartProps) {
-  return (
-    <span className={clsx('row items-center rounded-s border-e bg-muted px-1 text-dim', className)}>
-      {children}
-    </span>
-  );
+export function InputStart({ background, className, children }: InputStartProps) {
+  return <span className={classes.start({ background, className })}>{children}</span>;
 }
 
 type InputEndProps = {
+  background?: boolean;
   className?: string;
   children: React.ReactNode;
 };
 
-export function InputEnd({ className, children }: InputEndProps) {
-  return (
-    <span className={clsx('row items-center rounded-e border-s bg-muted px-1 text-dim', className)}>
-      {children}
-    </span>
-  );
+export function InputEnd({ background, className, children }: InputEndProps) {
+  return <span className={classes.end({ background, className })}>{children}</span>;
 }
+
+const classes = {
+  root: cva(['row w-full justify-stretch rounded border -outline-offset-1 focusable-within'], {
+    variants: {
+      size: {
+        1: 'min-h-6',
+        2: 'min-h-8',
+        3: 'min-h-10',
+      },
+      disabled: {
+        true: 'bg-muted pointer-events-none',
+        false: 'bg-neutral',
+      },
+      readOnly: {
+        true: 'pointer-events-none',
+      },
+      invalid: {
+        true: 'border-red outline-red',
+      },
+    },
+    defaultVariants: {
+      size: 2,
+      disabled: false,
+    },
+  }),
+
+  input: cva(
+    [
+      'w-full min-w-0 flex-1 rounded bg-inherit outline-none truncate placeholder:text-placeholder',
+      'disabled:placeholder:text-placeholder/50 disabled:text-default/50',
+    ],
+    {
+      variants: {
+        size: {
+          1: 'px-1',
+          2: 'px-2',
+          3: 'px-3',
+        },
+      },
+      defaultVariants: {
+        size: 2,
+      },
+    },
+  ),
+
+  start: cva('row items-center', {
+    variants: {
+      background: {
+        true: 'rounded-s border-e bg-muted text-dim px-1',
+        false: 'ps-2',
+      },
+    },
+    defaultVariants: {
+      background: true,
+    },
+  }),
+
+  end: cva('row items-center', {
+    variants: {
+      background: {
+        true: 'rounded-e border-s bg-muted text-dim px-1',
+        false: 'pe-2',
+      },
+    },
+    defaultVariants: {
+      background: true,
+    },
+  }),
+};

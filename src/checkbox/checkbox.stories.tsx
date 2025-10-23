@@ -1,28 +1,35 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
+import { InlineField } from '../field/field';
 import { controls } from '../utils/storybook';
 import { Checkbox } from './checkbox';
 
+type Args = {
+  label: string;
+  disabled: boolean;
+  indeterminate?: boolean;
+  checked?: boolean;
+};
+
 const meta = {
   title: 'DesignSystem/Checkbox',
-  component: Checkbox,
   args: {
     label: 'Label',
+    disabled: false,
   },
   argTypes: {
-    checked: controls.boolean(),
-    disabled: controls.hidden(),
     indeterminate: controls.boolean(),
+    checked: controls.boolean(),
   },
-} satisfies Meta<typeof Checkbox>;
+  render: ({ label, ...props }) => (
+    <InlineField>
+      <Checkbox {...props} />
+      <span>{label}</span>
+    </InlineField>
+  ),
+} satisfies Meta<Args>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {};
-
-export const Disabled: Story = {
-  args: {
-    disabled: true,
-  },
-};

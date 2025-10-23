@@ -1,56 +1,32 @@
 import clsx from 'clsx';
 
-import { FieldLabel } from '../field/field';
-import { Extend } from '../utils/types';
-import { useId } from '../utils/use-id';
+import { useFieldId } from '../field/field';
 
-type SwitchOwnProps = {
-  label?: React.ReactNode;
-  labelPosition?: 'top' | 'left';
-};
+type SwitchProps = React.ComponentProps<'input'>;
 
-type SwitchProps = Extend<React.ComponentProps<'input'>, SwitchOwnProps>;
-
-export function Switch({ label, labelPosition = 'top', className, ...props }: SwitchProps) {
-  const id = useId(props.id);
+export function Switch({ className, ...props }: SwitchProps) {
+  const id = useFieldId();
 
   return (
-    <FieldLabel
-      id={`${id}-label`}
-      htmlFor={id}
-      className={clsx(
-        'inline-flex rounded focusable-within outline-offset-4',
-        !props.disabled && 'cursor-pointer',
-        {
-          'flex-col items-start gap-1.5': labelPosition === 'top',
-          'flex-row items-center gap-2': labelPosition === 'left',
-        },
-        className,
-      )}
-    >
-      {label && (
-        <div className={clsx('row items-center gap-2', labelPosition === 'left' && 'order-2')}>{label}</div>
-      )}
+    <div className="row h-8 items-center">
+      <input
+        id={id}
+        type="checkbox"
+        aria-labelledby={`${id}-label`}
+        className="peer sr-only fixed"
+        {...props}
+      />
 
-      <div className="row h-8 items-center">
-        <input
-          type="checkbox"
-          className="peer sr-only fixed"
-          aria-labelledby={`${id}-label`}
-          id={id}
-          {...props}
-        />
-
-        <div
-          className={clsx(
-            'flex h-4 w-8 items-center',
-            'box-content rounded-full bg-gray/25 p-0.5 transition-all',
-            'after:size-4 after:rounded-full after:bg-neutral after:transition-all',
-            'peer-checked:bg-green peer-checked:after:translate-x-full peer-checked:after:bg-neutral',
-            'peer-disabled:opacity-50',
-          )}
-        />
-      </div>
-    </FieldLabel>
+      <div
+        className={clsx(
+          'flex h-4 w-8 items-center',
+          'not:disabled:cursor-pointer',
+          'box-content rounded-full bg-gray/25 p-0.5 transition-all',
+          'after:size-4 after:rounded-full after:bg-neutral after:transition-all',
+          'peer-checked:bg-green peer-checked:after:translate-x-full peer-checked:after:bg-neutral',
+          'peer-disabled:opacity-50',
+        )}
+      />
+    </div>
   );
 }

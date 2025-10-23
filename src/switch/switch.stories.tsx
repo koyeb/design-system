@@ -1,21 +1,26 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
-import { controls } from '../utils/storybook';
+import { InlineField } from '../field/field';
 import { Switch } from './switch';
+
+type Args = {
+  label: string;
+  disabled: boolean;
+};
 
 const meta = {
   title: 'DesignSystem/Switch',
-  component: Switch,
-  parameters: {
-    controls: controls.exclude(['onChange']),
-  },
   args: {
     label: 'Label',
+    disabled: false,
   },
-  argTypes: {
-    checked: controls.boolean(),
-  },
-} satisfies Meta<typeof Switch>;
+  render: ({ label, disabled }) => (
+    <InlineField>
+      <Switch disabled={disabled} />
+      <span>{label}</span>
+    </InlineField>
+  ),
+} satisfies Meta<Args>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;

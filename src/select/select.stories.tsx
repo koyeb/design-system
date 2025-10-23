@@ -1,9 +1,22 @@
-import type { Meta, StoryFn, StoryObj } from '@storybook/react-vite';
-import { useState } from 'react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
+import { useSelect } from 'downshift';
+import { Menu } from 'lucide-react';
+import { createPortal } from 'react-dom';
 
-import { Checkbox } from '../checkbox/checkbox';
+import { Dropdown, MenuItem, useDropdown } from '../dropdown/dropdown';
+import { Field, FieldHelperText, FieldLabel } from '../field/field';
 import { controls } from '../utils/storybook';
-import { MultiSelect, Select } from './select';
+import { SelectToggleButton } from './select';
+
+type Args = {
+  label: string;
+  size: 1 | 2 | 3;
+  placeholder: string;
+  disabled: boolean;
+  readOnly: boolean;
+  invalid: boolean;
+  helperText: string;
+};
 
 type Game = {
   name: string;
@@ -24,78 +37,70 @@ const games: Game[] = [
 
 const meta = {
   title: 'DesignSystem/Select',
-  component: Select,
-  parameters: {
-    controls: controls.exclude(['className', 'disabled', 'items', 'getKey', 'itemToString', 'renderItem']),
-  },
   args: {
-    className: 'max-w-sm',
-    label: 'Label',
-    placeholder: 'Placeholder',
-    helperText: 'Helper text',
-    items: games,
-    getKey: (game) => game.name,
-    itemToString: (game) => game.name,
-    renderItem: (game: Game) => (
-      <>
-        {game.name} <span className="text-dim">- {game.released}</span>
-      </>
-    ),
+    label: 'Favorite game',
+    size: 2,
+    placeholder: 'Pick a game',
+    disabled: false,
+    readOnly: false,
+    invalid: false,
+    helperText: '',
   },
   argTypes: {
-    open: controls.boolean(),
+    size: controls.inlineRadio([1, 2, 3]),
   },
-} satisfies Meta<typeof Select<Game>>;
+  render: ({ label, size, placeholder, disabled, readOnly, invalid, helperText }) => {
+    const select = useSelect({
+      items: games,
+    });
+
+    const dropdown = useDropdown(select.isOpen, {
+      offset: 8,
+      flip: true,
+      matchReferenceSize: true,
+    });
+
+    return (
+      <Field
+        label={<FieldLabel {...select.getLabelProps()}>{label}</FieldLabel>}
+        helperText={<FieldHelperText invalid={invalid}>{helperText}</FieldHelperText>}
+        className="max-w-sm"
+      >
+        <SelectToggleButton
+          select={select}
+          dropdown={dropdown}
+          size={size}
+          placeholder={placeholder}
+          disabled={disabled}
+          readOnly={readOnly}
+          invalid={invalid}
+        >
+          {select.selectedItem?.name}
+        </SelectToggleButton>
+
+        {createPortal(
+          <Dropdown dropdown={dropdown}>
+            <Menu {...select.getMenuProps()}>
+              {games.map((game, index) => (
+                <MenuItem
+                  {...select.getItemProps({ item: game, index })}
+                  key={game.name}
+                  highlighted={index === select.highlightedIndex}
+                >
+                  <span>{game.name}</span>
+                  <span className="text-dim ml-2">{game.released}</span>
+                </MenuItem>
+              ))}
+            </Menu>
+          </Dropdown>,
+          document.body,
+        )}
+      </Field>
+    );
+  },
+} satisfies Meta<Args>;
 
 export default meta;
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<Args>;
 
 export const Default: Story = {};
-
-export const Disabled: Story = {
-  args: {
-    disabled: true,
-  },
-};
-
-export const Invalid: Story = {
-  args: {
-    error: 'Error message',
-  },
-  argTypes: {
-    helperText: controls.hidden(),
-  },
-};
-
-const groups = [
-  { key: '7', label: '1970s', items: games.filter((game) => game.released.startsWith('197')) },
-  { key: '8', label: '1980s', items: games.filter((game) => game.released.startsWith('198')) },
-  { key: '9', label: '1990s', items: games.filter((game) => game.released.startsWith('199')) },
-];
-
-export const Groups: Story = {
-  args: {
-    items: groups.flatMap((group) => group.items),
-    groups,
-  },
-};
-
-export const multiSelect: StoryFn<typeof MultiSelect<Game>> = (args) => {
-  const [selected, setSelected] = useState<Game[]>([]);
-
-  return (
-    <MultiSelect
-      {...args}
-      selectedItems={selected}
-      onItemsSelected={(game) => setSelected([...selected, game])}
-      onItemsUnselected={(game) => setSelected(selected.filter((selected) => selected !== game))}
-      renderItem={(game, selected) => (
-        <div className="row items-center gap-2">
-          <Checkbox checked={selected} onChange={() => {}} />
-          {game.name} <span className="text-dim">- {game.released}</span>
-        </div>
-      )}
-      renderSelectedItems={(games) => <>{games.map((game) => game.name).join(', ')}</>}
-    />
-  );
-};

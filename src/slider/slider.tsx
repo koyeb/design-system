@@ -2,50 +2,35 @@ import { useRanger } from '@tanstack/react-ranger';
 import clsx from 'clsx';
 import { useMemo, useRef } from 'react';
 
-import { Field, FieldHelperText, FieldLabel } from '../field/field';
+import { useFieldId } from '../field/field';
 import { mergeRefs } from '../utils/merge-refs';
-import { useId } from '../utils/use-id';
 
 type SliderProps = {
   ref?: React.Ref<HTMLDivElement>;
-  value?: number[];
-  onChange?: (values: number[]) => void;
-  disabled?: boolean;
-  label?: React.ReactNode;
-  helperText?: React.ReactNode;
-  invalid?: boolean;
-  error?: React.ReactNode;
   min?: number;
   max?: number;
   step?: 1;
   tickSize?: number;
   renderTick?: (value: number) => React.ReactNode;
   connector?: boolean;
-  id?: string;
-  className?: string;
+  disabled?: boolean;
+  value?: number[];
+  onChange?: (values: number[]) => void;
 };
 
 export function Slider({
   ref,
-  value,
-  onChange,
-  disabled,
-  label,
-  helperText,
-  invalid,
-  error,
   min = 0,
   max = 100,
   step = 1,
   tickSize = step,
   renderTick,
   connector,
-  id: idProp,
-  className,
+  disabled,
+  value,
+  onChange,
 }: SliderProps) {
-  const id = useId(idProp);
-  const helperTextId = `${id}-helper-text`;
-
+  const id = useFieldId();
   const rangerRef = useRef<HTMLDivElement>(null);
 
   const ranger = useRanger({
@@ -59,15 +44,7 @@ export function Slider({
   });
 
   return (
-    <Field
-      label={<FieldLabel htmlFor={id}>{label}</FieldLabel>}
-      helperText={
-        <FieldHelperText id={helperTextId} invalid={invalid}>
-          {error ?? helperText}
-        </FieldHelperText>
-      }
-      className={className}
-    >
+    <>
       <div
         ref={mergeRefs(ref, rangerRef)}
         id={id}
@@ -98,7 +75,7 @@ export function Slider({
       </div>
 
       {renderTick && <Ticks ticks={ranger.getTicks()} renderTick={renderTick} />}
-    </Field>
+    </>
   );
 }
 

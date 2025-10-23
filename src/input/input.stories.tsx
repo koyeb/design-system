@@ -1,49 +1,57 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
+import { Field, FieldHelperText, FieldLabel } from '../field/field';
 import { controls } from '../utils/storybook';
 import { Input, InputEnd, InputStart } from './input';
 
+type Args = {
+  size: 1 | 2 | 3;
+  label: string;
+  placeholder: string;
+  helperText: string;
+  disabled: boolean;
+  readOnly: boolean;
+  invalid: boolean;
+  start: boolean;
+  end: boolean;
+};
+
 const meta = {
   title: 'DesignSystem/Input',
-  component: Input,
-  parameters: {
-    controls: controls.exclude(['className', 'disabled']),
-  },
   args: {
-    className: 'max-w-sm',
+    size: 2,
     label: 'Label',
     placeholder: 'Placeholder',
-    helperText: 'Helper text',
+    helperText: '',
+    disabled: false,
+    readOnly: false,
+    invalid: false,
+    start: false,
+    end: false,
   },
-} satisfies Meta<typeof Input>;
+  argTypes: {
+    size: controls.inlineRadio([1, 2, 3]),
+  },
+  render: ({ size, label, placeholder, helperText, disabled, readOnly, invalid, start, end }) => (
+    <Field
+      label={<FieldLabel>{label}</FieldLabel>}
+      helperText={<FieldHelperText invalid={invalid}>{helperText}</FieldHelperText>}
+      className="max-w-sm"
+    >
+      <Input
+        size={size}
+        placeholder={placeholder}
+        disabled={disabled}
+        readOnly={readOnly}
+        invalid={invalid}
+        start={start && <InputStart>Start</InputStart>}
+        end={end && <InputEnd>End</InputEnd>}
+      />
+    </Field>
+  ),
+} satisfies Meta<Args>;
 
 export default meta;
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<Args>;
 
 export const Default: Story = {};
-
-export const Disabled: Story = {
-  args: {
-    disabled: true,
-  },
-};
-
-export const Invalid: Story = {
-  args: {
-    error: 'Error message',
-  },
-  argTypes: {
-    helperText: controls.hidden(),
-  },
-};
-
-export const Adornments: Story = {
-  args: {
-    start: <InputStart>Start</InputStart>,
-    end: <InputEnd>End</InputEnd>,
-  },
-  argTypes: {
-    start: controls.hidden(),
-    end: controls.hidden(),
-  },
-};

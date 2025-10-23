@@ -1,42 +1,19 @@
-import clsx from 'clsx';
-
-import { FieldLabel } from '../field/field';
+import { useFieldId } from '../field/field';
 import { Extend } from '../utils/types';
-import { useId } from '../utils/use-id';
 
-type CheckboxOwnProps = {
-  label?: React.ReactNode;
-};
+type CheckboxProps = Extend<
+  React.ComponentProps<'input'>,
+  {
+    indeterminate?: boolean;
+  }
+>;
 
-type CheckboxProps = Extend<CheckboxInputProps, CheckboxOwnProps>;
+export function Checkbox({ indeterminate, className, ...props }: CheckboxProps) {
+  const id = useFieldId();
 
-export function Checkbox({ label, className, ...props }: CheckboxProps) {
-  const id = useId(props.id);
-
-  return (
-    <FieldLabel
-      id={`${id}-label`}
-      htmlFor={id}
-      className={clsx(
-        'inline-flex flex-row items-center gap-2',
-        'rounded focusable-within outline-offset-4',
-        !props.disabled && 'cursor-pointer',
-        props.disabled && 'text-dim',
-        className,
-      )}
-    >
-      <CheckboxInput {...props} id={id} />
-      {label}
-    </FieldLabel>
-  );
-}
-
-type CheckboxInputProps = Extend<React.ComponentProps<'input'>, { indeterminate?: boolean }>;
-
-export function CheckboxInput({ indeterminate, ...props }: CheckboxInputProps) {
   return (
     <>
-      <input type="checkbox" className="peer sr-only fixed" {...props} />
+      <input id={id} type="checkbox" className="peer sr-only fixed" {...props} />
 
       <span className="leading-none peer-checked:hidden peer-disabled:[&>span]:bg-muted">
         <Unchecked className="size-4" />

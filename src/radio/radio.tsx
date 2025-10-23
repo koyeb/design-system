@@ -1,40 +1,13 @@
-import clsx from 'clsx';
+import { useFieldId } from '../field/field';
 
-import { FieldLabel } from '../field/field';
-import { Extend } from '../utils/types';
-import { useId } from '../utils/use-id';
+type RadioProps = React.ComponentProps<'input'>;
 
-type RadioOwnProps = {
-  label?: React.ReactNode;
-};
+export function Radio({ className, ...props }: RadioProps) {
+  const id = useFieldId();
 
-type RadioProps = Extend<React.ComponentProps<'input'>, RadioOwnProps>;
-
-export function Radio({ label, className, ...props }: RadioProps) {
-  const id = useId(props.id);
-
-  return (
-    <FieldLabel
-      id={`${id}-label`}
-      htmlFor={id}
-      className={clsx(
-        'inline-flex flex-row items-center gap-2',
-        'rounded focusable-within outline-offset-4',
-        !props.disabled && 'cursor-pointer',
-        props.disabled && 'text-dim',
-        className,
-      )}
-    >
-      <RadioInput {...props} id={id} />
-      {label}
-    </FieldLabel>
-  );
-}
-
-export function RadioInput(props: React.ComponentProps<'input'>) {
   return (
     <>
-      <input type="radio" className="peer sr-only fixed" {...props} />
+      <input id={id} type="radio" className="peer sr-only fixed" {...props} />
 
       <span className="leading-none peer-checked:hidden peer-disabled:[&>span]:bg-muted">
         <span className="inline-block size-4 rounded-full border" />
@@ -50,10 +23,7 @@ export function RadioInput(props: React.ComponentProps<'input'>) {
 function Checked(props: React.SVGProps<SVGSVGElement>) {
   return (
     <svg viewBox="0 0 16 16" {...props}>
-      <path
-        d="M0 8C0 3.58172 3.58172 0 8 0C12.4183 0 16 3.58172 16 8C16 12.4183 12.4183 16 8 16C3.58172 16 0 12.4183 0 8Z"
-        className="fill-green"
-      />
+      <circle cx="8" cy="8" r="8" className="fill-green" />
       <circle cx="8" cy="8" r="2" className="fill-neutral" />
     </svg>
   );

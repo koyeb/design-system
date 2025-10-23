@@ -38,7 +38,6 @@ export const Default: StoryFn = () => {
 
   useEffect(() => {
     initialize(palette);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
