@@ -15,7 +15,6 @@ type InputProps = Extend<
 >;
 
 export function Input({
-  ref,
   size,
   disabled,
   readOnly,
