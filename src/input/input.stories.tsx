@@ -9,6 +9,7 @@ type Args = {
   label: string;
   placeholder: string;
   helperText: string;
+  value: string;
   disabled: boolean;
   readOnly: boolean;
   invalid: boolean;
@@ -23,6 +24,7 @@ const meta = {
     label: 'Label',
     placeholder: 'Placeholder',
     helperText: '',
+    value: '',
     disabled: false,
     readOnly: false,
     invalid: false,
@@ -32,13 +34,14 @@ const meta = {
   argTypes: {
     size: controls.inlineRadio([1, 2, 3]),
   },
-  render: ({ size, label, placeholder, helperText, disabled, readOnly, invalid, start, end }) => (
+  render: ({ size, label, placeholder, helperText, value, disabled, readOnly, invalid, start, end }) => (
     <Field
       label={<FieldLabel>{label}</FieldLabel>}
       helperText={<FieldHelperText invalid={invalid}>{helperText}</FieldHelperText>}
       className="max-w-sm"
     >
       <Input
+        value={value}
         size={size}
         placeholder={placeholder}
         disabled={disabled}

@@ -14,30 +14,16 @@ type InputProps = Extend<
   }
 >;
 
-export function Input({
-  size,
-  disabled,
-  readOnly,
-  invalid,
-  start,
-  end,
-  className,
-  root,
-  ...props
-}: InputProps) {
+export function Input({ size, disabled, invalid, start, end, className, root, ...props }: InputProps) {
   const id = useFieldId();
 
   return (
-    <div
-      {...root}
-      className={classes.root({ size, disabled, readOnly, invalid, className: root?.className })}
-    >
+    <div {...root} className={classes.root({ size, disabled, invalid, className: root?.className })}>
       {start}
 
       <input
         id={id}
         disabled={disabled}
-        readOnly={readOnly}
         aria-invalid={invalid || undefined}
         aria-errormessage={invalid ? `${id}-helper-text` : undefined}
         className={classes.input({ size, className })}
@@ -78,11 +64,8 @@ const classes = {
         3: 'min-h-10',
       },
       disabled: {
-        true: 'bg-muted pointer-events-none',
+        true: 'bg-muted/50 text-dim/50 pointer-events-none',
         false: 'bg-neutral',
-      },
-      readOnly: {
-        true: 'pointer-events-none',
       },
       invalid: {
         true: 'border-red outline-red',
@@ -97,7 +80,7 @@ const classes = {
   input: cva(
     [
       'w-full min-w-0 flex-1 rounded bg-inherit outline-none truncate placeholder:text-placeholder',
-      'disabled:placeholder:text-placeholder/50 disabled:text-default/50',
+      'disabled:placeholder:text-placeholder/50',
     ],
     {
       variants: {

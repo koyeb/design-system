@@ -46,7 +46,7 @@ export function InlineField({ id: idProp, className, ...props }: InlineFieldProp
     <fieldIdContext.Provider value={id}>
       <FieldLabel
         className={clsx(
-          'inline-flex flex-row items-center gap-2 rounded focusable-within outline-offset-4 cursor-pointer',
+          'inline-flex flex-row items-center gap-2 rounded focusable-within outline-offset-4 cursor-pointer has-disabled:pointer-events-none',
           className,
         )}
         {...props}

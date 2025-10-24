@@ -43,14 +43,18 @@ export function SelectToggleButton<T>(props: SelectToggleButtonProps<T>) {
 
   return (
     <div
-      {...select.getToggleButtonProps({ ref: mergedRefs, ...rest })}
+      {...select.getToggleButtonProps({ ref: mergedRefs, disabled: disabled || readOnly, ...rest })}
       aria-disabled={disabled || undefined}
+      aria-readonly={readOnly || undefined}
       aria-invalid={invalid || undefined}
       aria-errormessage={invalid ? `${id}-helper-text` : undefined}
-      className={toggleButton({ size, disabled, readOnly, invalid, className })}
+      className={toggleButton({ size, disabled, invalid, className })}
     >
       <div className="grow">
-        {children ?? (placeholder && <div className="text-placeholder">{placeholder}</div>)}
+        {children ??
+          (placeholder && (
+            <div className="text-placeholder in-aria-disabled:text-placeholder/50!">{placeholder}</div>
+          ))}
       </div>
 
       {icon ?? (
@@ -76,12 +80,8 @@ const toggleButton = cva(
         3: 'min-h-10 px-3',
       },
       disabled: {
-        true: 'bg-muted text-dim pointer-events-none',
+        true: 'bg-muted/50 text-dim/50 pointer-events-none outline-none',
         false: 'bg-neutral',
-      },
-      readOnly: {
-        true: 'pointer-events-none',
-        false: '',
       },
       invalid: {
         true: 'border-red outline-red',

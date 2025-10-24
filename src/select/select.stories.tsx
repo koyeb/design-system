@@ -1,9 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { useSelect } from 'downshift';
-import { Menu } from 'lucide-react';
 import { createPortal } from 'react-dom';
 
-import { Dropdown, MenuItem, useDropdown } from '../dropdown/dropdown';
+import { Dropdown, Menu, MenuItem, useDropdown } from '../dropdown/dropdown';
 import { Field, FieldHelperText, FieldLabel } from '../field/field';
 import { controls } from '../utils/storybook';
 import { SelectToggleButton } from './select';
