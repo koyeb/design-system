@@ -1,37 +1,30 @@
-import type { Meta, StoryObj } from '@storybook/react-vite';
+import type { Meta, StoryFn } from '@storybook/react-vite';
 
 import { controls } from '../utils/storybook';
-import { Button } from './button';
+import { Button, ButtonColor, ButtonSize, ButtonVariant } from './button';
 
-const meta = {
-  title: 'DesignSystem/Button',
-  component: Button,
-  parameters: {
-    controls: controls.exclude(['variant']),
-  },
-  args: {
-    children: 'New button',
-    disabled: false,
-    loading: false,
-  },
-  argTypes: {
-    color: controls.inlineRadio(['green', 'blue', 'orange', 'red', 'gray']),
-  },
-} satisfies Meta<typeof Button>;
-
-export default meta;
-type Story = StoryObj<typeof meta>;
-
-export const Solid: Story = {};
-
-export const Outline: Story = {
-  args: {
-    variant: 'outline',
-  },
+type Args = {
+  variant: ButtonVariant;
+  size: ButtonSize;
+  color: ButtonColor;
+  loading: boolean;
+  disabled: boolean;
 };
 
-export const Ghost: Story = {
+export default {
+  title: 'DesignSystem/Button',
   args: {
-    variant: 'ghost',
+    variant: 'solid',
+    loading: false,
+    disabled: false,
   },
+  argTypes: {
+    variant: controls.inlineRadio(['solid', 'outline', 'ghost']),
+    size: controls.inlineRadio([1, 2, 3]),
+    color: controls.inlineRadio(['green', 'blue', 'orange', 'red', 'gray']),
+  },
+} satisfies Meta<Args>;
+
+export const button: StoryFn<Args> = (args) => {
+  return <Button {...args}>Click me</Button>;
 };

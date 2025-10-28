@@ -1,6 +1,6 @@
 import clsx from 'clsx';
 
-type StatusIconColor = 'red' | 'green' | 'blue' | 'orange' | 'gray';
+export type StatusIconColor = 'red' | 'green' | 'blue' | 'orange' | 'gray';
 
 type StatusIconProps = {
   color: StatusIconColor;

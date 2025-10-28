@@ -2,8 +2,10 @@ import { cva } from 'class-variance-authority';
 
 import { Extend } from '../utils/types';
 
+export type TabButtonSize = 1 | 2;
+
 type TabButtonsProps = {
-  size?: 1 | 2;
+  size?: TabButtonSize;
   className?: string;
   children?: React.ReactNode;
 };

@@ -22,6 +22,11 @@ export function Theme() {
       </div>
 
       <div className="col gap-1">
+        <h2 className="mt-4 mb-2 text-lg font-semibold">Border colors</h2>
+        <Color label="default" className="border" />
+      </div>
+
+      <div className="col gap-1">
         <h2 className="mt-4 mb-2 text-lg font-semibold">Text colors</h2>
         <Text label="default" className="text-default" />
         <Text label="dim" className="text-dim" />
@@ -31,11 +36,6 @@ export function Theme() {
         <Text label="orange" className="text-orange" />
         <Text label="gray" className="text-gray" />
         <Text label="placeholder" className="text-placeholder" />
-      </div>
-
-      <div className="col gap-1">
-        <h2 className="mt-4 mb-2 text-lg font-semibold">Border colors</h2>
-        <Color label="default" className="border" />
       </div>
 
       <div className="col gap-1">
@@ -59,7 +59,7 @@ function Color({ className, label }: { className: string; label: React.ReactNode
 function Text({ className, label }: { className: string; label: React.ReactNode }) {
   return (
     <div className="row items-center gap-2">
-      <div className={className}>Koyeb</div>
+      <div className={className}>Text</div>
       {label}
     </div>
   );

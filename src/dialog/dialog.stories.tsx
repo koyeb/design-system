@@ -1,21 +1,35 @@
-import type { Meta, StoryObj } from '@storybook/react-vite';
+import type { Meta, StoryFn } from '@storybook/react-vite';
+import { action } from 'storybook/actions';
 
-import { ComponentPlaceholder, controls } from '../utils/storybook';
-import { Dialog } from './dialog';
+import { ComponentPlaceholder } from '../utils/storybook';
+import { Dialog, DialogFooter, DialogHeader } from './dialog';
 
-const meta = {
+type Args = {
+  open: boolean;
+  title: string;
+  footer: string;
+};
+
+export default {
   title: 'DesignSystem/Dialog',
-  component: Dialog,
-  parameters: {
-    controls: controls.exclude(['width', 'children']),
-  },
   args: {
     open: true,
-    children: <ComponentPlaceholder />,
+    title: 'Title',
+    footer: 'Footer',
   },
-} satisfies Meta<typeof Dialog>;
+} satisfies Meta<Args>;
 
-export default meta;
-type Story = StoryObj<typeof meta>;
-
-export const Default: Story = {};
+export const dialog: StoryFn<Args> = ({ open, title, footer }) => {
+  return (
+    <Dialog
+      open={open}
+      onClose={action('close')}
+      onClosed={action('closed')}
+      className="w-full max-w-sm col gap-4"
+    >
+      <DialogHeader title={title} onClose={action('close')} />
+      <ComponentPlaceholder />
+      <DialogFooter>{footer}</DialogFooter>
+    </Dialog>
+  );
+};

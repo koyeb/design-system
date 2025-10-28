@@ -10,7 +10,6 @@ export * from './command-palette/command-palette';
 export * from './dialog/dialog';
 export * from './dropdown/dropdown';
 export * from './field/field';
-export * from './floating/floating';
 export * from './input/input';
 export * from './notification/notification';
 export * from './progress-bar/progress-bar';

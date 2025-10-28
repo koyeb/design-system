@@ -1,84 +1,38 @@
 import clsx from 'clsx';
-import { createElement } from 'react';
 
-type TabsProps = {
-  className?: string;
-  children: React.ReactNode;
-};
+import { Extend } from '../utils/types';
 
-export function Tabs({ className, children }: TabsProps) {
+type TabsProps = React.ComponentProps<'div'>;
+
+export function Tabs({ className, ...props }: TabsProps) {
   return (
     <nav
       role="tablist"
       className={clsx('row hide-scrollbars flex-nowrap overflow-x-auto border-b', className)}
-    >
-      {children}
-    </nav>
+      {...props}
+    />
   );
 }
 
-type TabProps = {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  component?: string | React.ComponentType<any>;
-  selected?: boolean;
-  className?: string;
-  children: React.ReactNode;
-  [key: string]: unknown;
-};
+type TabProps = Extend<
+  React.ComponentProps<'button'>,
+  {
+    selected?: boolean;
+  }
+>;
 
-export function Tab({ component = 'button', className, selected, children, ...props }: TabProps) {
-  return createElement(
-    component,
-    {
-      role: 'tab',
-      'aria-selected': selected,
-      className: clsx(
-        'inline-block border-b-2 px-4 py-2 font-semibold whitespace-nowrap transition-colors outline-none focus-visible:bg-green/10',
-        selected && 'border-green',
-        !selected && 'border-transparent text-dim',
-        className,
-      ),
-      ...props,
-    },
-    children,
-  );
-}
-
-type VerticalTabsProps = {
-  className?: string;
-  children: React.ReactNode;
-};
-
-export function VerticalTabs({ className, children }: VerticalTabsProps) {
+export function Tab({ selected, className, ...props }: TabProps) {
   return (
-    <nav role="tablist" className={clsx('col', className)}>
-      {children}
-    </nav>
-  );
-}
-
-type VerticalTabProps = {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  component: string | React.ComponentType<any>;
-  selected?: boolean;
-  className?: string;
-  children: React.ReactNode;
-  [key: string]: unknown;
-};
-
-export function VerticalTab({ component, className, selected, children, ...props }: VerticalTabProps) {
-  return createElement(
-    component,
-    {
-      role: 'tab',
-      'aria-selected': selected,
-      className: clsx(
-        'rounded px-4 py-3 text-left font-medium hover:bg-green/20',
-        !selected && 'text-dim',
+    <button
+      type="button"
+      role="tab"
+      aria-selected={selected}
+      className={clsx(
+        'inline-block border-b-2 px-4 py-2 font-semibold whitespace-nowrap transition-colors outline-none focus-visible:bg-green/10',
+        'aria-selected:border-green not-aria-selected:border-transparent not-aria-selected:text-dim',
         className,
-      ),
-      ...props,
-    },
-    children,
+      )}
+      {...props}
+    />
   );
 }

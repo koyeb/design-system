@@ -1,21 +1,23 @@
-import type { Meta, StoryObj } from '@storybook/react-vite';
+import type { Meta, StoryFn } from '@storybook/react-vite';
 
 import { controls } from '../utils/storybook';
 import { ProgressBar } from './progress-bar';
 
-const meta = {
+type Args = {
+  label: boolean;
+  progress: number;
+};
+
+export default {
   title: 'DesignSystem/ProgressBar',
-  component: ProgressBar,
-  parameters: {
-    controls: controls.exclude(['className']),
-    className: 'max-w-main',
+  args: {
+    label: true,
   },
   argTypes: {
     progress: controls.range({ min: 0, max: 1, step: 0.01 }),
   },
-} satisfies Meta<typeof ProgressBar>;
+} satisfies Meta<Args>;
 
-export default meta;
-type Story = StoryObj<typeof meta>;
-
-export const Default: Story = {};
+export const progressBar: StoryFn = (args) => {
+  return <ProgressBar {...args} className="max-w-sm" />;
+};

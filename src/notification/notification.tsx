@@ -3,7 +3,7 @@ import { AlertCircleIcon, AlertTriangleIcon, CheckIcon, CircleIcon, XIcon } from
 
 import { StatusIcon } from '../status-icon/status-icon';
 
-type NotificationVariant = 'success' | 'info' | 'warning' | 'error';
+export type NotificationVariant = 'success' | 'info' | 'warning' | 'error';
 
 type NotificationProps = {
   title?: React.ReactNode;

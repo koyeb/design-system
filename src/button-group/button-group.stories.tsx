@@ -1,28 +1,16 @@
-import type { Meta, StoryObj } from '@storybook/react-vite';
+import type { Meta, StoryFn } from '@storybook/react-vite';
 
 import { Button } from '../button/button';
-import { controls } from '../utils/storybook';
 import { ButtonGroup } from './button-group';
 
-const meta = {
+export default {
   title: 'DesignSystem/ButtonGroup',
-  component: ButtonGroup,
-  parameters: {
-    controls: controls.exclude(['children']),
-  },
-} satisfies Meta<typeof ButtonGroup>;
+} satisfies Meta;
 
-export default meta;
-type Story = StoryObj<typeof meta>;
-
-export const Default: Story = {
-  args: {
-    children: (
-      <>
-        <Button>Left</Button>
-        <Button>Middle</Button>
-        <Button>Right</Button>
-      </>
-    ),
-  },
-};
+export const buttonGroup: StoryFn = () => (
+  <ButtonGroup>
+    <Button>Left</Button>
+    <Button>Middle</Button>
+    <Button>Right</Button>
+  </ButtonGroup>
+);

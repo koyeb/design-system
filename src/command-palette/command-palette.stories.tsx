@@ -16,19 +16,22 @@ import { useEffect, useState } from 'react';
 import { action } from 'storybook/actions';
 
 import { Dialog } from '../dialog/dialog';
-import { controls } from '../utils/storybook';
 import { CommandPalette, CommandPaletteComponent, useCommandPalette } from './command-palette';
+
+type Args = {
+  open: boolean;
+};
 
 const meta = {
   title: 'DesignSystem/CommandPalette',
-  parameters: {
-    controls: controls.exclude(['footer']),
+  args: {
+    open: true,
   },
 } satisfies Meta;
 
 export default meta;
 
-export const Default: StoryFn = () => {
+export const commandPalette: StoryFn<Args> = (args) => {
   const [open, setOpen] = useState(true);
 
   const palette = useCommandPalette({
@@ -41,26 +44,22 @@ export const Default: StoryFn = () => {
   }, []);
 
   return (
-    <>
-      <button onClick={() => setOpen(true)}>Open</button>
-
-      <Dialog
-        open={open}
-        onClose={() => setOpen(false)}
-        onClosed={() => palette.reset()}
-        className="h-80 w-full max-w-xl overflow-y-hidden p-0!"
-      >
-        <CommandPaletteComponent
-          palette={palette}
-          footer={() => <div className="border-t p-2 text-center text-dim">Footer</div>}
-          noResults={() => (
-            <div className="flex flex-1 items-center justify-center">
-              {`No results for "${palette.input.value}"`}
-            </div>
-          )}
-        />
-      </Dialog>
-    </>
+    <Dialog
+      open={args.open ?? open}
+      onClose={() => setOpen(false)}
+      onClosed={() => palette.reset()}
+      className="h-80 w-full max-w-xl overflow-y-hidden p-0!"
+    >
+      <CommandPaletteComponent
+        palette={palette}
+        footer={() => <div className="border-t p-2 text-center text-dim">Footer</div>}
+        noResults={() => (
+          <div className="flex flex-1 items-center justify-center">
+            {`No results for "${palette.input.value}"`}
+          </div>
+        )}
+      />
+    </Dialog>
   );
 };
 

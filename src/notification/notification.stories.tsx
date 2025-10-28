@@ -1,28 +1,31 @@
-import type { Meta, StoryObj } from '@storybook/react-vite';
+import type { Meta, StoryFn } from '@storybook/react-vite';
+import { action } from 'storybook/actions';
 
 import { controls } from '../utils/storybook';
-import { Notification } from './notification';
+import { Notification, NotificationVariant } from './notification';
 
-const meta = {
+type Args = {
+  variant: NotificationVariant;
+  title?: string;
+  content: string;
+};
+
+export default {
   title: 'DesignSystem/Notification',
-  component: Notification,
-  parameters: {
-    controls: controls.exclude(['className', 'variant']),
-  },
   args: {
-    className: 'max-w-sm',
-    title: 'Notification title',
-    children: 'Description, lorem ipsum dolor sit...',
+    variant: 'info',
+    content: 'Description, lorem ipsum dolor sit...',
   },
-} satisfies Meta<typeof Notification>;
-
-export default meta;
-type Story = StoryObj<typeof meta>;
-
-export const Info: Story = {};
-
-export const Error: Story = {
-  args: {
-    variant: 'error',
+  argTypes: {
+    title: controls.string(),
+    variant: controls.inlineRadio(['success', 'info', 'warning', 'error']),
   },
+} satisfies Meta<Args>;
+
+export const notification: StoryFn<Args> = ({ variant, title, content }) => {
+  return (
+    <Notification variant={variant} title={title} onClose={action('close')} className="max-w-sm">
+      {content}
+    </Notification>
+  );
 };

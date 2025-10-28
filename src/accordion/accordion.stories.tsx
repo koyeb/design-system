@@ -1,14 +1,14 @@
-import type { Meta, StoryObj } from '@storybook/react-vite';
+import type { Meta, StoryFn } from '@storybook/react-vite';
 import { useState } from 'react';
 
 import { ComponentPlaceholder } from '../utils/storybook';
-import { AccordionSection } from './accordion';
+import { AccordionHeader, AccordionSection } from './accordion';
 
 type Args = {
   hasError?: boolean;
 };
 
-const meta = {
+export default {
   title: 'DesignSystem/Accordion',
   decorators: [
     (Story) => (
@@ -22,30 +22,30 @@ const meta = {
   },
 } satisfies Meta<Args>;
 
-export default meta;
-type Story = StoryObj<typeof meta>;
+export const accordion: StoryFn<Args> = ({ hasError }) => {
+  const [expanded, setExpanded] = useState<number>();
 
-export const Default: Story = {
-  render: ({ hasError }) => {
-    const [expanded, setExpanded] = useState<number>();
-
-    return (
-      <>
-        {[1, 2, 3].map((item) => (
-          <AccordionSection
-            key={item}
-            header={
-              <header className="p-4" onClick={() => setExpanded(expanded === item ? undefined : item)}>
-                item {item} header
-              </header>
-            }
-            isExpanded={expanded === item}
-            hasError={hasError && item === 2}
-          >
-            <ComponentPlaceholder />
-          </AccordionSection>
-        ))}
-      </>
-    );
-  },
+  return (
+    <>
+      {[1, 2, 3].map((item) => (
+        <AccordionSection
+          key={item}
+          header={
+            <AccordionHeader
+              className="p-4"
+              hasError={hasError && item === 2}
+              expanded={expanded === item}
+              setExpanded={(expanded) => setExpanded(expanded ? item : undefined)}
+            >
+              item {item} header
+            </AccordionHeader>
+          }
+          isExpanded={expanded === item}
+          hasError={hasError && item === 2}
+        >
+          <ComponentPlaceholder />
+        </AccordionSection>
+      ))}
+    </>
+  );
 };

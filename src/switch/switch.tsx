@@ -8,7 +8,7 @@ export function Switch({ className, ...props }: SwitchProps) {
   const id = useFieldId();
 
   return (
-    <div className="row h-8 items-center">
+    <>
       <input
         id={id}
         type="checkbox"
@@ -27,6 +27,6 @@ export function Switch({ className, ...props }: SwitchProps) {
           'peer-disabled:opacity-50',
         )}
       />
-    </div>
+    </>
   );
 }

@@ -22,7 +22,7 @@ type TooltipProps = Omit<UseTooltipProps, 'open' | 'setOpen'> & TooltipOwnProps;
 export function Tooltip({ content, trigger, ...props }: TooltipProps) {
   const [open, setOpen] = useState(false);
 
-  const { getReferenceProps, setReference, ...tooltip } = useTooltip({
+  const tooltip = useTooltip({
     open,
     setOpen,
     ...props,
@@ -30,18 +30,19 @@ export function Tooltip({ content, trigger, ...props }: TooltipProps) {
 
   return (
     <>
-      {trigger(getReferenceProps({ ref: setReference }))}
+      {trigger(tooltip.interactions.getReferenceProps({ ref: tooltip.floating.refs.setReference }))}
 
       {content && (
-        <TooltipElement {...tooltip} {...props}>
-          {content({ onClose: () => tooltip.context.onOpenChange(false) })}
+        <TooltipElement tooltip={tooltip} {...props}>
+          {content({ onClose: () => tooltip.floating.context.onOpenChange(false) })}
         </TooltipElement>
       )}
     </>
   );
 }
 
-type TooltipElementProps = Omit<ReturnType<typeof useTooltip>, 'setReference' | 'getReferenceProps'> & {
+type TooltipElementProps = {
+  tooltip: ReturnType<typeof useTooltip>;
   root?: HTMLElement | null;
   arrow?: boolean;
   forceDesktop?: boolean;
@@ -50,12 +51,13 @@ type TooltipElementProps = Omit<ReturnType<typeof useTooltip>, 'setReference' | 
 };
 
 function TooltipElement(props: TooltipElementProps) {
-  const { context, forceDesktop, isMounted, arrowSize, arrowElement, arrow, children } = props;
+  const { tooltip, forceDesktop, children } = props;
+  const { floating, transition, arrow } = tooltip;
 
   const mobile = !useBreakpoint('sm');
   const Container = mobile && !forceDesktop ? ContainerMobile : ContainerDesktop;
 
-  if (!isMounted) {
+  if (!transition.isMounted) {
     return null;
   }
 
@@ -64,23 +66,33 @@ function TooltipElement(props: TooltipElementProps) {
       {children}
 
       {arrow && (
-        <FloatingArrow ref={arrowElement} context={context} height={arrowSize} className="fill-neutral" />
+        <FloatingArrow
+          ref={arrow.element}
+          context={floating.context}
+          height={arrow.size}
+          className="fill-neutral"
+        />
       )}
     </Container>
   );
 }
 
 function ContainerMobile(props: TooltipElementProps) {
-  const { context, setFloating, getFloatingProps, root, className, children } = props;
+  const { tooltip, root, className, children } = props;
+  const { floating, interactions } = tooltip;
 
   return (
-    <Backdrop context={context} root={root} className="z-40 overflow-hidden! bg-black/5 p-2 backdrop-blur-xs">
+    <Backdrop
+      context={floating.context}
+      root={root}
+      className="z-40 overflow-hidden! bg-black/5 p-2 backdrop-blur-xs"
+    >
       <motion.div
         initial={{ transform: 'translateY(100%)' }}
         animate={{ transform: 'translateY(0)' }}
         exit={{ transform: 'translateY(100%)' }}
         className={clsx('absolute inset-x-0 bottom-0 rounded-t-2xl bg-neutral p-4', className)}
-        {...getFloatingProps({ ref: setFloating })}
+        {...interactions.getFloatingProps({ ref: floating.refs.setFloating })}
       >
         {children}
       </motion.div>
@@ -89,14 +101,15 @@ function ContainerMobile(props: TooltipElementProps) {
 }
 
 function ContainerDesktop(props: TooltipElementProps) {
-  const { setFloating, getFloatingProps, root, className, children } = props;
+  const { tooltip, root, className, children } = props;
+  const { floating, transition, interactions } = tooltip;
 
   return (
     <FloatingPortal root={root}>
       <div
         className={clsx('z-50 rounded-md border bg-neutral p-3 drop-shadow-md', className)}
-        style={props.styles}
-        {...getFloatingProps({ ref: setFloating })}
+        style={{ ...floating.floatingStyles, ...transition.styles }}
+        {...interactions.getFloatingProps({ ref: floating.refs.setFloating })}
       >
         {children}
       </div>

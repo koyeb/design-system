@@ -5,11 +5,6 @@ import { useState } from 'react';
 import { IconButton } from '../button/button';
 import { Table } from './table';
 
-export default {
-  title: 'DesignSystem/Table',
-  component: Table,
-} satisfies Meta<typeof Table>;
-
 type Game = {
   id: string;
   name: string;
@@ -28,30 +23,11 @@ const games: Game[] = [
   { id: '9', name: 'Donkey Kong', released: '1981-07-01' },
 ];
 
-export const Default: StoryFn = () => (
-  <Table
-    items={games}
-    columns={{
-      id: {
-        header: 'ID',
-        render: (item) => item.id,
-      },
-      name: {
-        header: 'Name',
-        render: (item) => item.name,
-      },
-      released: {
-        header: 'Released',
-        render: (item) => item.released,
-      },
-      actions: {
-        render: () => <IconButton variant="ghost" color="gray" size={1} Icon={EllipsisVerticalIcon} />,
-      },
-    }}
-  />
-);
+export default {
+  title: 'DesignSystem/Table',
+} satisfies Meta;
 
-export const ExpandableRow: StoryFn = () => {
+export const table: StoryFn = () => {
   const [expanded, setExpanded] = useState<Game[]>([]);
 
   return (

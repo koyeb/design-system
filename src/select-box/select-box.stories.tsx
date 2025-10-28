@@ -1,49 +1,31 @@
-import type { Meta, StoryObj } from '@storybook/react-vite';
+import type { Meta, StoryFn } from '@storybook/react-vite';
 
-import { ComponentPlaceholder, controls } from '../utils/storybook';
+import { controls } from '../utils/storybook';
 import { SelectBox } from './select-box';
 
-const meta = {
+type Args = {
+  title: string;
+  description: string;
+  type: 'checkbox' | 'radio';
+  checked: boolean;
+  disabled: boolean;
+  footer?: string;
+};
+
+export default {
   title: 'DesignSystem/SelectBox',
-  component: SelectBox,
-  parameters: {
-    controls: controls.exclude(['className', 'type', 'footer', 'disabled']),
-  },
   args: {
-    className: 'w-64',
     title: 'Title',
     description: 'Description',
+    type: 'checkbox',
+    checked: false,
   },
   argTypes: {
-    checked: controls.boolean(),
+    disabled: controls.boolean(),
+    footer: controls.string(),
   },
-} satisfies Meta<typeof SelectBox>;
+} satisfies Meta<Args>;
 
-export default meta;
-type Story = StoryObj<typeof meta>;
-
-export const Checkbox: Story = {
-  args: {
-    type: 'checkbox',
-  },
-};
-
-export const Radio: Story = {
-  args: {
-    type: 'radio',
-  },
-};
-
-export const WithFooter: Story = {
-  args: {
-    ...Checkbox.args,
-    footer: <ComponentPlaceholder />,
-  },
-};
-
-export const Disabled: Story = {
-  args: {
-    ...Checkbox.args,
-    disabled: true,
-  },
+export const selectBox: StoryFn<Args> = (args) => {
+  return <SelectBox {...args} className="max-w-xs" />;
 };

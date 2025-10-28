@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react-vite';
+import type { Meta, StoryFn } from '@storybook/react-vite';
 
 import { Field, FieldHelperText, FieldLabel } from '../field/field';
 import { TextArea } from './textarea';
@@ -12,7 +12,7 @@ type Args = {
   invalid: boolean;
 };
 
-const meta = {
+export default {
   title: 'DesignSystem/TextArea',
   args: {
     label: 'Label',
@@ -22,7 +22,10 @@ const meta = {
     readOnly: false,
     invalid: false,
   },
-  render: ({ label, placeholder, helperText, disabled, readOnly, invalid }) => (
+} satisfies Meta<Args>;
+
+export const textArea: StoryFn<Args> = ({ label, placeholder, helperText, disabled, readOnly, invalid }) => {
+  return (
     <Field
       label={<FieldLabel>{label}</FieldLabel>}
       helperText={<FieldHelperText invalid={invalid}>{helperText}</FieldHelperText>}
@@ -30,10 +33,5 @@ const meta = {
     >
       <TextArea placeholder={placeholder} disabled={disabled} readOnly={readOnly} invalid={invalid} />
     </Field>
-  ),
-} satisfies Meta<Args>;
-
-export default meta;
-type Story = StoryObj<typeof meta>;
-
-export const Default: Story = {};
+  );
+};

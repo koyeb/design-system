@@ -1,31 +1,29 @@
-import type { Meta, StoryObj } from '@storybook/react-vite';
+import type { Meta, StoryFn } from '@storybook/react-vite';
 
 import { controls } from '../utils/storybook';
-import { Alert } from './alert';
+import { Alert, AlertStyle, AlertVariant } from './alert';
 
-const meta = {
-  title: 'DesignSystem/Alert',
-  component: Alert,
-  parameters: {
-    controls: controls.exclude(['style', 'className']),
-  },
-  args: {
-    title: 'Title',
-    description: 'Description',
-    className: 'max-w-sm',
-  },
-  argTypes: {
-    variant: controls.inlineRadio(['info', 'warning', 'error']),
-  },
-} satisfies Meta<typeof Alert>;
-
-export default meta;
-type Story = StoryObj<typeof meta>;
-
-export const solid: Story = {
-  args: { style: 'solid' },
+type Args = {
+  variant: AlertVariant;
+  style: AlertStyle;
+  title: string;
+  description: string;
 };
 
-export const outline: Story = {
-  args: { style: 'outline' },
+export default {
+  title: 'DesignSystem/Alert',
+  args: {
+    variant: 'info',
+    style: 'solid',
+    title: 'Title',
+    description: 'Description',
+  },
+  argTypes: {
+    variant: controls.inlineRadio(['neutral', 'info', 'warning', 'error']),
+    style: controls.inlineRadio(['solid', 'outline']),
+  },
+} satisfies Meta<Args>;
+
+export const alert: StoryFn<Args> = (args) => {
+  return <Alert {...args} className="max-w-lg" />;
 };

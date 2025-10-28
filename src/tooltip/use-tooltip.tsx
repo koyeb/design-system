@@ -1,7 +1,19 @@
-import { Placement, Strategy, arrow, safePolygon } from '@floating-ui/react';
+import {
+  Placement,
+  Strategy,
+  UseFloatingReturn,
+  UseInteractionsReturn,
+  arrow,
+  flip,
+  offset,
+  safePolygon,
+  useFloating,
+  useHover,
+  useInteractions,
+  useRole,
+  useTransitionStyles,
+} from '@floating-ui/react';
 import { useRef } from 'react';
-
-import { useFloating } from '../floating/use-floating';
 
 const arrowSize = 6;
 const gap = 6;
@@ -16,6 +28,13 @@ export type UseTooltipProps = {
   offset?: number;
 };
 
+type UseTooltip = {
+  floating: UseFloatingReturn;
+  transition: { isMounted: boolean; styles: React.CSSProperties };
+  interactions: UseInteractionsReturn;
+  arrow: false | { size: number; element: React.Ref<SVGSVGElement> };
+};
+
 export function useTooltip({
   open,
   setOpen,
@@ -23,31 +42,44 @@ export function useTooltip({
   strategy,
   arrow: showArrow = true,
   allowHover = false,
-  offset,
-}: UseTooltipProps) {
+  offset: offsetValue,
+}: UseTooltipProps): UseTooltip {
   const arrowElement = useRef<SVGSVGElement>(null);
 
-  const result = useFloating({
+  const floating = useFloating({
     open,
-    setOpen,
+    onOpenChange: setOpen,
     placement,
     strategy,
-    offset: (showArrow ? arrowSize : 0) + (offset ?? gap),
-    middlewares: [showArrow && arrow({ element: arrowElement })],
-    interactions: {
-      hover: {
-        move: false,
-        handleClose: allowHover ? safePolygon() : undefined,
-      },
-      role: {
-        role: 'tooltip',
-      },
-    },
+    middleware: [
+      flip(),
+      offset((showArrow ? arrowSize : 0) + (offsetValue ?? gap)),
+      showArrow && arrow({ element: arrowElement }),
+    ],
   });
 
+  const transition = useTransitionStyles(floating.context, {
+    duration: 100,
+  });
+
+  const hover = useHover(floating.context, {
+    move: false,
+    handleClose: allowHover ? safePolygon() : undefined,
+  });
+
+  const role = useRole(floating.context, {
+    role: 'tooltip',
+  });
+
+  const interactions = useInteractions([hover, role]);
+
   return {
-    ...result,
-    arrowSize,
-    arrowElement,
+    floating,
+    transition,
+    interactions,
+    arrow: showArrow && {
+      size: arrowSize,
+      element: arrowElement,
+    },
   };
 }

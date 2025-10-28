@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react-vite';
+import type { Meta, StoryFn } from '@storybook/react-vite';
 import { useSelect } from 'downshift';
 import { createPortal } from 'react-dom';
 
@@ -6,16 +6,6 @@ import { Dropdown, Menu, MenuItem, useDropdown } from '../dropdown/dropdown';
 import { Field, FieldHelperText, FieldLabel } from '../field/field';
 import { controls } from '../utils/storybook';
 import { SelectToggleButton } from './select';
-
-type Args = {
-  label: string;
-  size: 1 | 2 | 3;
-  placeholder: string;
-  disabled: boolean;
-  readOnly: boolean;
-  invalid: boolean;
-  helperText: string;
-};
 
 type Game = {
   name: string;
@@ -34,7 +24,17 @@ const games: Game[] = [
   { name: 'Donkey Kong', released: 'July 1981' },
 ];
 
-const meta = {
+type Args = {
+  label: string;
+  size: 1 | 2 | 3;
+  placeholder: string;
+  disabled: boolean;
+  readOnly: boolean;
+  invalid: boolean;
+  helperText: string;
+};
+
+export default {
   title: 'DesignSystem/Select',
   args: {
     label: 'Favorite game',
@@ -43,64 +43,60 @@ const meta = {
     disabled: false,
     readOnly: false,
     invalid: false,
-    helperText: '',
   },
   argTypes: {
     size: controls.inlineRadio([1, 2, 3]),
-  },
-  render: ({ label, size, placeholder, disabled, readOnly, invalid, helperText }) => {
-    const select = useSelect({
-      items: games,
-    });
-
-    const dropdown = useDropdown({
-      floating: { open: select.isOpen },
-      offset: 8,
-      flip: true,
-      matchReferenceSize: true,
-    });
-
-    return (
-      <Field
-        label={<FieldLabel {...select.getLabelProps()}>{label}</FieldLabel>}
-        helperText={<FieldHelperText invalid={invalid}>{helperText}</FieldHelperText>}
-        className="max-w-sm"
-      >
-        <SelectToggleButton
-          select={select}
-          dropdown={dropdown}
-          size={size}
-          placeholder={placeholder}
-          disabled={disabled}
-          readOnly={readOnly}
-          invalid={invalid}
-        >
-          {select.selectedItem?.name}
-        </SelectToggleButton>
-
-        {createPortal(
-          <Dropdown dropdown={dropdown}>
-            <Menu {...select.getMenuProps()}>
-              {games.map((game, index) => (
-                <MenuItem
-                  {...select.getItemProps({ item: game, index })}
-                  key={game.name}
-                  highlighted={index === select.highlightedIndex}
-                >
-                  <span>{game.name}</span>
-                  <span className="text-dim ml-2">{game.released}</span>
-                </MenuItem>
-              ))}
-            </Menu>
-          </Dropdown>,
-          document.body,
-        )}
-      </Field>
-    );
+    helperText: controls.string(),
   },
 } satisfies Meta<Args>;
 
-export default meta;
-type Story = StoryObj<Args>;
+export const select: StoryFn = ({ label, size, placeholder, disabled, readOnly, invalid, helperText }) => {
+  const select = useSelect({
+    items: games,
+  });
 
-export const Default: Story = {};
+  const dropdown = useDropdown({
+    floating: { open: select.isOpen },
+    offset: 8,
+    flip: true,
+    matchReferenceSize: true,
+  });
+
+  return (
+    <Field
+      label={<FieldLabel {...select.getLabelProps()}>{label}</FieldLabel>}
+      helperText={<FieldHelperText invalid={invalid}>{helperText}</FieldHelperText>}
+      className="max-w-sm"
+    >
+      <SelectToggleButton
+        select={select}
+        dropdown={dropdown}
+        size={size}
+        placeholder={placeholder}
+        disabled={disabled}
+        readOnly={readOnly}
+        invalid={invalid}
+      >
+        {select.selectedItem?.name}
+      </SelectToggleButton>
+
+      {createPortal(
+        <Dropdown dropdown={dropdown}>
+          <Menu {...select.getMenuProps()}>
+            {games.map((game, index) => (
+              <MenuItem
+                {...select.getItemProps({ item: game, index })}
+                key={game.name}
+                highlighted={index === select.highlightedIndex}
+              >
+                <span>{game.name}</span>
+                <span className="text-dim ml-2">{game.released}</span>
+              </MenuItem>
+            ))}
+          </Menu>
+        </Dropdown>,
+        document.body,
+      )}
+    </Field>
+  );
+};

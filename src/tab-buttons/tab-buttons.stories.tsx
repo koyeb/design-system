@@ -1,38 +1,39 @@
-import type { Meta, StoryObj } from '@storybook/react-vite';
+import type { Meta, StoryFn } from '@storybook/react-vite';
 import { useState } from 'react';
 
 import { controls } from '../utils/storybook';
-import { TabButton, TabButtons } from './tab-buttons';
+import { TabButton, TabButtonSize, TabButtons } from './tab-buttons';
 
-const meta = {
+type Args = {
+  size: TabButtonSize;
+};
+
+export default {
   title: 'DesignSystem/TabButtons',
-  component: TabButtons,
-  parameters: {
-    controls: controls.exclude(['className', 'children']),
+  args: {
+    size: 2,
   },
-} satisfies Meta<typeof TabButtons>;
-
-export default meta;
-type Story = StoryObj<typeof meta>;
-
-export const Default: Story = {
-  render() {
-    const [selected, setSelected] = useState(2);
-
-    return (
-      <TabButtons className="max-w-sm">
-        <TabButton selected={selected === 1} onClick={() => setSelected(1)}>
-          Tab 1
-        </TabButton>
-
-        <TabButton selected={selected === 2} onClick={() => setSelected(2)}>
-          Tab 2
-        </TabButton>
-
-        <TabButton selected={selected === 3} onClick={() => setSelected(3)}>
-          Tab 3
-        </TabButton>
-      </TabButtons>
-    );
+  argTypes: {
+    size: controls.inlineRadio([1, 2]),
   },
+} satisfies Meta<Args>;
+
+export const tabButtons: StoryFn<Args> = ({ size }) => {
+  const [selected, setSelected] = useState(2);
+
+  return (
+    <TabButtons size={size} className="max-w-sm">
+      <TabButton size={size} selected={selected === 1} onClick={() => setSelected(1)}>
+        Tab 1
+      </TabButton>
+
+      <TabButton size={size} selected={selected === 2} onClick={() => setSelected(2)}>
+        Tab 2
+      </TabButton>
+
+      <TabButton size={size} selected={selected === 3} onClick={() => setSelected(3)}>
+        Tab 3
+      </TabButton>
+    </TabButtons>
+  );
 };

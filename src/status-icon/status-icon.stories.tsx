@@ -1,40 +1,23 @@
-import type { Meta, StoryObj } from '@storybook/react-vite';
+import type { Meta, StoryFn } from '@storybook/react-vite';
 import { BoxIcon } from 'lucide-react';
 
 import { controls } from '../utils/storybook';
-import { StatusIcon } from './status-icon';
+import { StatusIcon, StatusIconColor } from './status-icon';
 
-const meta = {
+type Args = {
+  color: StatusIconColor;
+};
+
+export default {
   title: 'DesignSystem/StatusIcon',
-  component: StatusIcon,
-  parameters: {
-    controls: controls.exclude(['Icon', 'color']),
-  },
   args: {
-    Icon: BoxIcon,
+    color: 'green',
   },
-  argTypes: {},
-} satisfies Meta<typeof StatusIcon>;
+  argTypes: {
+    color: controls.inlineRadio(['red', 'green', 'blue', 'orange', 'gray']),
+  },
+} satisfies Meta<Args>;
 
-export default meta;
-type Story = StoryObj<typeof meta>;
-
-export const red: Story = {
-  args: { color: 'red' },
-};
-
-export const green: Story = {
-  args: { color: 'green' },
-};
-
-export const blue: Story = {
-  args: { color: 'blue' },
-};
-
-export const orange: Story = {
-  args: { color: 'orange' },
-};
-
-export const gray: Story = {
-  args: { color: 'gray' },
+export const statusIcon: StoryFn<Args> = ({ color }) => {
+  return <StatusIcon color={color} Icon={BoxIcon} />;
 };

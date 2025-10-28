@@ -1,23 +1,19 @@
-import type { Meta, StoryObj } from '@storybook/react-vite';
+import type { Meta, StoryFn } from '@storybook/react-vite';
 
 import { controls } from '../utils/storybook';
 import { Spinner } from './spinner';
 
-const meta = {
+type Args = {
+  progress?: number;
+};
+
+export default {
   title: 'DesignSystem/Spinner',
-  component: Spinner,
-  parameters: {
-    controls: controls.exclude(['className']),
-  },
-  args: {
-    className: 'size-24',
-  },
   argTypes: {
     progress: controls.number({ min: 0, max: 1, step: 0.01 }),
   },
-} satisfies Meta<typeof Spinner>;
+} satisfies Meta<Args>;
 
-export default meta;
-type Story = StoryObj<typeof meta>;
-
-export const Default: Story = {};
+export const spinner: StoryFn<Args> = ({ progress }) => {
+  return <Spinner progress={progress} className="size-24" />;
+};

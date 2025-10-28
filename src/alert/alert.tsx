@@ -3,8 +3,8 @@ import { AlertCircleIcon, InfoIcon } from 'lucide-react';
 
 import { StatusIcon } from '../status-icon/status-icon';
 
-type AlertVariant = 'neutral' | 'info' | 'error' | 'warning';
-type AlertStyle = 'solid' | 'outline';
+export type AlertVariant = 'neutral' | 'info' | 'error' | 'warning';
+export type AlertStyle = 'solid' | 'outline';
 
 type AlertProps = {
   variant?: AlertVariant;
@@ -36,6 +36,7 @@ export function Alert({
           'border-orange': variant === 'warning',
         },
         style === 'solid' && {
+          'bg-gray/5': variant === 'neutral',
           'bg-blue/5': variant === 'info',
           'bg-red/5': variant === 'error',
           'bg-orange/5': variant === 'warning',

@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react-vite';
+import type { Meta, StoryFn } from '@storybook/react-vite';
 
 import { Field, FieldHelperText, FieldLabel } from '../field/field';
 import { controls } from '../utils/storybook';
@@ -17,7 +17,7 @@ type Args = {
   end: boolean;
 };
 
-const meta = {
+export default {
   title: 'DesignSystem/Input',
   args: {
     size: 2,
@@ -34,27 +34,34 @@ const meta = {
   argTypes: {
     size: controls.inlineRadio([1, 2, 3]),
   },
-  render: ({ size, label, placeholder, helperText, value, disabled, readOnly, invalid, start, end }) => (
-    <Field
-      label={<FieldLabel>{label}</FieldLabel>}
-      helperText={<FieldHelperText invalid={invalid}>{helperText}</FieldHelperText>}
-      className="max-w-sm"
-    >
-      <Input
-        value={value}
-        size={size}
-        placeholder={placeholder}
-        disabled={disabled}
-        readOnly={readOnly}
-        invalid={invalid}
-        start={start && <InputStart>Start</InputStart>}
-        end={end && <InputEnd>End</InputEnd>}
-      />
-    </Field>
-  ),
 } satisfies Meta<Args>;
 
-export default meta;
-type Story = StoryObj<Args>;
-
-export const Default: Story = {};
+export const input: StoryFn<Args> = ({
+  size,
+  label,
+  placeholder,
+  helperText,
+  value,
+  disabled,
+  readOnly,
+  invalid,
+  start,
+  end,
+}) => (
+  <Field
+    label={<FieldLabel>{label}</FieldLabel>}
+    helperText={<FieldHelperText invalid={invalid}>{helperText}</FieldHelperText>}
+    className="max-w-sm"
+  >
+    <Input
+      value={value}
+      size={size}
+      placeholder={placeholder}
+      disabled={disabled}
+      readOnly={readOnly}
+      invalid={invalid}
+      start={start && <InputStart>Start</InputStart>}
+      end={end && <InputEnd>End</InputEnd>}
+    />
+  </Field>
+);

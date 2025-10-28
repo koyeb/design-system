@@ -1,28 +1,23 @@
-import type { Meta, StoryObj } from '@storybook/react-vite';
+import type { Meta, StoryFn } from '@storybook/react-vite';
 
-import { ComponentPlaceholder, controls } from '../utils/storybook';
+import { ComponentPlaceholder } from '../utils/storybook';
 import { Collapse } from './collapse';
 
-const meta = {
+type Args = {
+  open: boolean;
+};
+
+export default {
   title: 'DesignSystem/Collapse',
-  component: Collapse,
-  parameters: {
-    controls: controls.exclude(['children']),
-  },
   args: {
     open: true,
-    children: <ComponentPlaceholder />,
   },
-  decorators: [
-    (Story) => (
-      <div className="max-w-sm">
-        <Story />
-      </div>
-    ),
-  ],
-} satisfies Meta<typeof Collapse>;
+} satisfies Meta<Args>;
 
-export default meta;
-type Story = StoryObj<typeof meta>;
-
-export const Default: Story = {};
+export const collapse: StoryFn<Args> = ({ open }) => {
+  return (
+    <Collapse open={open} className="max-w-sm">
+      <ComponentPlaceholder />
+    </Collapse>
+  );
+};

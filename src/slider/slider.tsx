@@ -9,7 +9,7 @@ type SliderProps = {
   ref?: React.Ref<HTMLDivElement>;
   min?: number;
   max?: number;
-  step?: 1;
+  step?: number;
   tickSize?: number;
   renderTick?: (value: number) => React.ReactNode;
   connector?: boolean;
