@@ -1,22 +1,19 @@
+import clsx from 'clsx';
+
 type ProgressBarProps = {
   progress?: number;
-  label?: boolean;
   className?: string;
 };
 
-export function ProgressBar({ progress = 0, label = true, className }: ProgressBarProps) {
+export function ProgressBar({ progress = 0, className }: ProgressBarProps) {
   const percent = Math.round(progress * 100);
 
   return (
-    <div className={className}>
-      <div className="relative h-1 bg-green">
-        <div
-          className="absolute right-0 h-full bg-black/40 transition-[width] will-change-[width] dark:bg-white/80"
-          style={{ width: `${100 - percent}%` }}
-        />
-      </div>
-
-      {label && <div className="mt-1 text-center text-xs text-dim">{percent}%</div>}
+    <div className={clsx('relative bg-muted h-1.5 rounded-full', className)}>
+      <div
+        className="absolute left-0 h-full bg-green transition-[width] rounded-full will-change-[width] dark:bg-white/80"
+        style={{ width: percent + '%' }}
+      />
     </div>
   );
 }

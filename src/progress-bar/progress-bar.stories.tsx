@@ -4,17 +4,16 @@ import { controls } from '../utils/storybook';
 import { ProgressBar } from './progress-bar';
 
 type Args = {
-  label: boolean;
   progress: number;
 };
 
 export default {
   title: 'DesignSystem/ProgressBar',
   args: {
-    label: true,
+    progress: 0.42,
   },
   argTypes: {
-    progress: controls.range({ min: 0, max: 1, step: 0.01 }),
+    progress: controls.number({ min: 0, max: 1, step: 0.01 }),
   },
 } satisfies Meta<Args>;
 
