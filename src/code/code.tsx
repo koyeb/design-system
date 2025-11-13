@@ -1,7 +1,17 @@
 import { useEffect, useState } from 'react';
 import { HighlighterCore, createHighlighter } from 'shiki';
 
-export type CodeLang = 'dotenv' | 'javascript' | 'json' | 'python' | 'go' | 'prisma' | 'text' | 'yaml';
+export type CodeLang =
+  | 'dotenv'
+  | 'javascript'
+  | 'json'
+  | 'python'
+  | 'go'
+  | 'prisma'
+  | 'shell'
+  | 'text'
+  | 'yaml';
+
 type Theme = 'light' | 'dark';
 
 type CodeProps = {
@@ -38,7 +48,7 @@ function useHighlighter() {
   useEffect(() => {
     createHighlighter({
       themes: ['github-light', 'github-dark'],
-      langs: ['dotenv', 'javascript', 'json', 'python', 'go', 'prisma', 'yaml'],
+      langs: ['dotenv', 'javascript', 'json', 'python', 'go', 'prisma', 'shell', 'yaml'],
     }).then(setHighlighter, console.error);
   }, []);
 
