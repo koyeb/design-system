@@ -25,7 +25,7 @@ export const dialog: StoryFn<Args> = ({ open, title, footer }) => {
       open={open}
       onClose={action('close')}
       onClosed={action('closed')}
-      className="w-full max-w-sm col gap-4"
+      className="col w-full max-w-sm gap-4"
     >
       <DialogHeader title={title} onClose={action('close')} />
       <ComponentPlaceholder />

@@ -44,7 +44,6 @@ export function Tooltip({ content, trigger, ...props }: TooltipProps) {
 type TooltipElementProps = {
   tooltip: ReturnType<typeof useTooltip>;
   root?: HTMLElement | null;
-  arrow?: boolean;
   forceDesktop?: boolean;
   className?: string;
   children: React.ReactNode;
@@ -52,7 +51,7 @@ type TooltipElementProps = {
 
 function TooltipElement(props: TooltipElementProps) {
   const { tooltip, forceDesktop, children } = props;
-  const { floating, transition, arrow } = tooltip;
+  const { floating, transition, arrow, setArrow } = tooltip;
 
   const mobile = !useBreakpoint('sm');
   const Container = mobile && !forceDesktop ? ContainerMobile : ContainerDesktop;
@@ -67,7 +66,7 @@ function TooltipElement(props: TooltipElementProps) {
 
       {arrow && (
         <FloatingArrow
-          ref={arrow.element}
+          ref={setArrow}
           context={floating.context}
           height={arrow.size}
           className="fill-neutral"

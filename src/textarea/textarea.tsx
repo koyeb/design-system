@@ -18,7 +18,7 @@ export function TextArea({ disabled, readOnly, invalid, className, ...props }: T
       id={id}
       disabled={disabled}
       readOnly={readOnly}
-      aria-invalid={invalid || undefined}
+      aria-invalid={invalid ? true : undefined}
       aria-errormessage={invalid ? `${id}-helper-text` : undefined}
       className={textArea({ disabled, readOnly, invalid, className })}
       {...props}
@@ -34,7 +34,7 @@ const textArea = cva(
   {
     variants: {
       disabled: {
-        true: 'bg-muted pointer-events-none',
+        true: 'pointer-events-none bg-muted',
       },
       readOnly: {
         true: 'pointer-events-none',

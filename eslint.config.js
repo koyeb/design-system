@@ -11,7 +11,7 @@ export default tseslint.config(
   tseslint.configs.stylisticTypeChecked,
   react.configs.flat.recommended,
   react.configs.flat['jsx-runtime'],
-  reactHooks.configs['recommended-latest'],
+  reactHooks.configs.flat.recommended,
   {
     files: ['src/**/*'],
     languageOptions: {

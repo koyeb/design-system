@@ -1,3 +1,5 @@
+import clsx from 'clsx';
+
 import { useFieldId } from '../field/field';
 import { Extend } from '../utils/types';
 
@@ -15,11 +17,11 @@ export function Checkbox({ indeterminate, className, ...props }: CheckboxProps) 
     <>
       <input id={id} type="checkbox" className="peer sr-only fixed" {...props} />
 
-      <span className="leading-none peer-checked:hidden peer-disabled:[&>span]:bg-muted">
+      <span className={clsx('leading-none peer-checked:hidden peer-disabled:[&>span]:bg-muted', className)}>
         <Unchecked className="size-4" />
       </span>
 
-      <span className="hidden leading-none peer-checked:block">
+      <span className={clsx('hidden leading-none peer-checked:block', className)}>
         {indeterminate ? <Indeterminate className="size-4" /> : <Checked className="size-4" />}
       </span>
     </>

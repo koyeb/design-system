@@ -9,7 +9,7 @@ const meta = {
 
 export default meta;
 
-export const code: StoryFn = (args) => {
+export const code: StoryFn = () => {
   return (
     <Code
       lang="javascript"

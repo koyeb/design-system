@@ -13,7 +13,7 @@ import {
   useRole,
   useTransitionStyles,
 } from '@floating-ui/react';
-import { useRef } from 'react';
+import { useState } from 'react';
 
 const arrowSize = 6;
 const gap = 6;
@@ -32,7 +32,8 @@ type UseTooltip = {
   floating: UseFloatingReturn;
   transition: { isMounted: boolean; styles: React.CSSProperties };
   interactions: UseInteractionsReturn;
-  arrow: false | { size: number; element: React.Ref<SVGSVGElement> };
+  arrow: false | { size: number };
+  setArrow: (element: SVGSVGElement | null) => void;
 };
 
 export function useTooltip({
@@ -44,7 +45,7 @@ export function useTooltip({
   allowHover = false,
   offset: offsetValue,
 }: UseTooltipProps): UseTooltip {
-  const arrowElement = useRef<SVGSVGElement>(null);
+  const [arrowElement, setArrowElement] = useState<SVGSVGElement | null>(null);
 
   const floating = useFloating({
     open,
@@ -77,9 +78,7 @@ export function useTooltip({
     floating,
     transition,
     interactions,
-    arrow: showArrow && {
-      size: arrowSize,
-      element: arrowElement,
-    },
+    arrow: showArrow && { size: arrowSize },
+    setArrow: setArrowElement,
   };
 }

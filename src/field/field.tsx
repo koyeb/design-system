@@ -23,7 +23,7 @@ export function Field({ ref, id: idProp, label, helperText, className, children 
 
   return (
     <fieldIdContext.Provider value={id}>
-      <div ref={ref} className={clsx('gap-y-1.5 col items-start', className)}>
+      <div ref={ref} className={clsx('col items-start gap-y-1.5', className)}>
         {label}
         {children}
         {helperText}
@@ -46,7 +46,7 @@ export function InlineField({ id: idProp, className, ...props }: InlineFieldProp
     <fieldIdContext.Provider value={id}>
       <FieldLabel
         className={clsx(
-          'inline-flex flex-row items-center gap-2 rounded focusable-within outline-offset-4 cursor-pointer has-disabled:pointer-events-none',
+          'inline-flex cursor-pointer flex-row items-center gap-2 rounded focusable-within outline-offset-4 has-disabled:pointer-events-none',
           className,
         )}
         {...props}

@@ -20,11 +20,11 @@ export function Switch({ className, ...props }: SwitchProps) {
       <div
         className={clsx(
           'flex h-4 w-8 items-center',
-          'not:disabled:cursor-pointer',
-          'box-content rounded-full bg-gray/25 p-0.5 transition-all',
+          'box-content cursor-pointer rounded-full bg-gray/25 p-0.5 transition-all',
           'after:size-4 after:rounded-full after:bg-neutral after:transition-all',
           'peer-checked:bg-green peer-checked:after:translate-x-full peer-checked:after:bg-neutral',
           'peer-disabled:opacity-50',
+          className,
         )}
       />
     </>

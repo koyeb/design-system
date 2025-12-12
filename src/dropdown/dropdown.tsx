@@ -1,7 +1,6 @@
 import {
   ElementRects,
   Elements,
-  ReferenceType,
   UseFloatingOptions,
   UseFloatingReturn,
   UseTransitionStylesProps,
@@ -26,7 +25,7 @@ export type UseDropdownProps = Partial<{
   matchReferenceSize: boolean;
 }>;
 
-export type UseDropdown = UseFloatingReturn<ReferenceType> & {
+export type UseDropdown = UseFloatingReturn & {
   transition: { styles: React.CSSProperties; isMounted: boolean };
 };
 
@@ -81,6 +80,7 @@ export function Dropdown({ ref, dropdown, onClosed, style, className, children, 
       style={{ ...dropdown.floatingStyles, ...dropdown.transition.styles, ...style }}
       className={dropdownClassName({ hidden: !dropdown.transition.isMounted, className })}
       onTransitionEnd={onTransitionEnd}
+      // eslint-disable-next-line react/no-unknown-property
       onTransitionCancel={onTransitionEnd}
       {...props}
     >

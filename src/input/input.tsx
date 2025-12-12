@@ -24,7 +24,7 @@ export function Input({ size, disabled, invalid, start, end, className, root, ..
       <input
         id={id}
         disabled={disabled}
-        aria-invalid={invalid || undefined}
+        aria-invalid={invalid ? true : undefined}
         aria-errormessage={invalid ? `${id}-helper-text` : undefined}
         className={classes.input({ size, className })}
         {...props}
@@ -56,7 +56,7 @@ export function InputEnd({ background, className, children }: InputEndProps) {
 }
 
 const classes = {
-  root: cva(['row w-full justify-stretch rounded border -outline-offset-1 focusable-within'], {
+  root: cva(['row w-full justify-stretch rounded border focusable-within -outline-offset-1'], {
     variants: {
       size: {
         1: 'min-h-6',
@@ -64,7 +64,7 @@ const classes = {
         3: 'min-h-10',
       },
       disabled: {
-        true: 'bg-muted/50 text-dim/50 pointer-events-none',
+        true: 'pointer-events-none bg-muted/50 text-dim/50',
         false: 'bg-neutral',
       },
       invalid: {
@@ -79,7 +79,7 @@ const classes = {
 
   input: cva(
     [
-      'w-full min-w-0 flex-1 rounded bg-inherit outline-none truncate placeholder:text-placeholder',
+      'w-full min-w-0 flex-1 truncate rounded bg-inherit outline-none placeholder:text-placeholder',
       'disabled:placeholder:text-placeholder/50',
     ],
     {
@@ -99,7 +99,7 @@ const classes = {
   start: cva('row items-center', {
     variants: {
       background: {
-        true: 'rounded-s border-e bg-muted text-dim px-1',
+        true: 'rounded-s border-e bg-muted px-1 text-dim',
         false: 'ps-2',
       },
     },
@@ -111,7 +111,7 @@ const classes = {
   end: cva('row items-center', {
     variants: {
       background: {
-        true: 'rounded-e border-s bg-muted text-dim px-1',
+        true: 'rounded-e border-s bg-muted px-1 text-dim',
         false: 'pe-2',
       },
     },

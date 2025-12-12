@@ -50,7 +50,15 @@ export default {
   },
 } satisfies Meta<Args>;
 
-export const select: StoryFn = ({ label, size, placeholder, disabled, readOnly, invalid, helperText }) => {
+export const select: StoryFn<Args> = ({
+  label,
+  size,
+  placeholder,
+  disabled,
+  readOnly,
+  invalid,
+  helperText,
+}) => {
   const select = useSelect({
     items: games,
   });
@@ -90,7 +98,7 @@ export const select: StoryFn = ({ label, size, placeholder, disabled, readOnly, 
                 highlighted={index === select.highlightedIndex}
               >
                 <span>{game.name}</span>
-                <span className="text-dim ml-2">{game.released}</span>
+                <span className="ml-2 text-dim">{game.released}</span>
               </MenuItem>
             ))}
           </Menu>

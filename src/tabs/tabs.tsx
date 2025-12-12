@@ -29,7 +29,7 @@ export function Tab({ selected, className, ...props }: TabProps) {
       aria-selected={selected}
       className={clsx(
         'inline-block border-b-2 px-4 py-2 font-semibold whitespace-nowrap transition-colors outline-none focus-visible:bg-green/10',
-        'aria-selected:border-green not-aria-selected:border-transparent not-aria-selected:text-dim',
+        'not-aria-selected:border-transparent not-aria-selected:text-dim aria-selected:border-green',
         className,
       )}
       {...props}

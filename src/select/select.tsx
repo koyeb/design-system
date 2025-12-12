@@ -43,10 +43,11 @@ export function SelectToggleButton<T>(props: SelectToggleButtonProps<T>) {
 
   return (
     <div
+      // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
       {...select.getToggleButtonProps({ ref: mergedRefs, disabled: disabled || readOnly, ...rest })}
-      aria-disabled={disabled || undefined}
-      aria-readonly={readOnly || undefined}
-      aria-invalid={invalid || undefined}
+      aria-disabled={disabled ? true : undefined}
+      aria-readonly={readOnly ? true : undefined}
+      aria-invalid={invalid ? true : undefined}
       aria-errormessage={invalid ? `${id}-helper-text` : undefined}
       className={toggleButton({ size, disabled, invalid, className })}
     >
@@ -70,7 +71,7 @@ const toggleButton = cva(
   [
     'row w-full items-center gap-2',
     'rounded border -outline-offset-1 transition-colors duration-100',
-    'focus:focused cursor-pointer',
+    'cursor-pointer focus:focused',
   ],
   {
     variants: {
@@ -80,7 +81,7 @@ const toggleButton = cva(
         3: 'min-h-10 px-3',
       },
       disabled: {
-        true: 'bg-muted/50 text-dim/50 pointer-events-none outline-none',
+        true: 'pointer-events-none bg-muted/50 text-dim/50 outline-none',
         false: 'bg-neutral',
       },
       invalid: {

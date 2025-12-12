@@ -16,16 +16,17 @@ import { useEffect, useState } from 'react';
 import { action } from 'storybook/actions';
 
 import { Dialog } from '../dialog/dialog';
+import { controls } from '../utils/storybook';
 import { CommandPalette, CommandPaletteComponent, useCommandPalette } from './command-palette';
 
 type Args = {
-  open: boolean;
+  open?: boolean;
 };
 
 const meta = {
   title: 'DesignSystem/CommandPalette',
-  args: {
-    open: true,
+  argTypes: {
+    open: controls.boolean(),
   },
 } satisfies Meta;
 
@@ -41,6 +42,7 @@ export const commandPalette: StoryFn<Args> = (args) => {
 
   useEffect(() => {
     initialize(palette);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

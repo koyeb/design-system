@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { HighlighterCore, createHighlighter } from 'shiki';
 
 export type CodeLang =
@@ -23,23 +23,16 @@ type CodeProps = {
 
 export function Code({ lang, theme, value, className }: CodeProps) {
   const highlighter = useHighlighter();
-  const [html, setHtml] = useState<string>();
 
-  useEffect(() => {
-    const html = highlighter?.codeToHtml(value, {
+  const html = useMemo(() => {
+    return highlighter?.codeToHtml(value, {
       lang,
       theme: `github-${theme}`,
       colorReplacements: theme === 'light' ? { '#fff': 'transparent' } : { '#24292e': 'transparent' },
     });
+  }, [highlighter, lang, theme, value]);
 
-    setHtml(html);
-  }, [lang, theme, value, highlighter]);
-
-  if (html === undefined) {
-    return null;
-  }
-
-  return <div dangerouslySetInnerHTML={{ __html: html }} className={className} />;
+  return <div dangerouslySetInnerHTML={{ __html: html ?? '' }} className={className} />;
 }
 
 function useHighlighter() {
