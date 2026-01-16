@@ -17,7 +17,7 @@ export function Checkbox({ indeterminate, className, ...props }: CheckboxProps) 
     <>
       <input id={id} type="checkbox" className="peer sr-only fixed" {...props} />
 
-      <span className={clsx('leading-none peer-checked:hidden peer-disabled:[&>span]:bg-muted', className)}>
+      <span className={clsx('group leading-none peer-checked:hidden', className)}>
         <Unchecked className="size-4" />
       </span>
 
@@ -33,7 +33,7 @@ function Unchecked(props: React.SVGProps<SVGSVGElement>) {
     <svg viewBox="0 0 16 16" {...props}>
       <path
         strokeWidth={1}
-        className="fill-neutral stroke-border"
+        className="fill-neutral stroke-border group-peer-disabled:fill-muted"
         d="M4 0.5H12C13.933 0.5 15.5 2.067 15.5 4V12C15.5 13.933 13.933 15.5 12 15.5H4C2.067 15.5 0.5 13.933 0.5 12V4C0.5 2.067 2.067 0.5 4 0.5Z"
       />
     </svg>
