@@ -12,6 +12,7 @@ type Args = {
   open?: boolean;
   arrow?: boolean;
   allowHover?: boolean;
+  forceDesktop?: boolean;
 };
 
 export default {
@@ -25,10 +26,11 @@ export default {
   },
   argTypes: {
     title: controls.string(),
+    placement: controls.inlineRadio<Placement>(['top', 'left', 'right', 'bottom']),
     open: controls.boolean(),
     arrow: controls.boolean(),
     allowHover: controls.boolean(),
-    placement: controls.inlineRadio<Placement>(['top', 'left', 'right', 'bottom']),
+    forceDesktop: controls.boolean(),
   },
 } satisfies Meta<Args>;
 
@@ -36,7 +38,7 @@ export const tooltip: StoryFn<Args> = ({ title, content, ...args }) => {
   return (
     <Tooltip
       {...args}
-      trigger={(props) => <div className="size-24 rounded bg-inverted/25 font-semibold" {...props} />}
+      trigger={(props) => <div className="size-24 rounded-sm bg-inverted/25 font-semibold" {...props} />}
       content={({ onClose }) => (
         <div className="col gap-3">
           {title && <TooltipTitle title={title} />}
