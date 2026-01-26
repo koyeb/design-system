@@ -72,9 +72,9 @@ export function IconButton({
       size={size}
       className={clsx(
         {
-          '!px-1': size === 1,
-          '!px-2': size === 2,
-          '!px-3': size === 3,
+          'px-1!': size === 1,
+          'px-2!': size === 2,
+          'px-3!': size === 3,
         },
         className,
       )}

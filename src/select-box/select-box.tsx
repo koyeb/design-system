@@ -41,7 +41,7 @@ export function SelectBox({
       htmlFor={id}
       aria-disabled={disabled}
       className={clsx(
-        'relative row rounded-lg border transition-colors has-[:checked]:border-green',
+        'relative row rounded-lg border transition-colors has-checked:border-green',
         'before:absolute before:inset-0 before:-z-10 before:rounded-lg before:bg-popover',
         !disabled && 'cursor-pointer hover:bg-muted/50',
         disabled && 'bg-muted text-dim',

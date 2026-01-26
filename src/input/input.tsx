@@ -56,7 +56,7 @@ export function InputEnd({ background, className, children }: InputEndProps) {
 }
 
 const classes = {
-  root: cva(['row w-full justify-stretch rounded border focusable-within -outline-offset-1'], {
+  root: cva(['row w-full justify-stretch rounded-sm border focusable-within -outline-offset-1'], {
     variants: {
       size: {
         1: 'min-h-6',
@@ -79,7 +79,7 @@ const classes = {
 
   input: cva(
     [
-      'w-full min-w-0 flex-1 truncate rounded bg-inherit outline-none placeholder:text-placeholder',
+      'w-full min-w-0 flex-1 truncate rounded-sm bg-inherit outline-none placeholder:text-placeholder',
       'disabled:placeholder:text-placeholder/50',
     ],
     {

@@ -49,7 +49,7 @@ function Item({ item, isHighlighted, props }: ItemProps) {
 
   return (
     <div
-      className={clsx('mx-1 row items-center gap-3 rounded-md px-2 py-2', isHighlighted && 'bg-muted')}
+      className={clsx('mx-1 row items-center gap-3 rounded-md p-2', isHighlighted && 'bg-muted')}
       {...props}
     >
       {Icon && (

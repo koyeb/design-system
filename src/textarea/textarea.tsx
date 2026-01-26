@@ -27,7 +27,7 @@ export function TextArea({ disabled, readOnly, invalid, className, ...props }: T
 }
 const textArea = cva(
   [
-    'w-full rounded border bg-neutral px-2 py-1.5 focusable -outline-offset-1',
+    'w-full rounded-sm border bg-neutral px-2 py-1.5 focusable -outline-offset-1',
     'placeholder:text-placeholder',
     'disabled:opacity-50',
   ],

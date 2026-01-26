@@ -27,7 +27,7 @@ export function AccordionSection({
       className={clsx(
         'group border-t transition-colors first-of-type:border-none',
         'data-[expanded=true]:border-t-zinc-400 [[data-expanded=true]+&]:border-t-zinc-400',
-        'data-[error=true]:!border-t-red [[data-error=true]+&]:!border-t-red',
+        'data-[error=true]:border-t-red! [[data-error=true]+&]:border-t-red!',
         className,
       )}
     >
@@ -61,8 +61,8 @@ export function AccordionHeader({
       className={clsx(
         'row items-center gap-2 px-3 py-4',
         setExpanded !== undefined && 'cursor-pointer',
-        expanded && 'bg-gradient-to-b from-inverted/5 to-inverted/0',
-        hasError && 'bg-gradient-to-b from-red/10 to-red/0',
+        expanded && 'bg-linear-to-b from-inverted/5 to-inverted/0',
+        hasError && 'bg-linear-to-b from-red/10 to-red/0',
         className,
       )}
     >

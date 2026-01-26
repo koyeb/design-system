@@ -81,7 +81,7 @@ export function DialogHeader({ title, onClose }: DialogHeaderProps) {
     <header className="row items-center justify-between gap-4">
       <h2 className="text-2xl font-semibold">{title}</h2>
 
-      <button type="button" className={clsx('rounded focusable', !onClose && 'hidden')} onClick={onClose}>
+      <button type="button" className={clsx('rounded-sm focusable', !onClose && 'hidden')} onClick={onClose}>
         <XIcon className="size-4" />
       </button>
     </header>

@@ -82,8 +82,8 @@ export function Table<Item, Column extends string>({
             </tr>
 
             {isExpanded?.(item) && (
-              <tr className="hover:!bg-inherit">
-                <td colSpan={columnsArray.length} className="!border-t-0">
+              <tr className="hover:bg-inherit!">
+                <td colSpan={columnsArray.length} className="border-t-0!">
                   {renderExpanded?.(item)}
                 </td>
               </tr>

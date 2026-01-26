@@ -17,7 +17,7 @@ export function Notification({ title, variant = 'info', onClose, className, chil
   return (
     <div
       className={clsx(
-        'row items-start gap-3 rounded border bg-popover/90 px-4 py-3 shadow-md backdrop-blur-sm',
+        'row items-start gap-3 rounded-sm border bg-popover/90 px-4 py-3 shadow-md backdrop-blur-sm',
         className,
       )}
     >
