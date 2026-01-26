@@ -141,7 +141,7 @@
   }
 
   strong {
-    font-weight: var(--font-medium);
+    font-weight: var(--font-weight-medium);
   }
 }
 
