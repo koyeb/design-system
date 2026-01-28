@@ -7,6 +7,7 @@ import {
   flip,
   offset,
   safePolygon,
+  shift,
   useFloating,
   useHover,
   useInteractions,
@@ -54,6 +55,7 @@ export function useTooltip({
     strategy,
     middleware: [
       flip(),
+      shift(),
       offset((showArrow ? arrowSize : 0) + (offsetValue ?? gap)),
       showArrow && arrow({ element: arrowElement }),
     ],
