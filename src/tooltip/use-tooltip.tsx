@@ -8,6 +8,8 @@ import {
   offset,
   safePolygon,
   shift,
+  useClick,
+  useDismiss,
   useFloating,
   useHover,
   useInteractions,
@@ -22,6 +24,7 @@ const gap = 6;
 export type UseTooltipProps = {
   open?: boolean;
   setOpen?: (open: boolean) => void;
+  isMobile?: boolean;
   placement?: Placement;
   strategy?: Strategy;
   arrow?: boolean;
@@ -40,6 +43,7 @@ type UseTooltip = {
 export function useTooltip({
   open,
   setOpen,
+  isMobile,
   placement = 'bottom',
   strategy,
   arrow: showArrow = true,
@@ -65,16 +69,25 @@ export function useTooltip({
     duration: 100,
   });
 
-  const hover = useHover(floating.context, {
-    move: false,
-    handleClose: allowHover ? safePolygon() : undefined,
-  });
+  const interactions = useInteractions([
+    useHover(floating.context, {
+      enabled: !isMobile,
+      move: false,
+      handleClose: allowHover ? safePolygon() : undefined,
+    }),
 
-  const role = useRole(floating.context, {
-    role: 'tooltip',
-  });
+    useClick(floating.context, {
+      enabled: isMobile,
+    }),
 
-  const interactions = useInteractions([hover, role]);
+    useDismiss(floating.context, {
+      enabled: isMobile,
+    }),
+
+    useRole(floating.context, {
+      role: 'tooltip',
+    }),
+  ]);
 
   return {
     floating,

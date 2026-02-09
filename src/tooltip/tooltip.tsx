@@ -13,7 +13,7 @@ type TooltipOwnProps = {
   forceDesktop?: boolean;
   root?: HTMLElement | null;
   className?: string;
-  content?: ({ onClose }: { onClose: () => void }) => React.ReactNode;
+  content?: (props: { isMobile: boolean; onClose: () => void }) => React.ReactNode;
   trigger: (props: Record<string, unknown>) => React.ReactNode;
 };
 
@@ -22,9 +22,13 @@ type TooltipProps = Omit<UseTooltipProps, 'open' | 'setOpen'> & TooltipOwnProps;
 export function Tooltip({ content, trigger, ...props }: TooltipProps) {
   const [open, setOpen] = useState(false);
 
+  const mobile = !useBreakpoint('sm');
+  const isMobile = mobile && !props.forceDesktop;
+
   const tooltip = useTooltip({
     open,
     setOpen,
+    isMobile,
     ...props,
   });
 
@@ -33,8 +37,8 @@ export function Tooltip({ content, trigger, ...props }: TooltipProps) {
       {trigger(tooltip.interactions.getReferenceProps({ ref: tooltip.floating.refs.setReference }))}
 
       {content && (
-        <TooltipElement tooltip={tooltip} {...props}>
-          {content({ onClose: () => tooltip.floating.context.onOpenChange(false) })}
+        <TooltipElement tooltip={tooltip} isMobile={isMobile} {...props}>
+          {content({ isMobile, onClose: () => tooltip.floating.context.onOpenChange(false) })}
         </TooltipElement>
       )}
     </>
@@ -44,17 +48,16 @@ export function Tooltip({ content, trigger, ...props }: TooltipProps) {
 type TooltipElementProps = {
   tooltip: ReturnType<typeof useTooltip>;
   root?: HTMLElement | null;
-  forceDesktop?: boolean;
+  isMobile?: boolean;
   className?: string;
   children: React.ReactNode;
 };
 
 function TooltipElement(props: TooltipElementProps) {
-  const { tooltip, forceDesktop, children } = props;
+  const { tooltip, isMobile, children } = props;
   const { floating, transition, arrow, setArrow } = tooltip;
 
-  const mobile = !useBreakpoint('sm');
-  const Container = mobile && !forceDesktop ? ContainerMobile : ContainerDesktop;
+  const Container = isMobile ? ContainerMobile : ContainerDesktop;
 
   if (!transition.isMounted) {
     return null;
@@ -90,6 +93,7 @@ function ContainerMobile(props: TooltipElementProps) {
         initial={{ transform: 'translateY(100%)' }}
         animate={{ transform: 'translateY(0)' }}
         exit={{ transform: 'translateY(100%)' }}
+        transition={{ ease: 'easeOut', duration: 125 / 1000 }}
         className={clsx('absolute inset-x-0 bottom-0 rounded-t-2xl bg-neutral p-4', className)}
         {...interactions.getFloatingProps({ ref: floating.refs.setFloating })}
       >

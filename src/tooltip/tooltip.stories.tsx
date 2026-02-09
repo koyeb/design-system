@@ -39,15 +39,17 @@ export const tooltip: StoryFn<Args> = ({ title, content, ...args }) => {
     <Tooltip
       {...args}
       trigger={(props) => <div className="size-24 rounded-sm bg-inverted/25 font-semibold" {...props} />}
-      content={({ onClose }) => (
+      content={({ onClose, isMobile }) => (
         <div className="col gap-3">
           {title && <TooltipTitle title={title} />}
 
           {content}
 
-          <Button onClick={onClose} className="my-6 w-full sm:hidden">
-            Close
-          </Button>
+          {isMobile && (
+            <Button onClick={onClose} className="my-6 w-full">
+              Close
+            </Button>
+          )}
         </div>
       )}
     />
